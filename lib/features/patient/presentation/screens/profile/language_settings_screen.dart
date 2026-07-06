@@ -31,13 +31,17 @@ class LanguageSettingsScreen extends StatelessWidget {
             children: [
               RadioListTile<String>(
                 value: 'ar',
+                // ignore: deprecated_member_use
                 groupValue: language,
+                // ignore: deprecated_member_use
                 onChanged: (value) => _changeLanguage(context, value),
                 title: const Text('العربية'),
               ),
               RadioListTile<String>(
                 value: 'en',
+                // ignore: deprecated_member_use
                 groupValue: language,
+                // ignore: deprecated_member_use
                 onChanged: (value) => _changeLanguage(context, value),
                 title: const Text('English'),
               ),

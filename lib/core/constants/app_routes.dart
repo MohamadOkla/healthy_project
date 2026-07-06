@@ -135,20 +135,40 @@ abstract final class AppRoutes {
   static const String patientSettings = '/patient/settings';
   static const String patientSettingsName = 'patient-settings';
 
-  static const String patientPrivacyPolicy = patientProfilePrivacy;
-  static const String patientPrivacyPolicyName = 'patient-privacy-policy';
-
-  static const String patientTerms = patientProfileTerms;
-  static const String patientTermsName = 'patient-terms';
-
   static const String doctor = '/doctor';
   static const String doctorName = 'doctor';
+
+  static const String doctorPatients = '/doctor/patients';
+  static const String doctorPatientsName = 'doctor-patients';
+
+  static const String doctorPatientDetail = '/doctor/patients/detail';
+  static const String doctorPatientDetailName = 'doctor-patient-detail';
+
+  static const String doctorAppointments = '/doctor/appointments';
+  static const String doctorAppointmentsName = 'doctor-appointments';
+
+  static const String doctorConsultations = '/doctor/consultations';
+  static const String doctorConsultationsName = 'doctor-consultations';
+
+  static const String doctorProfile = '/doctor/profile';
+  static const String doctorProfileName = 'doctor-profile';
 
   static const String hospitalAdmin = '/hospital-admin';
   static const String hospitalAdminName = 'hospital-admin';
 
-  static const String ministryAdmin = '/ministry-admin';
-  static const String ministryAdminName = 'ministry-admin';
+  static const String hospitalAdminDoctors = '/hospital-admin/doctors';
+  static const String hospitalAdminDoctorsName = 'hospital-admin-doctors';
+
+  static const String hospitalAdminDoctorDetail =
+      '/hospital-admin/doctors/detail';
+  static const String hospitalAdminDoctorDetailName =
+      'hospital-admin-doctor-detail';
+
+  static const String hospitalAdminProfile = '/hospital-admin/profile';
+  static const String hospitalAdminProfileName = 'hospital-admin-profile';
+
+  static const String hospitalAdminReports = '/hospital-admin/reports';
+  static const String hospitalAdminReportsName = 'hospital-admin-reports';
 
   static const String appointments = '/appointments';
   static const String appointmentsName = 'appointments';

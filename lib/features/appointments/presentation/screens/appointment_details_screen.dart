@@ -8,15 +8,19 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../cubit/appointments_cubit.dart';
+import '../models/appointment_ui_model.dart';
 import '../widgets/appointment_info_row.dart';
 import '../widgets/appointment_status_chip.dart';
 
 class AppointmentDetailsScreen extends StatelessWidget {
-  const AppointmentDetailsScreen({super.key});
+  const AppointmentDetailsScreen({super.key, this.appointment});
+
+  final AppointmentUiModel? appointment;
 
   @override
   Widget build(BuildContext context) {
-    final appointment = AppointmentsCubit.sampleAppointment;
+    final appointment =
+        this.appointment ?? AppointmentsCubit.sampleAppointment;
 
     return Scaffold(
       backgroundColor: AppColors.background,

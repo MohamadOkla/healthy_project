@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_routes.dart';
-import '../../../../core/constants/storage_keys.dart';
 import '../../../../core/services/local_storage_service.dart';
+import '../../../../core/constants/storage_keys.dart';
 import '../cubit/onboarding_cubit.dart';
 import '../cubit/onboarding_state.dart';
 import '../widgets/onboarding_background.dart';
@@ -24,10 +24,6 @@ class OnboardingScreen extends StatelessWidget {
             await LocalStorageService.instance.setBool(
               StorageKeys.hasSeenOnboarding,
               true,
-            );
-            await LocalStorageService.instance.setString(
-              StorageKeys.lastRoute,
-              AppRoutes.roleSelection,
             );
             if (!context.mounted) return;
             context.go(AppRoutes.roleSelection);

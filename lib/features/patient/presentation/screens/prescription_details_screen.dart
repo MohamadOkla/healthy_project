@@ -12,12 +12,38 @@ import '../../../../core/widgets/app_app_bar.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/app_scaffold.dart';
+import '../../../prescriptions/domain/entities/prescription_entry.dart';
+
+const _fallbackPrescription = PrescriptionEntry(
+  id: 'rx0',
+  patientId: 'p1',
+  doctorName: 'د. أحمد خالد',
+  issueDate: '18 يونيو 2026',
+  expiryDate: '18 يوليو 2026',
+  isActive: true,
+  medicines: [
+    PrescriptionMedicine(
+      name: 'Atorvastatin 20mg',
+      dose: '20mg',
+      frequency: 'مرة يومياً',
+      duration: '30 يوم',
+      instructions: 'يؤخذ مساءً بعد الطعام',
+    ),
+  ],
+  notes: 'الالتزام بالجرعات ومراجعة الطبيب عند ظهور أي أعراض غير معتادة.',
+  warnings:
+      'تجنب إيقاف الدواء دون استشارة الطبيب. أخبر الطبيب في حال وجود حساسية دوائية.',
+);
 
 class PrescriptionDetailsScreen extends StatelessWidget {
-  const PrescriptionDetailsScreen({super.key});
+  const PrescriptionDetailsScreen({super.key, this.prescription});
+
+  final PrescriptionEntry? prescription;
 
   @override
   Widget build(BuildContext context) {
+    final prescription = this.prescription ?? _fallbackPrescription;
+
     return AppScaffold(
       padding: EdgeInsets.zero,
       appBar: AppAppBar(
@@ -37,11 +63,14 @@ class PrescriptionDetailsScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
         children: [
-          const _PrescriptionHeader(),
+          _PrescriptionHeader(prescription: prescription),
           const SizedBox(height: AppSpacing.md),
-          const _MedicineListCard(),
-          const SizedBox(height: AppSpacing.md),
-          const _PrescriptionNotesCard(),
+          _MedicineListCard(medicines: prescription.medicines),
+          if (prescription.notes.isNotEmpty ||
+              prescription.warnings.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.md),
+            _PrescriptionNotesCard(prescription: prescription),
+          ],
           const SizedBox(height: AppSpacing.xl),
           AppButton(
             text: 'تحميل الوصفة',
@@ -77,7 +106,9 @@ class PrescriptionDetailsScreen extends StatelessWidget {
 }
 
 class _PrescriptionHeader extends StatelessWidget {
-  const _PrescriptionHeader();
+  const _PrescriptionHeader({required this.prescription});
+
+  final PrescriptionEntry prescription;
 
   @override
   Widget build(BuildContext context) {
@@ -91,18 +122,24 @@ class _PrescriptionHeader extends StatelessWidget {
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(
-                  'الوصفة رقم RX-2026-184',
+                  'الوصفة رقم ${prescription.id.toUpperCase()}',
                   style: AppTextStyles.titleMedium
                       .copyWith(color: AppColors.primary),
                 ),
               ),
-              const _StatusChip(label: 'نشطة', color: AppColors.success),
+              _StatusChip(
+                label: prescription.isActive ? 'نشطة' : 'منتهية',
+                color: prescription.isActive
+                    ? AppColors.success
+                    : AppColors.textGrey,
+              ),
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          const _InfoRow(label: 'اسم الطبيب', value: 'د. أحمد خالد'),
-          const _InfoRow(label: 'تاريخ الإصدار', value: '18 يونيو 2026'),
-          const _InfoRow(label: 'تاريخ انتهاء الوصفة', value: '18 يوليو 2026'),
+          _InfoRow(label: 'اسم الطبيب', value: prescription.doctorName),
+          _InfoRow(label: 'تاريخ الإصدار', value: prescription.issueDate),
+          _InfoRow(
+              label: 'تاريخ انتهاء الوصفة', value: prescription.expiryDate),
         ],
       ),
     );
@@ -110,28 +147,12 @@ class _PrescriptionHeader extends StatelessWidget {
 }
 
 class _MedicineListCard extends StatelessWidget {
-  const _MedicineListCard();
+  const _MedicineListCard({required this.medicines});
+
+  final List<PrescriptionMedicine> medicines;
 
   @override
   Widget build(BuildContext context) {
-    const medicines = [
-      (
-        'Atorvastatin 20mg',
-        '20mg',
-        'مرة يومياً',
-        '30 يوم',
-        'يؤخذ مساءً بعد الطعام'
-      ),
-      ('Aspirin 81mg', '81mg', 'مرة يومياً', '30 يوم', 'يؤخذ بعد الإفطار'),
-      (
-        'Vitamin D',
-        '50000 IU',
-        'مرة أسبوعياً',
-        '8 أسابيع',
-        'يؤخذ بعد وجبة رئيسية'
-      ),
-    ];
-
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,11 +161,11 @@ class _MedicineListCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           ...medicines.map(
             (medicine) => _MedicineTile(
-              name: medicine.$1,
-              dose: medicine.$2,
-              frequency: medicine.$3,
-              duration: medicine.$4,
-              instructions: medicine.$5,
+              name: medicine.name,
+              dose: medicine.dose,
+              frequency: medicine.frequency,
+              duration: medicine.duration,
+              instructions: medicine.instructions,
             ),
           ),
         ],
@@ -154,25 +175,22 @@ class _MedicineListCard extends StatelessWidget {
 }
 
 class _PrescriptionNotesCard extends StatelessWidget {
-  const _PrescriptionNotesCard();
+  const _PrescriptionNotesCard({required this.prescription});
+
+  final PrescriptionEntry prescription;
 
   @override
   Widget build(BuildContext context) {
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          _SectionText(
-            title: 'ملاحظات الطبيب',
-            value:
-                'الالتزام بالجرعات ومراجعة الطبيب عند ظهور أي أعراض غير معتادة.',
-          ),
-          SizedBox(height: AppSpacing.md),
-          _SectionText(
-            title: 'التحذيرات',
-            value:
-                'تجنب إيقاف الدواء دون استشارة الطبيب. أخبر الطبيب في حال وجود حساسية دوائية.',
-          ),
+        children: [
+          if (prescription.notes.isNotEmpty)
+            _SectionText(title: 'ملاحظات الطبيب', value: prescription.notes),
+          if (prescription.notes.isNotEmpty && prescription.warnings.isNotEmpty)
+            const SizedBox(height: AppSpacing.md),
+          if (prescription.warnings.isNotEmpty)
+            _SectionText(title: 'التحذيرات', value: prescription.warnings),
         ],
       ),
     );

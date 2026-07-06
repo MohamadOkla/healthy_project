@@ -12,12 +12,44 @@ import '../../../../core/widgets/app_app_bar.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/app_scaffold.dart';
+import '../../../laboratory/domain/entities/lab_result_entry.dart';
+
+const _fallbackResult = LabResultEntry(
+  id: 'lab0',
+  patientId: 'p1',
+  testName: 'CBC + Vitamin D + HbA1c',
+  testDate: '19 يونيو 2026',
+  labName: 'مخبر مشفى دمشق الجامعي',
+  isCompleted: true,
+  summary: 'معظم القيم ضمن الطبيعي مع انخفاض بسيط في Vitamin D.',
+  rows: [
+    LabResultRow(
+      name: 'Hemoglobin',
+      value: '14.2 g/dL',
+      normalRange: '13.5 - 17.5',
+      isNormal: true,
+    ),
+    LabResultRow(
+      name: 'Vitamin D',
+      value: '18 ng/mL',
+      normalRange: '30 - 100',
+      isNormal: false,
+    ),
+  ],
+  recommendation:
+      'الالتزام بالمكملات، التعرض الآمن للشمس، ومراجعة الطبيب عند استمرار التعب.',
+  doctorNotes: 'ينصح بإعادة فحص Vitamin D بعد 8 أسابيع من بدء العلاج.',
+);
 
 class LaboratoryResultDetailsScreen extends StatelessWidget {
-  const LaboratoryResultDetailsScreen({super.key});
+  const LaboratoryResultDetailsScreen({super.key, this.result});
+
+  final LabResultEntry? result;
 
   @override
   Widget build(BuildContext context) {
+    final result = this.result ?? _fallbackResult;
+
     return AppScaffold(
       padding: EdgeInsets.zero,
       appBar: AppAppBar(
@@ -37,11 +69,16 @@ class LaboratoryResultDetailsScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
         children: [
-          const _ResultHeaderCard(),
-          const SizedBox(height: AppSpacing.md),
-          const _ResultTableCard(),
-          const SizedBox(height: AppSpacing.md),
-          const _InterpretationCard(),
+          _ResultHeaderCard(result: result),
+          if (result.rows.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.md),
+            _ResultTableCard(rows: result.rows),
+          ],
+          if (result.recommendation.isNotEmpty ||
+              result.doctorNotes.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.md),
+            _InterpretationCard(result: result),
+          ],
           const SizedBox(height: AppSpacing.xl),
           AppButton(
             text: 'تحميل PDF',
@@ -66,7 +103,10 @@ class LaboratoryResultDetailsScreen extends StatelessWidget {
             text: 'طلب استشارة',
             icon: Icons.medical_services_rounded,
             isOutlined: true,
-            onPressed: () => context.go(AppRoutes.patientRequestConsultation),
+            onPressed: () => context.go(
+              AppRoutes.patientRequestConsultation,
+              extra: result,
+            ),
           ),
         ],
       ),
@@ -75,24 +115,29 @@ class LaboratoryResultDetailsScreen extends StatelessWidget {
 }
 
 class _ResultHeaderCard extends StatelessWidget {
-  const _ResultHeaderCard();
+  const _ResultHeaderCard({required this.result});
+
+  final LabResultEntry result;
 
   @override
   Widget build(BuildContext context) {
+    final hasAbnormal = result.rows.any((row) => !row.isNormal);
+
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          _TitleRow(),
-          SizedBox(height: AppSpacing.md),
-          _InfoRow(label: 'اسم التحليل', value: 'CBC + Vitamin D + HbA1c'),
-          _InfoRow(label: 'تاريخ التحليل', value: '19 يونيو 2026'),
-          _InfoRow(label: 'المخبر أو المشفى', value: 'مخبر مشفى دمشق الجامعي'),
-          _InfoRow(label: 'حالة النتيجة', value: 'مكتملة'),
+        children: [
+          _TitleRow(hasAbnormal: hasAbnormal),
+          const SizedBox(height: AppSpacing.md),
+          _InfoRow(label: 'اسم التحليل', value: result.testName),
+          _InfoRow(label: 'تاريخ التحليل', value: result.testDate),
+          _InfoRow(label: 'المخبر أو المشفى', value: result.labName),
           _InfoRow(
-            label: 'ملخص النتيجة',
-            value: 'معظم القيم ضمن الطبيعي مع انخفاض بسيط في Vitamin D.',
+            label: 'حالة النتيجة',
+            value: result.isCompleted ? 'مكتملة' : 'قيد الإجراء',
           ),
+          if (result.summary.isNotEmpty)
+            _InfoRow(label: 'ملخص النتيجة', value: result.summary),
         ],
       ),
     );
@@ -100,7 +145,9 @@ class _ResultHeaderCard extends StatelessWidget {
 }
 
 class _TitleRow extends StatelessWidget {
-  const _TitleRow();
+  const _TitleRow({required this.hasAbnormal});
+
+  final bool hasAbnormal;
 
   @override
   Widget build(BuildContext context) {
@@ -114,25 +161,22 @@ class _TitleRow extends StatelessWidget {
             style: AppTextStyles.titleMedium.copyWith(color: AppColors.primary),
           ),
         ),
-        const _StatusChip(label: 'طبيعي غالباً', color: AppColors.success),
+        _StatusChip(
+          label: hasAbnormal ? 'يحتاج متابعة' : 'طبيعي',
+          color: hasAbnormal ? AppColors.warning : AppColors.success,
+        ),
       ],
     );
   }
 }
 
 class _ResultTableCard extends StatelessWidget {
-  const _ResultTableCard();
+  const _ResultTableCard({required this.rows});
+
+  final List<LabResultRow> rows;
 
   @override
   Widget build(BuildContext context) {
-    const rows = [
-      ('Hemoglobin', '14.2 g/dL', '13.5 - 17.5', 'طبيعي', AppColors.success),
-      ('WBC', '6.1 x10^9/L', '4.0 - 11.0', 'طبيعي', AppColors.success),
-      ('Platelets', '250 x10^9/L', '150 - 450', 'طبيعي', AppColors.success),
-      ('Vitamin D', '18 ng/mL', '30 - 100', 'منخفض', AppColors.warning),
-      ('HbA1c', '5.4%', 'أقل من 5.7%', 'طبيعي', AppColors.success),
-    ];
-
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,12 +184,12 @@ class _ResultTableCard extends StatelessWidget {
           Text('جدول النتائج', style: AppTextStyles.titleMedium),
           const SizedBox(height: AppSpacing.md),
           ...rows.map(
-            (row) => _LabResultRow(
-              name: row.$1,
-              value: row.$2,
-              normalRange: row.$3,
-              status: row.$4,
-              color: row.$5,
+            (row) => _LabResultRowTile(
+              name: row.name,
+              value: row.value,
+              normalRange: row.normalRange,
+              status: row.isNormal ? 'طبيعي' : 'غير طبيعي',
+              color: row.isNormal ? AppColors.success : AppColors.warning,
             ),
           ),
         ],
@@ -155,38 +199,43 @@ class _ResultTableCard extends StatelessWidget {
 }
 
 class _InterpretationCard extends StatelessWidget {
-  const _InterpretationCard();
+  const _InterpretationCard({required this.result});
+
+  final LabResultEntry result;
 
   @override
   Widget build(BuildContext context) {
+    final sections = <Widget>[];
+    if (result.summary.isNotEmpty) {
+      sections.add(_SectionText(title: 'تفسير مختصر', value: result.summary));
+    }
+    if (result.doctorNotes.isNotEmpty) {
+      sections.add(
+        _SectionText(title: 'ملاحظات الطبيب', value: result.doctorNotes),
+      );
+    }
+    if (result.recommendation.isNotEmpty) {
+      sections.add(
+        _SectionText(title: 'توصيات', value: result.recommendation),
+      );
+    }
+
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          _SectionText(
-            title: 'تفسير مختصر',
-            value:
-                'لا توجد مؤشرات خطورة واضحة. انخفاض Vitamin D يحتاج متابعة غذائية ودوائية.',
-          ),
-          SizedBox(height: AppSpacing.md),
-          _SectionText(
-            title: 'ملاحظات الطبيب',
-            value: 'ينصح بإعادة فحص Vitamin D بعد 8 أسابيع من بدء العلاج.',
-          ),
-          SizedBox(height: AppSpacing.md),
-          _SectionText(
-            title: 'توصيات',
-            value:
-                'الالتزام بالمكملات، التعرض الآمن للشمس، ومراجعة الطبيب عند استمرار التعب.',
-          ),
+        children: [
+          for (var i = 0; i < sections.length; i++) ...[
+            if (i > 0) const SizedBox(height: AppSpacing.md),
+            sections[i],
+          ],
         ],
       ),
     );
   }
 }
 
-class _LabResultRow extends StatelessWidget {
-  const _LabResultRow({
+class _LabResultRowTile extends StatelessWidget {
+  const _LabResultRowTile({
     required this.name,
     required this.value,
     required this.normalRange,

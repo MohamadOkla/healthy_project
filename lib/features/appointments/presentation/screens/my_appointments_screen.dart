@@ -93,8 +93,10 @@ class _MyAppointmentsView extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: AppSpacing.md),
                     child: AppointmentCard(
                       appointment: appointment,
-                      onDetailsPressed: () =>
-                          context.go(AppRoutes.patientAppointmentDetails),
+                      onDetailsPressed: () => context.go(
+                        AppRoutes.patientAppointmentDetails,
+                        extra: appointment,
+                      ),
                     ),
                   ),
                 ),
@@ -198,7 +200,7 @@ class _MyAppointmentsView extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     DropdownButtonFormField<AppointmentStatus>(
-                      value: selectedStatus,
+                      initialValue: selectedStatus,
                       decoration: const InputDecoration(labelText: 'الحالة'),
                       items: AppointmentStatus.values
                           .map(
@@ -215,7 +217,7 @@ class _MyAppointmentsView extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     DropdownButtonFormField<String?>(
-                      value: selectedSpecialty,
+                      initialValue: selectedSpecialty,
                       decoration: const InputDecoration(labelText: 'الاختصاص'),
                       items: [
                         const DropdownMenuItem<String?>(
@@ -235,7 +237,7 @@ class _MyAppointmentsView extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     DropdownButtonFormField<String?>(
-                      value: selectedDate,
+                      initialValue: selectedDate,
                       decoration: const InputDecoration(labelText: 'التاريخ'),
                       items: [
                         const DropdownMenuItem<String?>(

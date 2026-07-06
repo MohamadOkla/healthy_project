@@ -7,8 +7,21 @@ import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/widgets/app_button.dart';
 import '../../../../../core/widgets/app_text_field.dart';
 
-class HelpSupportScreen extends StatelessWidget {
+class HelpSupportScreen extends StatefulWidget {
   const HelpSupportScreen({super.key});
+
+  @override
+  State<HelpSupportScreen> createState() => _HelpSupportScreenState();
+}
+
+class _HelpSupportScreenState extends State<HelpSupportScreen> {
+  final _feedbackController = TextEditingController();
+
+  @override
+  void dispose() {
+    _feedbackController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +71,7 @@ class HelpSupportScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.feedback_rounded),
             title: const Text('إرسال ملاحظة'),
-            onTap: () => _showFeedbackSheet(context),
+            onTap: _showFeedbackSheet,
           ),
         ],
       ),
@@ -81,7 +94,7 @@ class HelpSupportScreen extends StatelessWidget {
     );
   }
 
-  void _showFeedbackSheet(BuildContext context) {
+  void _showFeedbackSheet() {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -95,16 +108,18 @@ class HelpSupportScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const AppTextField(
+            AppTextField(
+              controller: _feedbackController,
               label: 'ملاحظتك',
               maxLines: 4,
-              prefixIcon: Icon(Icons.edit_note_rounded),
+              prefixIcon: const Icon(Icons.edit_note_rounded),
             ),
             const SizedBox(height: AppSpacing.md),
             AppButton(
               text: 'إرسال',
               onPressed: () {
                 sheetContext.pop();
+                _feedbackController.clear();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('تم إرسال الملاحظة')),
                 );

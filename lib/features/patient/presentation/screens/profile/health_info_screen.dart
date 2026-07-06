@@ -61,7 +61,14 @@ class HealthInfoScreen extends StatelessWidget {
               AppButton(
                 text: 'تعديل المعلومات الصحية',
                 icon: Icons.edit_rounded,
-                onPressed: () => _showEditSheet(context, state),
+                onPressed: () => showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (sheetContext) => BlocProvider.value(
+                    value: context.read<ProfileCubit>(),
+                    child: const _EditHealthInfoSheet(),
+                  ),
+                ),
               ),
             ],
           );
@@ -69,58 +76,82 @@ class HealthInfoScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  void _showEditSheet(BuildContext context, ProfileState state) {
-    final bloodController = TextEditingController(text: state.bloodType);
-    final heightController = TextEditingController(text: state.height);
-    final weightController = TextEditingController(text: state.weight);
-    final allergiesController = TextEditingController(text: state.allergies);
+class _EditHealthInfoSheet extends StatefulWidget {
+  const _EditHealthInfoSheet();
 
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (sheetContext) => Padding(
-        padding: EdgeInsets.only(
-          left: AppSpacing.md,
-          right: AppSpacing.md,
-          top: AppSpacing.md,
-          bottom: MediaQuery.viewInsetsOf(sheetContext).bottom + AppSpacing.md,
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AppTextField(controller: bloodController, label: 'فصيلة الدم'),
-              const SizedBox(height: AppSpacing.md),
-              AppTextField(controller: heightController, label: 'الطول'),
-              const SizedBox(height: AppSpacing.md),
-              AppTextField(controller: weightController, label: 'الوزن'),
-              const SizedBox(height: AppSpacing.md),
-              AppTextField(controller: allergiesController, label: 'الحساسية'),
-              const SizedBox(height: AppSpacing.lg),
-              AppButton(
-                text: 'حفظ',
-                onPressed: () async {
-                  await context.read<ProfileCubit>().saveHealthInfo(
-                        bloodType: bloodController.text,
-                        age: state.age,
-                        gender: state.gender,
-                        height: heightController.text,
-                        weight: weightController.text,
-                        allergies: allergiesController.text,
-                        chronicDiseases: state.chronicDiseases,
-                      );
-                  if (!context.mounted) return;
-                  sheetContext.pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('تم تحديث المعلومات الصحية'),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
+  @override
+  State<_EditHealthInfoSheet> createState() => _EditHealthInfoSheetState();
+}
+
+class _EditHealthInfoSheetState extends State<_EditHealthInfoSheet> {
+  late final ProfileState _initialState = context.read<ProfileCubit>().state;
+  late final _bloodController = TextEditingController(
+    text: _initialState.bloodType,
+  );
+  late final _heightController = TextEditingController(
+    text: _initialState.height,
+  );
+  late final _weightController = TextEditingController(
+    text: _initialState.weight,
+  );
+  late final _allergiesController = TextEditingController(
+    text: _initialState.allergies,
+  );
+
+  @override
+  void dispose() {
+    _bloodController.dispose();
+    _heightController.dispose();
+    _weightController.dispose();
+    _allergiesController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _save() async {
+    await context.read<ProfileCubit>().saveHealthInfo(
+          bloodType: _bloodController.text,
+          age: _initialState.age,
+          gender: _initialState.gender,
+          height: _heightController.text,
+          weight: _weightController.text,
+          allergies: _allergiesController.text,
+          chronicDiseases: _initialState.chronicDiseases,
+        );
+    if (!mounted) return;
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('تم تحديث المعلومات الصحية')),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: AppSpacing.md,
+        right: AppSpacing.md,
+        top: AppSpacing.md,
+        bottom: MediaQuery.viewInsetsOf(context).bottom + AppSpacing.md,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppTextField(controller: _bloodController, label: 'فصيلة الدم'),
+            const SizedBox(height: AppSpacing.md),
+            AppTextField(controller: _heightController, label: 'الطول'),
+            const SizedBox(height: AppSpacing.md),
+            AppTextField(controller: _weightController, label: 'الوزن'),
+            const SizedBox(height: AppSpacing.md),
+            AppTextField(
+              controller: _allergiesController,
+              label: 'الحساسية',
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            AppButton(text: 'حفظ', onPressed: _save),
+          ],
         ),
       ),
     );

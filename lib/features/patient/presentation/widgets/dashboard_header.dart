@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/constants/current_patient.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../notifications/data/repositories/notifications_repository_impl.dart';
+import '../cubit/profile_cubit.dart';
+import '../cubit/profile_state.dart';
 
 class DashboardHeader extends StatelessWidget {
   const DashboardHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final fullName = context.select<ProfileCubit, String>(
+      (cubit) => cubit.state.fullName,
+    );
+    final firstName = fullName.trim().split(RegExp(r'\s+')).first;
+    final unreadNotifications = NotificationsRepositoryImpl()
+        .getUnreadCountForPatient(currentPatientId);
+
     return Row(
       children: [
         InkWell(
@@ -45,7 +57,7 @@ class DashboardHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'مرحباً محمد',
+                'مرحباً $firstName',
                 style: AppTextStyles.titleMedium.copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.w800,
@@ -64,28 +76,31 @@ class DashboardHeader extends StatelessWidget {
           children: [
             _HeaderIconButton(
               icon: Icons.notifications_none_rounded,
-              semanticLabel: 'الإشعارات، 3 إشعارات جديدة',
+              semanticLabel: unreadNotifications > 0
+                  ? 'الإشعارات، $unreadNotifications إشعارات جديدة'
+                  : 'الإشعارات',
               onPressed: () => context.go(AppRoutes.patientNotifications),
             ),
-            PositionedDirectional(
-              top: -3,
-              end: -3,
-              child: Container(
-                padding: const EdgeInsets.all(AppSpacing.xs),
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.error,
-                ),
-                child: Text(
-                  '3',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w800,
+            if (unreadNotifications > 0)
+              PositionedDirectional(
+                top: -3,
+                end: -3,
+                child: Container(
+                  padding: const EdgeInsets.all(AppSpacing.xs),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.error,
+                  ),
+                  child: Text(
+                    '$unreadNotifications',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
         const SizedBox(width: AppSpacing.sm),

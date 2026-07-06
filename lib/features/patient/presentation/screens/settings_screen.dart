@@ -67,12 +67,12 @@ class SettingsScreen extends StatelessWidget {
                   ProfileSectionItem(
                     icon: Icons.privacy_tip_rounded,
                     title: 'سياسة الخصوصية',
-                    onTap: () => context.go(AppRoutes.patientPrivacyPolicy),
+                    onTap: () => context.go(AppRoutes.patientProfilePrivacy),
                   ),
                   ProfileSectionItem(
                     icon: Icons.gavel_rounded,
                     title: 'شروط الاستخدام',
-                    onTap: () => context.go(AppRoutes.patientTerms),
+                    onTap: () => context.go(AppRoutes.patientProfileTerms),
                   ),
                   ProfileSectionItem(
                     icon: Icons.info_outline_rounded,

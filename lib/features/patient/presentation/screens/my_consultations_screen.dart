@@ -3,93 +3,119 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/constants/current_patient.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/widgets/app_app_bar.dart';
 import '../../../../core/widgets/app_card.dart';
-import '../../../../core/widgets/app_scaffold.dart';
+import '../../../../core/widgets/app_empty_state.dart';
+import '../../data/repositories/consultations_repository_impl.dart';
+import '../../domain/entities/consultation.dart';
 
 class MyConsultationsScreen extends StatelessWidget {
   const MyConsultationsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const consultations = [
-      ('CBC + Vitamin D', 'قيد المراجعة', '19 يونيو 2026'),
-      ('HbA1c', 'تم الرد', '18 يونيو 2026'),
-    ];
+    final consultations = ConsultationsRepositoryImpl()
+        .getConsultationsForPatient(currentPatientId);
 
-    return AppScaffold(
-      padding: EdgeInsets.zero,
-      appBar: AppAppBar(
-        title: 'استشاراتي',
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-              return;
-            }
-            context.go(AppRoutes.patientLaboratoryDetails);
-          },
+          onPressed: () => context.go(AppRoutes.patientLaboratory),
           icon: const Icon(Icons.arrow_back_rounded),
         ),
+        title: const Text('استشاراتي'),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(AppSpacing.md),
+      body: consultations.isEmpty
+          ? const AppEmptyState(
+              title: 'لا توجد استشارات بعد',
+              message: 'اطلب استشارة من صفحة أي نتيجة تحليل لعرضها هنا.',
+              icon: Icons.forum_outlined,
+            )
+          : ListView.separated(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              itemCount: consultations.length,
+              separatorBuilder: (_, __) =>
+                  const SizedBox(height: AppSpacing.md),
+              itemBuilder: (context, index) {
+                final consultation = consultations[index];
+                return _ConsultationCard(consultation: consultation);
+              },
+            ),
+    );
+  }
+}
+
+class _ConsultationCard extends StatelessWidget {
+  const _ConsultationCard({required this.consultation});
+
+  final Consultation consultation;
+
+  @override
+  Widget build(BuildContext context) {
+    final isAnswered = consultation.status == ConsultationStatus.answered;
+
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('الاستشارات المرسلة', style: AppTextStyles.headlineLarge),
-          const SizedBox(height: AppSpacing.md),
-          ...consultations.map(
-            (item) => Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.md),
-              child: AppCard(
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor:
-                          AppColors.primary.withValues(alpha: 0.10),
-                      child: const Icon(
-                        Icons.forum_rounded,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.$1, style: AppTextStyles.titleMedium),
-                          const SizedBox(height: AppSpacing.xs),
-                          Text(
-                            'تاريخ الإرسال: ${item.$3}',
-                            style: AppTextStyles.bodyMedium,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.md,
-                        vertical: AppSpacing.xs,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.10),
-                        borderRadius: BorderRadius.circular(AppRadius.xl),
-                      ),
-                      child: Text(
-                        item.$2,
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ),
-                  ],
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  consultation.subject,
+                  style: AppTextStyles.titleMedium,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.xs,
+                ),
+                decoration: BoxDecoration(
+                  color: (isAnswered ? AppColors.success : AppColors.warning)
+                      .withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(AppRadius.xl),
+                ),
+                child: Text(
+                  isAnswered ? 'تم الرد' : 'بانتظار الرد',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: isAnswered ? AppColors.success : AppColors.warning,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            '${consultation.doctorName} · ${consultation.dateLabel}',
+            style: AppTextStyles.bodyMedium,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            'سؤالك: ${consultation.patientQuestion}',
+            style: AppTextStyles.bodyMedium,
+          ),
+          if (isAnswered && consultation.doctorAnswer != null) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.06),
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+              ),
+              child: Text(
+                'رد الطبيب: ${consultation.doctorAnswer}',
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.textDark,
                 ),
               ),
             ),
-          ),
+          ],
         ],
       ),
     );

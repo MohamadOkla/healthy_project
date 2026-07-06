@@ -21,6 +21,9 @@ abstract final class Validators {
   static const String passwordSpecialMessage =
       'يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل';
 
+  static const String passwordEnglishOnlyMessage =
+      'يجب إدخال كلمة المرور بحروف إنجليزية فقط وبدون مسافات';
+
   static const String confirmPasswordMessage = 'كلمتا المرور غير متطابقتين';
 
   static final List<TextInputFormatter> emailInputFormatters = [
@@ -50,7 +53,8 @@ abstract final class Validators {
       return 'يرجى إدخال البريد الإلكتروني أو رقم الهاتف';
     }
 
-    final phoneOnly = RegExp(r'^[0-9+()-]+$').hasMatch(text);
+    final phoneOnly = RegExp(r'^[0-9+()-]+$').hasMatch(text) &&
+        RegExp(r'[0-9]{7,}').hasMatch(text.replaceAll(RegExp(r'[^0-9]'), ''));
     if (phoneOnly) {
       return null;
     }
@@ -65,7 +69,7 @@ abstract final class Validators {
     }
     if (AppRegex.hasArabic.hasMatch(password) ||
         AppRegex.hasWhitespace.hasMatch(password)) {
-      return passwordSpecialMessage;
+      return passwordEnglishOnlyMessage;
     }
     if (!AppRegex.hasUppercase.hasMatch(password)) {
       return passwordUppercaseMessage;

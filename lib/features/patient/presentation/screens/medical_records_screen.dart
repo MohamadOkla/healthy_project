@@ -3,9 +3,14 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/constants/current_patient.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/app_empty_state.dart';
+import '../../../laboratory/data/repositories/laboratory_repository_impl.dart';
+import '../../../medical_records/data/repositories/medical_records_repository_impl.dart';
+import '../../../prescriptions/data/repositories/prescriptions_repository_impl.dart';
 import '../widgets/patient_bottom_navigation.dart';
 
 class MedicalRecordsScreen extends StatelessWidget {
@@ -13,23 +18,26 @@ class MedicalRecordsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const records = [
-      ('زيارة قلبية', 'د. أحمد خالد', '18 يونيو 2026'),
-      ('مراجعة جلدية', 'د. رانيا يوسف', '7 يونيو 2026'),
-      ('صورة أشعة', 'قسم العظمية', '28 مايو 2026'),
-    ];
+    final records = MedicalRecordsRepositoryImpl()
+        .getRecordsForPatient(currentPatientId);
 
     return _PatientListScreen(
       title: 'السجل الطبي',
       selectedIndex: 0,
+      emptyTitle: 'لا توجد سجلات طبية بعد',
+      emptyMessage: 'ستظهر هنا زياراتك الطبية بعد أن يضيفها طبيبك.',
+      emptyIcon: Icons.assignment_outlined,
       children: records
           .map(
             (record) => _ListCard(
               icon: Icons.assignment_rounded,
-              title: record.$1,
-              subtitle: record.$2,
-              trailing: record.$3,
-              onTap: () => context.go(AppRoutes.patientMedicalRecordDetails),
+              title: record.diagnosis,
+              subtitle: '${record.doctorName} · ${record.specialty}',
+              trailing: record.visitDate,
+              onTap: () => context.go(
+                AppRoutes.patientMedicalRecordDetails,
+                extra: record,
+              ),
             ),
           )
           .toList(),
@@ -42,23 +50,32 @@ class PrescriptionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const prescriptions = [
-      ('Atorvastatin 20mg', 'مرة يومياً مساءً', 'نشطة'),
-      ('Vitamin D', 'كبسولة أسبوعياً', 'نشطة'),
-      ('Aspirin 81mg', 'بعد الطعام', 'سابقة'),
-    ];
+    final prescriptions = PrescriptionsRepositoryImpl()
+        .getPrescriptionsForPatient(currentPatientId);
 
     return _PatientListScreen(
       title: 'الوصفات',
       selectedIndex: 0,
+      emptyTitle: 'لا توجد وصفات بعد',
+      emptyMessage: 'ستظهر هنا الوصفات التي يصدرها طبيبك.',
+      emptyIcon: Icons.medication_outlined,
       children: prescriptions
           .map(
             (prescription) => _ListCard(
               icon: Icons.medication_rounded,
-              title: prescription.$1,
-              subtitle: prescription.$2,
-              trailing: prescription.$3,
-              onTap: () => context.go(AppRoutes.patientPrescriptionDetails),
+              title: prescription.medicines.isEmpty
+                  ? 'وصفة طبية'
+                  : prescription.medicines.first.name,
+              subtitle: prescription.medicines.length > 1
+                  ? 'و ${prescription.medicines.length - 1} أدوية أخرى'
+                  : prescription.medicines.isEmpty
+                      ? ''
+                      : prescription.medicines.first.frequency,
+              trailing: prescription.isActive ? 'نشطة' : 'سابقة',
+              onTap: () => context.go(
+                AppRoutes.patientPrescriptionDetails,
+                extra: prescription,
+              ),
             ),
           )
           .toList(),
@@ -71,23 +88,26 @@ class LaboratoryResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const results = [
-      ('CBC', 'طبيعي', 'اليوم'),
-      ('HbA1c', 'طبيعي', 'أمس'),
-      ('Vitamin D', 'منخفض', 'قبل أسبوع'),
-    ];
+    final results =
+        LaboratoryRepositoryImpl().getResultsForPatient(currentPatientId);
 
     return _PatientListScreen(
       title: 'التحاليل',
       selectedIndex: 0,
+      emptyTitle: 'لا توجد نتائج تحاليل بعد',
+      emptyMessage: 'ستظهر هنا نتائج التحاليل المخبرية عند توفرها.',
+      emptyIcon: Icons.science_outlined,
       children: results
           .map(
             (result) => _ListCard(
               icon: Icons.science_rounded,
-              title: result.$1,
-              subtitle: result.$2,
-              trailing: result.$3,
-              onTap: () => context.go(AppRoutes.patientLaboratoryDetails),
+              title: result.testName,
+              subtitle: result.labName,
+              trailing: result.testDate,
+              onTap: () => context.go(
+                AppRoutes.patientLaboratoryDetails,
+                extra: result,
+              ),
             ),
           )
           .toList(),
@@ -100,11 +120,17 @@ class _PatientListScreen extends StatelessWidget {
     required this.title,
     required this.children,
     required this.selectedIndex,
+    required this.emptyTitle,
+    required this.emptyMessage,
+    required this.emptyIcon,
   });
 
   final String title;
   final List<Widget> children;
   final int selectedIndex;
+  final String emptyTitle;
+  final String emptyMessage;
+  final IconData emptyIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -118,19 +144,25 @@ class _PatientListScreen extends StatelessWidget {
         ),
         title: Text(title),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        children: [
-          Text(title, style: AppTextStyles.headlineLarge),
-          const SizedBox(height: AppSpacing.md),
-          ...children.map(
-            (child) => Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.md),
-              child: child,
+      body: children.isEmpty
+          ? AppEmptyState(
+              title: emptyTitle,
+              message: emptyMessage,
+              icon: emptyIcon,
+            )
+          : ListView(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              children: [
+                Text(title, style: AppTextStyles.headlineLarge),
+                const SizedBox(height: AppSpacing.md),
+                ...children.map(
+                  (child) => Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                    child: child,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
       bottomNavigationBar:
           PatientBottomNavigation(selectedIndex: selectedIndex),
     );
@@ -168,7 +200,8 @@ class _ListCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: AppTextStyles.titleMedium),
-                Text(subtitle, style: AppTextStyles.bodyMedium),
+                if (subtitle.isNotEmpty)
+                  Text(subtitle, style: AppTextStyles.bodyMedium),
               ],
             ),
           ),

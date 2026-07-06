@@ -39,6 +39,10 @@ class OtpCubit extends Cubit<OtpState> {
   void _startTimer() {
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (isClosed) {
+        timer.cancel();
+        return;
+      }
       if (state.remainingSeconds <= 1) {
         timer.cancel();
         emit(state.copyWith(remainingSeconds: 0));

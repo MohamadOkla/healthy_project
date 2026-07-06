@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/constants/app_routes.dart';
+import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/theme/app_text_styles.dart';
 import '../../../../../core/widgets/app_button.dart';
@@ -36,8 +37,7 @@ class AboutAppScreen extends StatelessWidget {
                   size: 64,
                 ),
                 const SizedBox(height: AppSpacing.md),
-                Text('Digital Health System',
-                    style: AppTextStyles.headlineLarge),
+                Text(AppStrings.appNameAr, style: AppTextStyles.headlineLarge),
                 const SizedBox(height: AppSpacing.sm),
                 Text('الإصدار 1.0.0', style: AppTextStyles.bodyMedium),
                 const SizedBox(height: AppSpacing.md),

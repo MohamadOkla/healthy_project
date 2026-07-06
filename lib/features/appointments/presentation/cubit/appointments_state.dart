@@ -35,11 +35,17 @@ class AppointmentsState extends Equatable {
     }).toList(growable: false);
   }
 
-  int get upcomingCount => 2;
+  int get upcomingCount => appointments
+      .where((appointment) => appointment.status == AppointmentStatus.confirmed)
+      .length;
 
-  int get previousCount => 12;
+  int get previousCount => appointments
+      .where((appointment) => appointment.status == AppointmentStatus.completed)
+      .length;
 
-  int get canceledCount => 1;
+  int get canceledCount => appointments
+      .where((appointment) => appointment.status == AppointmentStatus.canceled)
+      .length;
 
   AppointmentUiModel get selectedAppointment => appointments.first;
 

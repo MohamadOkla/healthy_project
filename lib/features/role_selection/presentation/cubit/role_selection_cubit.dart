@@ -29,13 +29,6 @@ class RoleSelectionCubit extends Cubit<RoleSelectionState> {
       description: 'إدارة الأقسام، الأطباء، المواعيد وتقارير المشفى',
       icon: Icons.local_hospital_rounded,
     ),
-    RoleUiModel(
-      id: 'ministry_admin',
-      englishTitle: 'Ministry Admin',
-      arabicTitle: 'مسؤول وزارة الصحة',
-      description: 'الإشراف على النظام، التقارير الوطنية ومؤشرات الأداء',
-      icon: Icons.account_balance_rounded,
-    ),
   ];
 
   void selectRole(RoleUiModel role) {

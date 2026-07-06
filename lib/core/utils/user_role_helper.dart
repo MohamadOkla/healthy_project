@@ -4,14 +4,11 @@ abstract final class UserRoleHelper {
   static const patient = 'patient';
   static const doctor = 'doctor';
   static const hospitalAdmin = 'hospitalAdmin';
-  static const ministryAdmin = 'ministryAdmin';
 
   static String normalize(String? role) {
     return switch (role) {
       'hospital_admin' => hospitalAdmin,
-      'ministry_admin' => ministryAdmin,
       'hospitalAdmin' => hospitalAdmin,
-      'ministryAdmin' => ministryAdmin,
       'doctor' => doctor,
       _ => patient,
     };
@@ -59,7 +56,6 @@ abstract final class UserRoleHelper {
     return switch (normalize(role)) {
       doctor => AppRoutes.doctor,
       hospitalAdmin => AppRoutes.hospitalAdmin,
-      ministryAdmin => AppRoutes.ministryAdmin,
       _ => AppRoutes.patientDashboard,
     };
   }

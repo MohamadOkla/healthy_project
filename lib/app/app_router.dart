@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -10,12 +12,18 @@ import '../core/theme/app_radius.dart';
 import '../core/theme/app_spacing.dart';
 import '../core/theme/app_text_styles.dart';
 import '../core/widgets/app_button.dart';
+import '../core/utils/route_persistence_helper.dart';
 import '../features/appointments/presentation/cubit/book_appointment_cubit.dart';
 import '../features/appointments/presentation/cubit/book_appointment_state.dart';
+import '../features/appointments/presentation/models/appointment_ui_model.dart';
 import '../features/appointments/presentation/screens/appointment_details_screen.dart';
 import '../features/appointments/presentation/screens/book_appointment_screen.dart';
 import '../features/appointments/presentation/screens/booking_success_screen.dart';
 import '../features/appointments/presentation/screens/date_time_selection_screen.dart';
+import '../features/laboratory/domain/entities/lab_result_entry.dart';
+import '../features/medical_records/domain/entities/medical_record_entry.dart';
+import '../features/notifications/domain/entities/app_notification.dart';
+import '../features/prescriptions/domain/entities/prescription_entry.dart';
 import '../features/appointments/presentation/screens/doctor_selection_screen.dart';
 import '../features/appointments/presentation/screens/my_appointments_screen.dart';
 import '../features/authentication/presentation/screens/account_created_screen.dart';
@@ -25,8 +33,18 @@ import '../features/authentication/presentation/screens/otp_verification_screen.
 import '../features/authentication/presentation/screens/password_changed_screen.dart';
 import '../features/authentication/presentation/screens/register_screen.dart';
 import '../features/authentication/presentation/screens/reset_password_screen.dart';
+import '../features/doctor/presentation/screens/doctor_appointments_screen.dart';
+import '../features/doctor/presentation/screens/doctor_consultations_screen.dart';
+import '../features/doctor/presentation/screens/doctor_dashboard_screen.dart';
+import '../features/doctor/presentation/screens/doctor_patient_detail_screen.dart';
+import '../features/doctor/presentation/screens/doctor_patients_screen.dart';
+import '../features/doctor/presentation/screens/doctor_profile_screen.dart';
+import '../features/hospital_admin/presentation/screens/hospital_admin_dashboard_screen.dart';
+import '../features/hospital_admin/presentation/screens/hospital_admin_profile_screen.dart';
+import '../features/hospital_admin/presentation/screens/hospital_doctor_detail_screen.dart';
+import '../features/hospital_admin/presentation/screens/hospital_doctors_screen.dart';
+import '../features/reports/presentation/screens/hospital_reports_screen.dart';
 import '../features/onboarding/presentation/screens/onboarding_screen.dart';
-import '../features/patient/presentation/cubit/profile_cubit.dart';
 import '../features/patient/presentation/screens/medical_records_screen.dart';
 import '../features/patient/presentation/screens/medical_record_details_screen.dart';
 import '../features/patient/presentation/screens/consultation_request_screen.dart';
@@ -55,6 +73,7 @@ abstract final class AppRouter {
 
   static final GoRouter router = GoRouter(
     initialLocation: AppRoutes.splash,
+    redirect: _persistLastRoute,
     routes: [
       GoRoute(
         path: AppRoutes.splash,
@@ -144,13 +163,25 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.patientAppointmentDetails,
         name: AppRoutes.patientAppointmentDetailsName,
-        builder: (context, state) => const AppointmentDetailsScreen(),
+        builder: (context, state) {
+          final appointment = state.extra;
+          return AppointmentDetailsScreen(
+            appointment:
+                appointment is AppointmentUiModel ? appointment : null,
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.patientBookAppointment,
         name: AppRoutes.patientBookAppointmentName,
         builder: (context, state) {
           final cubit = state.extra;
+          if (cubit is! BookAppointmentCubit) {
+            // Fresh entry into the booking wizard (not a continuation of an
+            // in-progress flow) - clear out any selections left over from a
+            // previous, abandoned booking attempt.
+            _bookingCubit.resetBooking();
+          }
           return BookAppointmentScreen(
             cubit: cubit is BookAppointmentCubit ? cubit : _bookingCubit,
           );
@@ -199,7 +230,12 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.patientMedicalRecordDetails,
         name: AppRoutes.patientMedicalRecordDetailsName,
-        builder: (context, state) => const MedicalRecordDetailsScreen(),
+        builder: (context, state) {
+          final record = state.extra;
+          return MedicalRecordDetailsScreen(
+            record: record is MedicalRecordEntry ? record : null,
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.patientPrescriptions,
@@ -209,7 +245,13 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.patientPrescriptionDetails,
         name: AppRoutes.patientPrescriptionDetailsName,
-        builder: (context, state) => const PrescriptionDetailsScreen(),
+        builder: (context, state) {
+          final prescription = state.extra;
+          return PrescriptionDetailsScreen(
+            prescription:
+                prescription is PrescriptionEntry ? prescription : null,
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.patientLaboratory,
@@ -219,12 +261,22 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.patientLaboratoryDetails,
         name: AppRoutes.patientLaboratoryDetailsName,
-        builder: (context, state) => const LaboratoryResultDetailsScreen(),
+        builder: (context, state) {
+          final result = state.extra;
+          return LaboratoryResultDetailsScreen(
+            result: result is LabResultEntry ? result : null,
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.patientRequestConsultation,
         name: AppRoutes.patientRequestConsultationName,
-        builder: (context, state) => const ConsultationRequestScreen(),
+        builder: (context, state) {
+          final labResult = state.extra;
+          return ConsultationRequestScreen(
+            labResult: labResult is LabResultEntry ? labResult : null,
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.patientConsultations,
@@ -239,42 +291,42 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.patientNotificationDetails,
         name: AppRoutes.patientNotificationDetailsName,
-        builder: (context, state) => const NotificationDetailsScreen(),
+        builder: (context, state) {
+          final notification = state.extra;
+          return NotificationDetailsScreen(
+            notification: notification is AppNotification ? notification : null,
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.patientProfile,
         name: AppRoutes.patientProfileName,
-        builder: (context, state) => _withProfileCubit(const ProfileScreen()),
+        builder: (context, state) => const ProfileScreen(),
       ),
       GoRoute(
         path: AppRoutes.patientEditProfile,
         name: AppRoutes.patientEditProfileName,
-        builder: (context, state) =>
-            _withProfileCubit(const EditProfileScreen()),
+        builder: (context, state) => const EditProfileScreen(),
       ),
       GoRoute(
         path: AppRoutes.patientChangePassword,
         name: AppRoutes.patientChangePasswordName,
-        builder: (context, state) =>
-            _withProfileCubit(const ChangePasswordScreen()),
+        builder: (context, state) => const ChangePasswordScreen(),
       ),
       GoRoute(
         path: AppRoutes.patientNotificationSettings,
         name: AppRoutes.patientNotificationSettingsName,
-        builder: (context, state) =>
-            _withProfileCubit(const NotificationSettingsScreen()),
+        builder: (context, state) => const NotificationSettingsScreen(),
       ),
       GoRoute(
         path: AppRoutes.patientLanguage,
         name: AppRoutes.patientLanguageName,
-        builder: (context, state) =>
-            _withProfileCubit(const LanguageSettingsScreen()),
+        builder: (context, state) => const LanguageSettingsScreen(),
       ),
       GoRoute(
         path: AppRoutes.patientHealthInfo,
         name: AppRoutes.patientHealthInfoName,
-        builder: (context, state) =>
-            _withProfileCubit(const HealthInfoScreen()),
+        builder: (context, state) => const HealthInfoScreen(),
       ),
       GoRoute(
         path: AppRoutes.patientHelp,
@@ -304,29 +356,67 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.doctor,
         name: AppRoutes.doctorName,
-        builder: (context, state) => const RoleDashboardPlaceholderScreen(
-          title: 'لوحة الطبيب',
-          description: 'سيتم تجهيز لوحة الطبيب في مرحلة لاحقة.',
-          icon: Icons.medical_services_rounded,
-        ),
+        builder: (context, state) => const DoctorDashboardScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.doctorPatients,
+        name: AppRoutes.doctorPatientsName,
+        builder: (context, state) => const DoctorPatientsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.doctorPatientDetail,
+        name: AppRoutes.doctorPatientDetailName,
+        builder: (context, state) {
+          final patientId = state.extra;
+          return DoctorPatientDetailScreen(
+            patientId: patientId is String ? patientId : '',
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.doctorAppointments,
+        name: AppRoutes.doctorAppointmentsName,
+        builder: (context, state) => const DoctorAppointmentsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.doctorConsultations,
+        name: AppRoutes.doctorConsultationsName,
+        builder: (context, state) => const DoctorConsultationsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.doctorProfile,
+        name: AppRoutes.doctorProfileName,
+        builder: (context, state) => const DoctorProfileScreen(),
       ),
       GoRoute(
         path: AppRoutes.hospitalAdmin,
         name: AppRoutes.hospitalAdminName,
-        builder: (context, state) => const RoleDashboardPlaceholderScreen(
-          title: 'لوحة مدير المشفى',
-          description: 'سيتم تجهيز إدارة المشفى في مرحلة لاحقة.',
-          icon: Icons.local_hospital_rounded,
-        ),
+        builder: (context, state) => const HospitalAdminDashboardScreen(),
       ),
       GoRoute(
-        path: AppRoutes.ministryAdmin,
-        name: AppRoutes.ministryAdminName,
-        builder: (context, state) => const RoleDashboardPlaceholderScreen(
-          title: 'لوحة وزارة الصحة',
-          description: 'سيتم تجهيز مؤشرات الوزارة والتقارير في مرحلة لاحقة.',
-          icon: Icons.account_balance_rounded,
-        ),
+        path: AppRoutes.hospitalAdminDoctors,
+        name: AppRoutes.hospitalAdminDoctorsName,
+        builder: (context, state) => const HospitalDoctorsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.hospitalAdminDoctorDetail,
+        name: AppRoutes.hospitalAdminDoctorDetailName,
+        builder: (context, state) {
+          final doctorId = state.extra;
+          return HospitalDoctorDetailScreen(
+            doctorId: doctorId is String ? doctorId : '',
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.hospitalAdminProfile,
+        name: AppRoutes.hospitalAdminProfileName,
+        builder: (context, state) => const HospitalAdminProfileScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.hospitalAdminReports,
+        name: AppRoutes.hospitalAdminReportsName,
+        builder: (context, state) => const HospitalReportsScreen(),
       ),
       GoRoute(
         path: AppRoutes.appointments,
@@ -366,13 +456,6 @@ abstract final class AppRouter {
     ],
   );
 
-  static Widget _withProfileCubit(Widget child) {
-    return BlocProvider(
-      create: (_) => ProfileCubit(),
-      child: child,
-    );
-  }
-
   static String _redirectToOnboarding(
     BuildContext context,
     GoRouterState state,
@@ -392,6 +475,28 @@ abstract final class AppRouter {
     GoRouterState state,
   ) {
     return AppRoutes.patientDashboard;
+  }
+
+  static String? _persistLastRoute(
+    BuildContext context,
+    GoRouterState state,
+  ) {
+    final route = state.uri.path;
+    final isLoggedIn =
+        LocalStorageService.instance.getBool(StorageKeys.isLoggedIn) == true;
+    final currentRole = LocalStorageService.instance.getString(
+      StorageKeys.currentUserRole,
+    );
+
+    if (isLoggedIn &&
+        currentRole == 'patient' &&
+        RoutePersistenceHelper.isPersistableRoute(route)) {
+      unawaited(
+        LocalStorageService.instance.saveString(StorageKeys.lastRoute, route),
+      );
+    }
+
+    return null;
   }
 }
 
@@ -472,85 +577,6 @@ class PatientPlaceholderScreen extends StatelessWidget {
       ),
       bottomNavigationBar:
           PatientBottomNavigation(selectedIndex: selectedIndex),
-    );
-  }
-}
-
-class RoleDashboardPlaceholderScreen extends StatelessWidget {
-  const RoleDashboardPlaceholderScreen({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.icon,
-  });
-
-  final String title;
-  final String description;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        leading: IconButton(
-          tooltip: 'رجوع',
-          onPressed: () => context.go(AppRoutes.roleSelection),
-          icon: const Icon(Icons.arrow_back_rounded),
-        ),
-        title: Text(title),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 520),
-            child: Container(
-              padding: const EdgeInsets.all(AppSpacing.xl),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(AppRadius.xl),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.10),
-                    blurRadius: 24,
-                    offset: const Offset(0, 14),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircleAvatar(
-                    radius: 34,
-                    backgroundColor:
-                        AppColors.secondary.withValues(alpha: 0.14),
-                    child: Icon(icon, color: AppColors.primary, size: 34),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.headlineLarge,
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Text(
-                    description,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.bodyMedium,
-                  ),
-                  const SizedBox(height: AppSpacing.xl),
-                  AppButton(
-                    text: 'اختيار دور آخر',
-                    icon: Icons.switch_account_rounded,
-                    onPressed: () => context.go(AppRoutes.roleSelection),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

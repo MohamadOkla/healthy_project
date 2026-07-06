@@ -29,21 +29,21 @@ Future<void> showPatientLogoutDialog(BuildContext context) async {
     return;
   }
 
-  await LocalStorageService.instance.setBool(StorageKeys.isLoggedIn, false);
-  await LocalStorageService.instance.remove(StorageKeys.lastRoute);
-  await LocalStorageService.instance.setString(
+  final selectedRole = LocalStorageService.instance.getString(
     StorageKeys.selectedRole,
-    UserRoleHelper.patient,
   );
+  await LocalStorageService.instance.remove(StorageKeys.isLoggedIn);
+  await LocalStorageService.instance.remove(StorageKeys.currentUserRole);
+  await LocalStorageService.instance.remove(StorageKeys.lastRoute);
 
   if (!context.mounted) {
     return;
   }
 
-  context.go(
-    Uri(
-      path: AppRoutes.login,
-      queryParameters: const {'role': UserRoleHelper.patient},
-    ).toString(),
-  );
+  if (selectedRole == null) {
+    context.go(AppRoutes.roleSelection);
+    return;
+  }
+
+  context.go(UserRoleHelper.loginRouteFor(selectedRole));
 }

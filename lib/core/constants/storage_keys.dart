@@ -9,4 +9,28 @@ abstract final class StorageKeys {
   static const passwordResetCompleted = 'passwordResetCompleted';
   static const selectedLanguage = 'selectedLanguage';
   static const isDarkMode = 'isDarkMode';
+
+  // Patient profile fields (see ProfileCubit).
+  static const profileFullName = 'profileFullName';
+  static const profilePhone = 'profilePhone';
+  static const profileEmail = 'profileEmail';
+  static const profileProvince = 'profileProvince';
+  static const profileCity = 'profileCity';
+  static const profileAddress = 'profileAddress';
+  static const profileBloodType = 'profileBloodType';
+  static const profileAge = 'profileAge';
+  static const profileGender = 'profileGender';
+  static const profileHeight = 'profileHeight';
+  static const profileWeight = 'profileWeight';
+  static const profileAllergies = 'profileAllergies';
+  static const profileChronicDiseases = 'profileChronicDiseases';
+  static const profileLanguage = 'profileLanguage';
+  static const profileAppointmentNotifications =
+      'profileAppointmentNotifications';
+  static const profileLaboratoryNotifications =
+      'profileLaboratoryNotifications';
+  static const profilePrescriptionNotifications =
+      'profilePrescriptionNotifications';
+  static const profileGeneralNotifications = 'profileGeneralNotifications';
+  static const profileAppointmentReminder = 'profileAppointmentReminder';
 }

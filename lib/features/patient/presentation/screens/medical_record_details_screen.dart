@@ -12,12 +12,35 @@ import '../../../../core/widgets/app_app_bar.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/app_scaffold.dart';
+import '../../../medical_records/domain/entities/medical_record_entry.dart';
+
+const _fallbackRecord = MedicalRecordEntry(
+  id: 'mr0',
+  patientId: 'p1',
+  doctorName: 'د. أحمد خالد',
+  specialty: 'قلبية',
+  hospital: 'مشفى دمشق الجامعي',
+  visitDate: '18 يونيو 2026',
+  diagnosis: 'اضطراب بسيط في ضغط الدم مع حالة مستقرة',
+  symptoms: 'إرهاق خفيف، صداع متقطع، خفقان بسيط',
+  doctorNotes: 'ينصح بالمتابعة بعد أسبوعين ومراقبة الضغط يومياً.',
+  vitals: [
+    ('الضغط', '120/80'),
+    ('النبض', '78 bpm'),
+    ('الحرارة', '36.8 C'),
+    ('الوزن', '74 kg'),
+  ],
+);
 
 class MedicalRecordDetailsScreen extends StatelessWidget {
-  const MedicalRecordDetailsScreen({super.key});
+  const MedicalRecordDetailsScreen({super.key, this.record});
+
+  final MedicalRecordEntry? record;
 
   @override
   Widget build(BuildContext context) {
+    final record = this.record ?? _fallbackRecord;
+
     return AppScaffold(
       padding: EdgeInsets.zero,
       appBar: AppAppBar(
@@ -37,15 +60,18 @@ class MedicalRecordDetailsScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
         children: [
-          const _VisitHeaderCard(),
+          _VisitHeaderCard(record: record),
           const SizedBox(height: AppSpacing.md),
-          const _DiagnosisCard(),
-          const SizedBox(height: AppSpacing.md),
-          const _VitalsCard(),
-          const SizedBox(height: AppSpacing.md),
-          const _MedicalListsCard(),
-          const SizedBox(height: AppSpacing.md),
-          const _AttachmentsCard(),
+          _DiagnosisCard(record: record),
+          if (record.vitals.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.md),
+            _VitalsCard(vitals: record.vitals),
+          ],
+          if (record.medications.isNotEmpty ||
+              record.testsRequired.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.md),
+            _MedicalListsCard(record: record),
+          ],
           const SizedBox(height: AppSpacing.xl),
           AppButton(
             text: 'تحميل التقرير',
@@ -79,21 +105,25 @@ class MedicalRecordDetailsScreen extends StatelessWidget {
 }
 
 class _VisitHeaderCard extends StatelessWidget {
-  const _VisitHeaderCard();
+  const _VisitHeaderCard({required this.record});
+
+  final MedicalRecordEntry record;
 
   @override
   Widget build(BuildContext context) {
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          _SectionTitle(
-              icon: Icons.assignment_rounded, title: 'معلومات الزيارة'),
-          SizedBox(height: AppSpacing.md),
-          _InfoRow(label: 'اسم الطبيب', value: 'د. أحمد خالد'),
-          _InfoRow(label: 'الاختصاص', value: 'قلبية'),
-          _InfoRow(label: 'اسم المشفى', value: 'مشفى دمشق الجامعي'),
-          _InfoRow(label: 'تاريخ الزيارة', value: '18 يونيو 2026'),
+        children: [
+          const _SectionTitle(
+            icon: Icons.assignment_rounded,
+            title: 'معلومات الزيارة',
+          ),
+          const SizedBox(height: AppSpacing.md),
+          _InfoRow(label: 'اسم الطبيب', value: record.doctorName),
+          _InfoRow(label: 'الاختصاص', value: record.specialty),
+          _InfoRow(label: 'اسم المشفى', value: record.hospital),
+          _InfoRow(label: 'تاريخ الزيارة', value: record.visitDate),
         ],
       ),
     );
@@ -101,26 +131,26 @@ class _VisitHeaderCard extends StatelessWidget {
 }
 
 class _DiagnosisCard extends StatelessWidget {
-  const _DiagnosisCard();
+  const _DiagnosisCard({required this.record});
+
+  final MedicalRecordEntry record;
 
   @override
   Widget build(BuildContext context) {
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          _SectionTitle(
-              icon: Icons.health_and_safety_rounded, title: 'التشخيص'),
-          SizedBox(height: AppSpacing.md),
-          _InfoRow(
-              label: 'التشخيص',
-              value: 'اضطراب بسيط في ضغط الدم مع حالة مستقرة'),
-          _InfoRow(
-              label: 'الأعراض', value: 'إرهاق خفيف، صداع متقطع، خفقان بسيط'),
-          _InfoRow(
-            label: 'ملاحظات الطبيب',
-            value: 'ينصح بالمتابعة بعد أسبوعين ومراقبة الضغط يومياً.',
+        children: [
+          const _SectionTitle(
+            icon: Icons.health_and_safety_rounded,
+            title: 'التشخيص',
           ),
+          const SizedBox(height: AppSpacing.md),
+          _InfoRow(label: 'التشخيص', value: record.diagnosis),
+          if (record.symptoms.isNotEmpty)
+            _InfoRow(label: 'الأعراض', value: record.symptoms),
+          if (record.doctorNotes.isNotEmpty)
+            _InfoRow(label: 'ملاحظات الطبيب', value: record.doctorNotes),
         ],
       ),
     );
@@ -128,23 +158,20 @@ class _DiagnosisCard extends StatelessWidget {
 }
 
 class _VitalsCard extends StatelessWidget {
-  const _VitalsCard();
+  const _VitalsCard({required this.vitals});
+
+  final List<(String, String)> vitals;
 
   @override
   Widget build(BuildContext context) {
-    const vitals = [
-      ('الضغط', '120/80'),
-      ('النبض', '78 bpm'),
-      ('الحرارة', '36.8 C'),
-      ('الوزن', '74 kg'),
-    ];
-
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const _SectionTitle(
-              icon: Icons.monitor_heart_rounded, title: 'العلامات الحيوية'),
+            icon: Icons.monitor_heart_rounded,
+            title: 'العلامات الحيوية',
+          ),
           const SizedBox(height: AppSpacing.md),
           Wrap(
             spacing: AppSpacing.sm,
@@ -160,45 +187,28 @@ class _VitalsCard extends StatelessWidget {
 }
 
 class _MedicalListsCard extends StatelessWidget {
-  const _MedicalListsCard();
+  const _MedicalListsCard({required this.record});
+
+  final MedicalRecordEntry record;
 
   @override
   Widget build(BuildContext context) {
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          _SectionTitle(icon: Icons.medication_rounded, title: 'الخطة الطبية'),
-          SizedBox(height: AppSpacing.md),
-          _BulletList(
-            title: 'الأدوية الموصوفة',
-            items: ['Atorvastatin 20mg مساءً', 'Aspirin 81mg بعد الطعام'],
+        children: [
+          const _SectionTitle(
+            icon: Icons.medication_rounded,
+            title: 'الخطة الطبية',
           ),
-          SizedBox(height: AppSpacing.md),
-          _BulletList(
-            title: 'التحاليل المطلوبة',
-            items: ['CBC', 'Lipid Profile', 'ECG عند المراجعة القادمة'],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _AttachmentsCard extends StatelessWidget {
-  const _AttachmentsCard();
-
-  @override
-  Widget build(BuildContext context) {
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          _SectionTitle(
-              icon: Icons.attach_file_rounded, title: 'مرفقات الزيارة'),
-          SizedBox(height: AppSpacing.md),
-          _AttachmentTile(title: 'تقرير الزيارة.pdf'),
-          _AttachmentTile(title: 'صورة تخطيط القلب.png'),
+          const SizedBox(height: AppSpacing.md),
+          if (record.medications.isNotEmpty) ...[
+            _BulletList(title: 'الأدوية الموصوفة', items: record.medications),
+            if (record.testsRequired.isNotEmpty)
+              const SizedBox(height: AppSpacing.md),
+          ],
+          if (record.testsRequired.isNotEmpty)
+            _BulletList(title: 'التحاليل المطلوبة', items: record.testsRequired),
         ],
       ),
     );
@@ -315,24 +325,6 @@ class _BulletList extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _AttachmentTile extends StatelessWidget {
-  const _AttachmentTile({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      leading:
-          const Icon(Icons.insert_drive_file_rounded, color: AppColors.primary),
-      title: Text(title, style: AppTextStyles.bodyMedium),
-      trailing: const Icon(Icons.download_rounded),
-      onTap: () => PdfMockService.createPdf(context: context, fileName: title),
     );
   }
 }

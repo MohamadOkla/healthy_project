@@ -7,12 +7,28 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../notifications/domain/entities/app_notification.dart';
+import 'notifications_screen.dart' show iconForNotificationType;
+
+const _fallbackNotification = AppNotification(
+  id: 'n0',
+  patientId: 'p1',
+  type: AppNotificationType.appointment,
+  title: 'تم تأكيد موعدك القادم',
+  description: 'موعدك مع طبيبك في انتظار التفاصيل.',
+  timeLabel: '',
+  isRead: true,
+);
 
 class NotificationDetailsScreen extends StatelessWidget {
-  const NotificationDetailsScreen({super.key});
+  const NotificationDetailsScreen({super.key, this.notification});
+
+  final AppNotification? notification;
 
   @override
   Widget build(BuildContext context) {
+    final notification = this.notification ?? _fallbackNotification;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -31,40 +47,47 @@ class NotificationDetailsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 30,
-                  backgroundColor: Color(0xFFE0F2F1),
+                  backgroundColor: const Color(0xFFE0F2F1),
                   child: Icon(
-                    Icons.notifications_active_rounded,
+                    iconForNotificationType(notification.type),
                     color: AppColors.primary,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 Text(
-                  'تم تأكيد موعدك القادم',
+                  notification.title,
                   style: AppTextStyles.headlineLarge,
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Text(
-                  'موعدك مع د. أحمد خالد غداً الساعة 10:30 صباحاً في مشفى دمشق الجامعي.',
+                  notification.description,
                   style: AppTextStyles.bodyMedium,
                 ),
-                const SizedBox(height: AppSpacing.md),
-                Text(
-                  'منذ 10 دقائق',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.primary,
+                if (notification.timeLabel.isNotEmpty) ...[
+                  const SizedBox(height: AppSpacing.md),
+                  Text(
+                    notification.timeLabel,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.primary,
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
-          AppButton(
-            text: 'عرض الموعد',
-            icon: Icons.calendar_month_rounded,
-            onPressed: () => context.go(AppRoutes.patientAppointmentDetails),
-          ),
+          if (notification.actionRoute != null) ...[
+            const SizedBox(height: AppSpacing.lg),
+            AppButton(
+              text: 'عرض التفاصيل',
+              icon: Icons.arrow_forward_rounded,
+              onPressed: () => context.go(
+                notification.actionRoute!,
+                extra: notification.actionExtra,
+              ),
+            ),
+          ],
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/constants/current_patient.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_app_bar.dart';
@@ -10,9 +11,13 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/app_scaffold.dart';
 import '../../../../core/widgets/app_text_field.dart';
+import '../../../laboratory/domain/entities/lab_result_entry.dart';
+import '../../data/repositories/consultations_repository_impl.dart';
 
 class ConsultationRequestScreen extends StatefulWidget {
-  const ConsultationRequestScreen({super.key});
+  const ConsultationRequestScreen({super.key, this.labResult});
+
+  final LabResultEntry? labResult;
 
   @override
   State<ConsultationRequestScreen> createState() =>
@@ -30,6 +35,8 @@ class _ConsultationRequestScreenState extends State<ConsultationRequestScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final labResult = widget.labResult;
+
     return AppScaffold(
       padding: EdgeInsets.zero,
       appBar: AppAppBar(
@@ -41,7 +48,7 @@ class _ConsultationRequestScreenState extends State<ConsultationRequestScreen> {
               context.pop();
               return;
             }
-            context.go(AppRoutes.patientLaboratoryDetails);
+            context.go(AppRoutes.patientLaboratory);
           },
           icon: const Icon(Icons.arrow_back_rounded),
         ),
@@ -52,18 +59,13 @@ class _ConsultationRequestScreenState extends State<ConsultationRequestScreen> {
           AppCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 _InfoRow(
-                    label: 'اسم التحليل', value: 'CBC + Vitamin D + HbA1c'),
-                _InfoRow(
-                  label: 'ملخص النتيجة',
-                  value: 'انخفاض بسيط في Vitamin D وباقي المؤشرات مستقرة.',
+                  label: 'اسم التحليل',
+                  value: labResult?.testName ?? 'استشارة عامة',
                 ),
-                _InfoRow(label: 'الطبيب المطلوب', value: 'د. أحمد خالد'),
-                _InfoRow(
-                  label: 'ملاحظات المريض',
-                  value: 'أرغب بمعرفة سبب الإرهاق المستمر وخطة المتابعة.',
-                ),
+                if (labResult?.summary.isNotEmpty ?? false)
+                  _InfoRow(label: 'ملخص النتيجة', value: labResult!.summary),
               ],
             ),
           ),
@@ -94,6 +96,15 @@ class _ConsultationRequestScreenState extends State<ConsultationRequestScreen> {
   }
 
   Future<void> _submitConsultation() async {
+    final question = _questionController.text.trim();
+    ConsultationsRepositoryImpl().addConsultation(
+      patientId: currentPatientId,
+      doctorName: 'د. سارة منصور',
+      subject: widget.labResult?.testName ?? 'استشارة عامة',
+      patientQuestion:
+          question.isEmpty ? 'أرغب بمعرفة المزيد حول هذه النتيجة.' : question,
+    );
+
     await showDialog<void>(
       context: context,
       builder: (dialogContext) {
@@ -118,7 +129,7 @@ class _ConsultationRequestScreenState extends State<ConsultationRequestScreen> {
     );
 
     if (!mounted) return;
-    context.go(AppRoutes.patientLaboratoryDetails);
+    context.go(AppRoutes.patientConsultations);
   }
 }
 

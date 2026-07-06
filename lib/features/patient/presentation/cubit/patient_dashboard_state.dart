@@ -17,6 +17,20 @@ class PatientDashboardState extends Equatable {
   final AppointmentModel upcomingAppointment;
   final bool isLoading;
 
+  PatientDashboardState copyWith({
+    HealthSummaryModel? healthSummary,
+    List<QuickActionModel>? quickActions,
+    AppointmentModel? upcomingAppointment,
+    bool? isLoading,
+  }) {
+    return PatientDashboardState(
+      healthSummary: healthSummary ?? this.healthSummary,
+      quickActions: quickActions ?? this.quickActions,
+      upcomingAppointment: upcomingAppointment ?? this.upcomingAppointment,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
+
   @override
   List<Object?> get props => [
         healthSummary,

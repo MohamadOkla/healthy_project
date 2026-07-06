@@ -12,13 +12,13 @@ class LocalStorageService {
     _preferences ??= await SharedPreferences.getInstance();
   }
 
-  bool getBool(String key, {bool defaultValue = false}) {
+  bool? getBool(String key) {
     final preferences = _preferences;
     if (preferences != null) {
-      return preferences.getBool(key) ?? defaultValue;
+      return preferences.getBool(key);
     }
     final value = _fallbackStorage[key];
-    return value is bool ? value : defaultValue;
+    return value is bool ? value : null;
   }
 
   String? getString(String key) {
