@@ -36,7 +36,6 @@ class _MyAppointmentsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -136,7 +135,7 @@ class _MyAppointmentsView extends StatelessWidget {
               children: [
                 Text(
                   'بحث في المواعيد',
-                  style: AppTextStyles.titleMedium,
+                  style: AppTextStyles.titleMedium(context),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 AppTextField(
@@ -196,7 +195,7 @@ class _MyAppointmentsView extends StatelessWidget {
                   children: [
                     Text(
                       'تصفية المواعيد',
-                      style: AppTextStyles.titleMedium,
+                      style: AppTextStyles.titleMedium(context),
                     ),
                     const SizedBox(height: AppSpacing.md),
                     DropdownButtonFormField<AppointmentStatus>(

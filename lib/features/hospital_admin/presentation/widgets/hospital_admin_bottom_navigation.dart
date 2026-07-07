@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -14,14 +15,20 @@ class HospitalAdminBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SafeArea(
       child: Container(
         margin: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(AppRadius.xl),
-          border: Border.all(color: AppColors.primary.withValues(alpha: 0.08)),
-          boxShadow: AppShadows.medium,
+          border: Border.all(
+            color: theme.colorScheme.outline.withValues(alpha: 0.08),
+          ),
+          boxShadow: theme.brightness == Brightness.dark
+              ? null
+              : AppShadows.medium,
         ),
         child: NavigationBar(
           selectedIndex: selectedIndex,
@@ -30,30 +37,30 @@ class HospitalAdminBottomNavigation extends StatelessWidget {
           height: 76,
           indicatorColor: AppColors.primary.withValues(alpha: 0.12),
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          destinations: const [
+          destinations: [
             NavigationDestination(
-              icon: Icon(Icons.dashboard_rounded),
-              selectedIcon: Icon(
+              icon: const Icon(Icons.dashboard_rounded),
+              selectedIcon: const Icon(
                 Icons.dashboard_rounded,
                 color: AppColors.primary,
               ),
-              label: 'الرئيسية',
+              label: context.tr('nav_dashboard'),
             ),
             NavigationDestination(
-              icon: Icon(Icons.medical_services_outlined),
-              selectedIcon: Icon(
+              icon: const Icon(Icons.medical_services_outlined),
+              selectedIcon: const Icon(
                 Icons.medical_services_rounded,
                 color: AppColors.primary,
               ),
-              label: 'الأطباء',
+              label: context.tr('nav_doctors'),
             ),
             NavigationDestination(
-              icon: Icon(Icons.person_rounded),
-              selectedIcon: Icon(
+              icon: const Icon(Icons.person_rounded),
+              selectedIcon: const Icon(
                 Icons.person_rounded,
                 color: AppColors.primary,
               ),
-              label: 'حسابي',
+              label: context.tr('nav_profile'),
             ),
           ],
           onDestinationSelected: (index) {

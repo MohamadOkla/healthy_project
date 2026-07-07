@@ -5,8 +5,10 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/constants/storage_keys.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/services/local_storage_service.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/user_role_helper.dart';
@@ -160,8 +162,8 @@ class _LoginFormBody extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      decoration: const BoxDecoration(
-        color: AppColors.background,
+      decoration: BoxDecoration(
+        color: context.colors.background,
         borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
       ),
       child: Align(
@@ -180,11 +182,11 @@ class _LoginFormBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text('أهلاً بعودتك', style: AppTextStyles.headlineLarge),
+                  Text(context.tr('welcome_back'), style: AppTextStyles.headlineLarge(context)),
                   const SizedBox(height: AppSpacing.sm),
                   Text(
-                    'سجل دخولك للوصول إلى خدماتك الطبية بسهولة وأمان.',
-                    style: AppTextStyles.bodyMedium,
+                    context.tr('login_subtitle'),
+                    style: AppTextStyles.bodyMedium(context),
                   ),
                   if (selectedRole != null) ...[
                     const SizedBox(height: AppSpacing.md),
@@ -233,8 +235,8 @@ class _SelectedRoleBadge extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.md),
         ),
         child: Text(
-          'نوع الحساب: $role',
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primary),
+          '${context.tr('account_type_label')}: $role',
+          style: AppTextStyles.bodyMedium(context).copyWith(color: AppColors.primary),
         ),
       ),
     );

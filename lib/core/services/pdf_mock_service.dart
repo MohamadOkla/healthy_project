@@ -24,7 +24,7 @@ abstract final class PdfMockService {
             children: [
               Text(
                 fileName,
-                style: AppTextStyles.titleMedium.copyWith(
+                style: AppTextStyles.titleMedium(context).copyWith(
                   color: AppColors.primary,
                 ),
                 textAlign: TextAlign.center,
@@ -32,7 +32,7 @@ abstract final class PdfMockService {
               const SizedBox(height: AppSpacing.sm),
               Text(
                 'هذا تنفيذ واجهة تجريبي لحين ربط خدمة الملفات الفعلية.',
-                style: AppTextStyles.bodyMedium,
+                style: AppTextStyles.bodyMedium(context),
                 textAlign: TextAlign.center,
               ),
             ],

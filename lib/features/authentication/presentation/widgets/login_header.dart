@@ -79,14 +79,14 @@ class _HeaderIdentity extends StatelessWidget {
         const SizedBox(height: AppSpacing.md),
         Text(
           AppStrings.appNameEn,
-          style: AppTextStyles.titleMedium.copyWith(color: AppColors.white),
+          style: AppTextStyles.titleMedium(context).copyWith(color: AppColors.white),
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
         ),
         const SizedBox(height: AppSpacing.xs),
         Text(
           AppStrings.appNameAr,
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.white),
+          style: AppTextStyles.bodyMedium(context).copyWith(color: AppColors.white),
           textAlign: TextAlign.center,
         ),
       ],

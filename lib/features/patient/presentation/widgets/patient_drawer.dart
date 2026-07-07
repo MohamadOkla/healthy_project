@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../cubit/profile_cubit.dart';
@@ -19,7 +20,6 @@ class PatientDrawer extends StatelessWidget {
     final profile = context.watch<ProfileCubit>().state;
 
     return Drawer(
-      backgroundColor: AppColors.background,
       child: SafeArea(
         child: Column(
           children: [
@@ -56,7 +56,7 @@ class PatientDrawer extends StatelessWidget {
                       children: [
                         Text(
                           profile.fullName,
-                          style: AppTextStyles.titleMedium.copyWith(
+                          style: AppTextStyles.titleMedium(context).copyWith(
                             color: AppColors.white,
                             fontWeight: FontWeight.w800,
                           ),
@@ -64,7 +64,7 @@ class PatientDrawer extends StatelessWidget {
                         const SizedBox(height: AppSpacing.xs),
                         Text(
                           profile.email,
-                          style: AppTextStyles.bodyMedium.copyWith(
+                          style: AppTextStyles.bodyMedium(context).copyWith(
                             color: AppColors.white.withValues(alpha: 0.86),
                             fontSize: 13,
                           ),
@@ -141,7 +141,7 @@ class PatientDrawer extends StatelessWidget {
                   ),
                   title: Text(
                     'تسجيل الخروج',
-                    style: AppTextStyles.bodyMedium.copyWith(
+                    style: AppTextStyles.bodyMedium(context).copyWith(
                       color: AppColors.error,
                       fontWeight: FontWeight.w800,
                     ),
@@ -173,7 +173,7 @@ class _DrawerItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.xs),
       child: Material(
-        color: AppColors.white,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: ListTile(
           shape: RoundedRectangleBorder(
@@ -190,7 +190,7 @@ class _DrawerItem extends StatelessWidget {
           ),
           title: Text(
             title,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.bodyMedium(context).copyWith(
               color: AppColors.textDark,
               fontWeight: FontWeight.w700,
             ),

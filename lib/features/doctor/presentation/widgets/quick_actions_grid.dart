@@ -58,7 +58,7 @@ class QuickActionsGrid extends StatelessWidget {
       children: [
         Text(
           'إجراءات سريعة',
-          style: AppTextStyles.titleMedium.copyWith(
+          style: AppTextStyles.titleMedium(context).copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.w800,
           ),

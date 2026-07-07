@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/app_colors.dart';
 import '../theme/app_spacing.dart';
 import 'app_app_bar.dart';
 
@@ -11,7 +10,7 @@ class AppScaffold extends StatelessWidget {
     this.title,
     this.appBar,
     this.padding = const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-    this.backgroundColor = AppColors.background,
+    this.backgroundColor,
     this.bottomNavigationBar,
     this.floatingActionButton,
     this.resizeToAvoidBottomInset,
@@ -21,7 +20,7 @@ class AppScaffold extends StatelessWidget {
   final String? title;
   final PreferredSizeWidget? appBar;
   final EdgeInsetsGeometry padding;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
   final bool? resizeToAvoidBottomInset;

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -21,7 +22,6 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -187,7 +187,7 @@ class _ProfileHeader extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           Text(
             state.fullName,
-            style: AppTextStyles.headlineLarge.copyWith(
+            style: AppTextStyles.headlineLarge(context).copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w800,
             ),
@@ -217,7 +217,7 @@ class _ProfileInfoChip extends StatelessWidget {
         vertical: AppSpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: context.colors.background,
         borderRadius: BorderRadius.circular(AppRadius.lg),
       ),
       child: Row(
@@ -228,7 +228,7 @@ class _ProfileInfoChip extends StatelessWidget {
           Flexible(
             child: Text(
               value,
-              style: AppTextStyles.bodyMedium,
+              style: AppTextStyles.bodyMedium(context),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
             ),

@@ -66,10 +66,10 @@ class _StatItem extends StatelessWidget {
       children: [
         Text(
           value,
-          style: AppTextStyles.headlineLarge.copyWith(color: color),
+          style: AppTextStyles.headlineLarge(context).copyWith(color: color),
         ),
         const SizedBox(height: AppSpacing.xs),
-        Text(label, style: AppTextStyles.bodyMedium),
+        Text(label, style: AppTextStyles.bodyMedium(context)),
       ],
     );
   }

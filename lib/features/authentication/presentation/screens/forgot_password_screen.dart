@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -47,7 +48,7 @@ class _ForgotPasswordContent extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(AppSpacing.lg),
                     decoration: BoxDecoration(
-                      color: AppColors.background,
+                      color: context.colors.background,
                       borderRadius: BorderRadius.circular(AppRadius.xl),
                     ),
                     child:
@@ -58,12 +59,12 @@ class _ForgotPasswordContent extends StatelessWidget {
                           children: [
                             Text(
                               'استعادة كلمة المرور',
-                              style: AppTextStyles.headlineLarge,
+                              style: AppTextStyles.headlineLarge(context),
                             ),
                             const SizedBox(height: AppSpacing.sm),
                             Text(
                               'أدخل بريدك الإلكتروني أو رقم الهاتف لإرسال رمز التحقق.',
-                              style: AppTextStyles.bodyMedium,
+                              style: AppTextStyles.bodyMedium(context),
                             ),
                             const SizedBox(height: AppSpacing.xl),
                             const AppTextField(

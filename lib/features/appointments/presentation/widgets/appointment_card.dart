@@ -45,11 +45,11 @@ class AppointmentCard extends StatelessWidget {
                   children: [
                     Text(
                       appointment.doctorName,
-                      style: AppTextStyles.titleMedium,
+                      style: AppTextStyles.titleMedium(context),
                     ),
                     Text(
                       '${appointment.specialty} • ${appointment.hospital}',
-                      style: AppTextStyles.bodyMedium,
+                      style: AppTextStyles.bodyMedium(context),
                     ),
                   ],
                 ),
@@ -69,7 +69,7 @@ class AppointmentCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   '${appointment.day}، ${appointment.date}',
-                  style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium(context),
                 ),
               ),
               const Icon(
@@ -78,7 +78,7 @@ class AppointmentCard extends StatelessWidget {
                 size: 20,
               ),
               const SizedBox(width: AppSpacing.xs),
-              Text(appointment.time, style: AppTextStyles.bodyMedium),
+              Text(appointment.time, style: AppTextStyles.bodyMedium(context)),
             ],
           ),
           const SizedBox(height: AppSpacing.md),

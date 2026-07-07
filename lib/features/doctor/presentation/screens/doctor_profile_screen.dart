@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -17,7 +18,6 @@ class DoctorProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -32,7 +32,7 @@ class DoctorProfileScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: context.colors.surface,
               borderRadius: BorderRadius.circular(AppRadius.xl),
               boxShadow: AppShadows.soft,
             ),
@@ -54,11 +54,11 @@ class DoctorProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
-                Text('د. سارة منصور', style: AppTextStyles.headlineLarge),
+                Text('د. سارة منصور', style: AppTextStyles.headlineLarge(context)),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'طب عام · مشفى دمشق الجامعي',
-                  style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium(context),
                 ),
               ],
             ),

@@ -8,27 +8,27 @@ class SplashTitleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             AppStrings.appNameAr,
-            style: AppTextStyles.headlineLarge,
+            style: AppTextStyles.headlineLarge(context),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 8),
           Text(
             AppStrings.appNameEn,
-            style: AppTextStyles.bodyMedium,
+            style: AppTextStyles.bodyMedium(context),
             textAlign: TextAlign.center,
             textDirection: TextDirection.ltr,
           ),
           SizedBox(height: 20),
           Text(
             AppStrings.ministryName,
-            style: AppTextStyles.titleMedium,
+            style: AppTextStyles.titleMedium(context),
             textAlign: TextAlign.center,
           ),
         ],

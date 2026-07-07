@@ -6,6 +6,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/constants/storage_keys.dart';
 import '../../../../core/services/local_storage_service.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -71,7 +72,7 @@ class _RegisterContentState extends State<_RegisterContent> {
                       child: Container(
                         padding: const EdgeInsets.all(AppSpacing.lg),
                         decoration: BoxDecoration(
-                          color: AppColors.background,
+                          color: context.colors.background,
                           borderRadius: BorderRadius.circular(AppRadius.xl),
                         ),
                         child: Column(
@@ -81,14 +82,14 @@ class _RegisterContentState extends State<_RegisterContent> {
                               state.isDoctorRegistration
                                   ? 'إنشاء حساب طبيب'
                                   : 'إنشاء حساب مريض',
-                              style: AppTextStyles.headlineLarge,
+                              style: AppTextStyles.headlineLarge(context),
                             ),
                             const SizedBox(height: AppSpacing.sm),
                             Text(
                               state.isDoctorRegistration
                                   ? 'أكمل بياناتك المهنية ليتم إنشاء الحساب ومراجعته من الإدارة.'
                                   : 'أكمل البيانات التالية لإنشاء حسابك داخل المنظومة.',
-                              style: AppTextStyles.bodyMedium,
+                              style: AppTextStyles.bodyMedium(context),
                             ),
                             const SizedBox(height: AppSpacing.lg),
                             RegisterStepIndicator(

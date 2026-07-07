@@ -25,7 +25,7 @@ class HealthProgressIndicator extends StatelessWidget {
             ),
             Text(
               '${(value * 100).round()}%',
-              style: AppTextStyles.titleMedium,
+              style: AppTextStyles.titleMedium(context),
             ),
           ],
         ),

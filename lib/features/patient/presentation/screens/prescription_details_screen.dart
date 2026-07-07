@@ -123,7 +123,7 @@ class _PrescriptionHeader extends StatelessWidget {
               Expanded(
                 child: Text(
                   'الوصفة رقم ${prescription.id.toUpperCase()}',
-                  style: AppTextStyles.titleMedium
+                  style: AppTextStyles.titleMedium(context)
                       .copyWith(color: AppColors.primary),
                 ),
               ),
@@ -157,7 +157,7 @@ class _MedicineListCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('قائمة الأدوية', style: AppTextStyles.titleMedium),
+          Text('قائمة الأدوية', style: AppTextStyles.titleMedium(context)),
           const SizedBox(height: AppSpacing.md),
           ...medicines.map(
             (medicine) => _MedicineTile(
@@ -224,7 +224,7 @@ class _MedicineTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(name, style: AppTextStyles.titleMedium),
+          Text(name, style: AppTextStyles.titleMedium(context)),
           const SizedBox(height: AppSpacing.sm),
           _InfoRow(label: 'الجرعة', value: dose),
           _InfoRow(label: 'عدد المرات', value: frequency),
@@ -252,7 +252,7 @@ class _StatusChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.xl),
       ),
       child:
-          Text(label, style: AppTextStyles.bodyMedium.copyWith(color: color)),
+          Text(label, style: AppTextStyles.bodyMedium(context).copyWith(color: color)),
     );
   }
 }
@@ -271,12 +271,12 @@ class _InfoRow extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-              width: 110, child: Text(label, style: AppTextStyles.bodyMedium)),
+              width: 110, child: Text(label, style: AppTextStyles.bodyMedium(context))),
           Expanded(
             child: Text(
               value,
               style:
-                  AppTextStyles.bodyMedium.copyWith(color: AppColors.textDark),
+                  AppTextStyles.bodyMedium(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
             ),
           ),
         ],
@@ -298,9 +298,9 @@ class _SectionText extends StatelessWidget {
       children: [
         Text(title,
             style:
-                AppTextStyles.titleMedium.copyWith(color: AppColors.primary)),
+                AppTextStyles.titleMedium(context).copyWith(color: AppColors.primary)),
         const SizedBox(height: AppSpacing.sm),
-        Text(value, style: AppTextStyles.bodyMedium),
+        Text(value, style: AppTextStyles.bodyMedium(context)),
       ],
     );
   }

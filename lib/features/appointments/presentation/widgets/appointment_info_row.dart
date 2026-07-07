@@ -25,14 +25,14 @@ class AppointmentInfoRow extends StatelessWidget {
         Expanded(
           child: Text(
             label,
-            style: AppTextStyles.bodyMedium,
+            style: AppTextStyles.bodyMedium(context),
           ),
         ),
         Flexible(
           child: Text(
             value,
             textAlign: TextAlign.end,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.bodyMedium(context).copyWith(
               color: AppColors.textDark,
               fontWeight: FontWeight.w700,
             ),

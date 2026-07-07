@@ -36,7 +36,7 @@ class TodayScheduleSection extends StatelessWidget {
             Expanded(
               child: Text(
                 'جدول اليوم',
-                style: AppTextStyles.titleMedium.copyWith(
+                style: AppTextStyles.titleMedium(context).copyWith(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.w800,
                 ),
@@ -50,7 +50,7 @@ class TodayScheduleSection extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         if (appointments.isEmpty)
-          Text('لا توجد مواعيد اليوم', style: AppTextStyles.bodyMedium)
+          Text('لا توجد مواعيد اليوم', style: AppTextStyles.bodyMedium(context))
         else
           SizedBox(
             height: 176,

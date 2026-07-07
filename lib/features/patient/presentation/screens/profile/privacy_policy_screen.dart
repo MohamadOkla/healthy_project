@@ -73,7 +73,6 @@ class _ProfileTextScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -91,9 +90,9 @@ class _ProfileTextScreen extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(section.$1, style: AppTextStyles.titleMedium),
+              Text(section.$1, style: AppTextStyles.titleMedium(context)),
               const SizedBox(height: AppSpacing.sm),
-              Text(section.$2, style: AppTextStyles.bodyMedium),
+              Text(section.$2, style: AppTextStyles.bodyMedium(context)),
             ],
           );
         },

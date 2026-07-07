@@ -21,7 +21,6 @@ class BookingSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -46,13 +45,13 @@ class BookingSuccessScreen extends StatelessWidget {
             Text(
               'تم حجز الموعد بنجاح',
               textAlign: TextAlign.center,
-              style: AppTextStyles.headlineLarge,
+              style: AppTextStyles.headlineLarge(context),
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
               'تم تأكيد موعدك وسيتم إرسال تذكير قبل الموعد.',
               textAlign: TextAlign.center,
-              style: AppTextStyles.bodyMedium,
+              style: AppTextStyles.bodyMedium(context),
             ),
             const SizedBox(height: AppSpacing.xl),
             AppCard(

@@ -31,7 +31,6 @@ class HospitalAdminDashboardScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => HospitalAdminDashboardCubit(),
       child: const Scaffold(
-        backgroundColor: AppColors.background,
         body: SafeArea(child: _DashboardBody()),
         bottomNavigationBar: HospitalAdminBottomNavigation(selectedIndex: 0),
       ),
@@ -68,7 +67,7 @@ class _DashboardBody extends StatelessWidget {
                         Expanded(
                           child: Text(
                             'الأطباء',
-                            style: AppTextStyles.titleMedium.copyWith(
+                            style: AppTextStyles.titleMedium(context).copyWith(
                               fontWeight: FontWeight.w800,
                             ),
                           ),
@@ -137,7 +136,7 @@ class _Header extends StatelessWidget {
             children: [
               Text(
                 hospitalName,
-                style: AppTextStyles.titleMedium.copyWith(
+                style: AppTextStyles.titleMedium(context).copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 20,
                 ),
@@ -145,7 +144,7 @@ class _Header extends StatelessWidget {
               const SizedBox(height: AppSpacing.xs),
               Text(
                 'نظرة عامة على نشاط المشفى اليوم',
-                style: AppTextStyles.bodyMedium,
+                style: AppTextStyles.bodyMedium(context),
               ),
             ],
           ),
@@ -229,11 +228,11 @@ class _ReportsLinkCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('التقارير', style: AppTextStyles.titleMedium),
+                Text('التقارير', style: AppTextStyles.titleMedium(context)),
                 const SizedBox(height: 2),
                 Text(
                   'توزيع الأطباء، أعداد المرضى، ومعدل الرد على الاستشارات',
-                  style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium(context),
                 ),
               ],
             ),

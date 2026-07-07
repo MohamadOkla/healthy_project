@@ -26,7 +26,7 @@ class RecentResultsSection extends StatelessWidget {
         children: [
           Text(
             'آخر النتائج',
-            style: AppTextStyles.titleMedium.copyWith(
+            style: AppTextStyles.titleMedium(context).copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w800,
             ),
@@ -77,7 +77,7 @@ class _ResultTile extends StatelessWidget {
             Expanded(
               child: Text(
                 name,
-                style: AppTextStyles.titleMedium.copyWith(
+                style: AppTextStyles.titleMedium(context).copyWith(
                   color: AppColors.textDark,
                   fontWeight: FontWeight.w800,
                 ),
@@ -94,7 +94,7 @@ class _ResultTile extends StatelessWidget {
               ),
               child: Text(
                 status,
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodyMedium(context).copyWith(
                   color: color,
                   fontWeight: FontWeight.w700,
                 ),

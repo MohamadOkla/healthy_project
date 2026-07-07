@@ -49,7 +49,7 @@ class PatientTile extends StatelessWidget {
                 backgroundColor: accentColor.withValues(alpha: 0.12),
                 child: Text(
                   initials,
-                  style: AppTextStyles.bodyMedium.copyWith(
+                  style: AppTextStyles.bodyMedium(context).copyWith(
                     color: accentColor,
                     fontWeight: FontWeight.w800,
                   ),
@@ -67,7 +67,7 @@ class PatientTile extends StatelessWidget {
                             name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.titleMedium.copyWith(
+                            style: AppTextStyles.titleMedium(context).copyWith(
                               color: theme.colorScheme.onSurface,
                               fontSize: 16,
                               fontWeight: FontWeight.w800,
@@ -76,7 +76,7 @@ class PatientTile extends StatelessWidget {
                         ),
                         Text(
                           age,
-                          style: AppTextStyles.bodyMedium.copyWith(
+                          style: AppTextStyles.bodyMedium(context).copyWith(
                             color: theme.colorScheme.onSurface
                                 .withValues(alpha: 0.54),
                             fontSize: 12,
@@ -89,7 +89,7 @@ class PatientTile extends StatelessWidget {
                       diagnosis,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.bodyMedium.copyWith(
+                      style: AppTextStyles.bodyMedium(context).copyWith(
                         color:
                             theme.colorScheme.onSurface.withValues(alpha: 0.72),
                         fontSize: 13,
@@ -100,7 +100,7 @@ class PatientTile extends StatelessWidget {
                       'Last visit: $lastVisit',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.bodyMedium.copyWith(
+                      style: AppTextStyles.bodyMedium(context).copyWith(
                         color:
                             theme.colorScheme.onSurface.withValues(alpha: 0.52),
                         fontSize: 12,

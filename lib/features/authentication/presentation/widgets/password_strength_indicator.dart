@@ -58,7 +58,7 @@ class PasswordStrengthIndicator extends StatelessWidget {
           }),
         ),
         const SizedBox(height: AppSpacing.xs),
-        Text('قوة كلمة المرور: $label', style: AppTextStyles.bodyMedium),
+        Text('قوة كلمة المرور: $label', style: AppTextStyles.bodyMedium(context)),
       ],
     );
   }

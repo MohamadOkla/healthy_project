@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/cubit/app_settings_cubit.dart';
 import '../../../../app/cubit/app_settings_state.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -17,7 +18,6 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -31,22 +31,22 @@ class SettingsScreen extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.all(AppSpacing.md),
             children: [
-              Text('تفضيلات التطبيق', style: AppTextStyles.titleMedium),
+              Text('تفضيلات التطبيق', style: AppTextStyles.titleMedium(context)),
               const SizedBox(height: AppSpacing.md),
               ProfileSectionCard(
                 title: 'عام',
                 items: [
                   ProfileSectionItem(
                     icon: Icons.language_rounded,
-                    title: 'تغيير اللغة',
-                    subtitle: appSettings.isArabic ? 'العربية' : 'English',
+                    title: context.tr('language'),
+                    subtitle: appSettings.isArabic ? context.tr('arabic') : context.tr('english'),
                     onTap: () => context.go(AppRoutes.patientLanguage),
                   ),
                   ProfileSectionItem(
                     icon: appSettings.isDarkMode
                         ? Icons.light_mode_rounded
                         : Icons.dark_mode_rounded,
-                    title: 'الوضع الليلي',
+                    title: context.tr('dark_mode'),
                     subtitle: appSettings.isDarkMode ? 'مفعل' : 'غير مفعل',
                     onTap: () => context
                         .read<AppSettingsCubit>()

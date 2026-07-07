@@ -38,7 +38,7 @@ class RecentActivitySection extends StatelessWidget {
         children: [
           Text(
             'آخر النشاطات',
-            style: AppTextStyles.titleMedium.copyWith(
+            style: AppTextStyles.titleMedium(context).copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w800,
             ),
@@ -72,7 +72,7 @@ class RecentActivitySection extends StatelessWidget {
                       ),
                       const SizedBox(width: AppSpacing.md),
                       Expanded(
-                        child: Text(item.$2, style: AppTextStyles.bodyMedium),
+                        child: Text(item.$2, style: AppTextStyles.bodyMedium(context)),
                       ),
                       const Icon(
                         Icons.chevron_left_rounded,

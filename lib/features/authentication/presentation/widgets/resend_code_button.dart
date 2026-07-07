@@ -22,7 +22,7 @@ class ResendCodeButton extends StatelessWidget {
         canResend
             ? 'إعادة إرسال الرمز'
             : 'إعادة الإرسال خلال $remainingSeconds ثانية',
-        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primary),
+        style: AppTextStyles.bodyMedium(context).copyWith(color: AppColors.primary),
       ),
     );
   }

@@ -42,10 +42,10 @@ class DoctorCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(doctor.name, style: AppTextStyles.titleMedium),
+                  Text(doctor.name, style: AppTextStyles.titleMedium(context)),
                   Text(
                     '${doctor.specialty} • ${doctor.hospital}',
-                    style: AppTextStyles.bodyMedium,
+                    style: AppTextStyles.bodyMedium(context),
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Wrap(
@@ -101,7 +101,7 @@ class _Meta extends StatelessWidget {
       children: [
         Icon(icon, size: 16, color: AppColors.warning),
         const SizedBox(width: AppSpacing.xs),
-        Text(label, style: AppTextStyles.bodyMedium.copyWith(fontSize: 12)),
+        Text(label, style: AppTextStyles.bodyMedium(context).copyWith(fontSize: 12)),
       ],
     );
   }

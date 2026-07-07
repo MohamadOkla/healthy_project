@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/theme/app_text_styles.dart';
 
 class RegisterLink extends StatelessWidget {
@@ -16,7 +17,7 @@ class RegisterLink extends StatelessWidget {
       alignment: WrapAlignment.center,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Text('ليس لديك حساب؟', style: AppTextStyles.bodyMedium),
+        Text(context.tr('no_account'), style: AppTextStyles.bodyMedium(context)),
         TextButton(
           onPressed: () {
             context.go(
@@ -29,8 +30,8 @@ class RegisterLink extends StatelessWidget {
             );
           },
           child: Text(
-            'إنشاء حساب',
-            style: AppTextStyles.bodyMedium.copyWith(
+            context.tr('create_account'),
+            style: AppTextStyles.bodyMedium(context).copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w700,
             ),

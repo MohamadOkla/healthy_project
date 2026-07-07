@@ -23,7 +23,7 @@ class AppointmentStatusChip extends StatelessWidget {
       ),
       child: Text(
         status.label,
-        style: AppTextStyles.bodyMedium.copyWith(
+        style: AppTextStyles.bodyMedium(context).copyWith(
           color: status.color,
           fontWeight: FontWeight.w700,
         ),

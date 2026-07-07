@@ -15,7 +15,6 @@ class AboutAppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -37,17 +36,17 @@ class AboutAppScreen extends StatelessWidget {
                   size: 64,
                 ),
                 const SizedBox(height: AppSpacing.md),
-                Text(AppStrings.appNameAr, style: AppTextStyles.headlineLarge),
+                Text(AppStrings.appNameAr, style: AppTextStyles.headlineLarge(context)),
                 const SizedBox(height: AppSpacing.sm),
-                Text('الإصدار 1.0.0', style: AppTextStyles.bodyMedium),
+                Text('الإصدار 1.0.0', style: AppTextStyles.bodyMedium(context)),
                 const SizedBox(height: AppSpacing.md),
                 Text(
                   'منظومة رقمية لإدارة الخدمات الطبية وربط المرضى بالخدمات الصحية بسهولة وأمان.',
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium(context),
                 ),
                 const SizedBox(height: AppSpacing.md),
-                Text('وزارة الصحة', style: AppTextStyles.titleMedium),
+                Text('وزارة الصحة', style: AppTextStyles.titleMedium(context)),
               ],
             ),
           ),

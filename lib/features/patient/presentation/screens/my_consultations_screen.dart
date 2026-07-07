@@ -21,7 +21,6 @@ class MyConsultationsScreen extends StatelessWidget {
         .getConsultationsForPatient(currentPatientId);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -68,7 +67,7 @@ class _ConsultationCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   consultation.subject,
-                  style: AppTextStyles.titleMedium,
+                  style: AppTextStyles.titleMedium(context),
                 ),
               ),
               Container(
@@ -83,7 +82,7 @@ class _ConsultationCard extends StatelessWidget {
                 ),
                 child: Text(
                   isAnswered ? 'تم الرد' : 'بانتظار الرد',
-                  style: AppTextStyles.bodyMedium.copyWith(
+                  style: AppTextStyles.bodyMedium(context).copyWith(
                     color: isAnswered ? AppColors.success : AppColors.warning,
                   ),
                 ),
@@ -93,12 +92,12 @@ class _ConsultationCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Text(
             '${consultation.doctorName} · ${consultation.dateLabel}',
-            style: AppTextStyles.bodyMedium,
+            style: AppTextStyles.bodyMedium(context),
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             'سؤالك: ${consultation.patientQuestion}',
-            style: AppTextStyles.bodyMedium,
+            style: AppTextStyles.bodyMedium(context),
           ),
           if (isAnswered && consultation.doctorAnswer != null) ...[
             const SizedBox(height: AppSpacing.sm),
@@ -110,7 +109,7 @@ class _ConsultationCard extends StatelessWidget {
               ),
               child: Text(
                 'رد الطبيب: ${consultation.doctorAnswer}',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodyMedium(context).copyWith(
                   color: AppColors.textDark,
                 ),
               ),

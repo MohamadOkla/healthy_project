@@ -33,7 +33,6 @@ class _PatientDashboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       endDrawer: const PatientDrawer(),
       bottomNavigationBar: const PatientBottomNavigation(selectedIndex: 0),
       body: SafeArea(
@@ -74,7 +73,7 @@ class _PatientDashboardView extends StatelessWidget {
                               const SizedBox(height: AppSpacing.xl),
                               Text(
                                 'الخدمات السريعة',
-                                style: AppTextStyles.titleMedium,
+                                style: AppTextStyles.titleMedium(context),
                               ),
                               const SizedBox(height: AppSpacing.md),
                               QuickActionsGrid(actions: state.quickActions),

@@ -555,13 +555,13 @@ class PatientPlaceholderScreen extends StatelessWidget {
                   Text(
                     title,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.headlineLarge,
+                    style: AppTextStyles.headlineLarge(context),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   Text(
                     description,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.bodyMedium,
+                    style: AppTextStyles.bodyMedium(context),
                   ),
                   const SizedBox(height: AppSpacing.xl),
                   AppButton(

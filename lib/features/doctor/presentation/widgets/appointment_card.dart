@@ -47,7 +47,7 @@ class AppointmentCard extends StatelessWidget {
                 backgroundColor: AppColors.primary.withValues(alpha: 0.12),
                 child: Text(
                   initials,
-                  style: AppTextStyles.bodyMedium.copyWith(
+                  style: AppTextStyles.bodyMedium(context).copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w800,
                   ),
@@ -59,7 +59,7 @@ class AppointmentCard extends StatelessWidget {
                   patientName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.titleMedium.copyWith(
+                  style: AppTextStyles.titleMedium(context).copyWith(
                     color: theme.colorScheme.onSurface,
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
@@ -86,7 +86,7 @@ class AppointmentCard extends StatelessWidget {
               ),
               child: Text(
                 status,
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodyMedium(context).copyWith(
                   color: statusColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w800,
@@ -123,7 +123,7 @@ class _InfoRow extends StatelessWidget {
             text,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.bodyMedium(context).copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.68),
               fontSize: 13,
             ),

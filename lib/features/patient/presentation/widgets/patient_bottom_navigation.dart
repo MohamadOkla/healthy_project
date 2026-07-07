@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -14,14 +15,20 @@ class PatientBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SafeArea(
       child: Container(
         margin: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(AppRadius.xl),
-          border: Border.all(color: AppColors.primary.withValues(alpha: 0.08)),
-          boxShadow: AppShadows.medium,
+          border: Border.all(
+            color: theme.colorScheme.outline.withValues(alpha: 0.08),
+          ),
+          boxShadow: theme.brightness == Brightness.dark
+              ? null
+              : AppShadows.medium,
         ),
         child: NavigationBar(
           selectedIndex: selectedIndex,
@@ -30,43 +37,46 @@ class PatientBottomNavigation extends StatelessWidget {
           height: 76,
           indicatorColor: AppColors.primary.withValues(alpha: 0.12),
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          destinations: const [
+          destinations: [
             NavigationDestination(
-              icon: Icon(Icons.home_rounded),
-              selectedIcon: Icon(Icons.home_rounded, color: AppColors.primary),
-              label: 'الرئيسية',
+              icon: const Icon(Icons.home_rounded),
+              selectedIcon: const Icon(
+                Icons.home_rounded,
+                color: AppColors.primary,
+              ),
+              label: context.tr('nav_home'),
             ),
             NavigationDestination(
-              icon: Icon(Icons.calendar_month_rounded),
-              selectedIcon: Icon(
+              icon: const Icon(Icons.calendar_month_rounded),
+              selectedIcon: const Icon(
                 Icons.calendar_month_rounded,
                 color: AppColors.primary,
               ),
-              label: 'المواعيد',
+              label: context.tr('nav_appointments'),
             ),
             NavigationDestination(
-              icon: Icon(Icons.add_circle_rounded),
-              selectedIcon: Icon(
+              icon: const Icon(Icons.add_circle_rounded),
+              selectedIcon: const Icon(
                 Icons.add_circle_rounded,
                 color: AppColors.primary,
               ),
-              label: 'حجز',
+              label: context.tr('nav_book'),
             ),
             NavigationDestination(
-              icon: Icon(Icons.notifications_rounded),
-              selectedIcon: Icon(
+              icon: const Icon(Icons.notifications_rounded),
+              selectedIcon: const Icon(
                 Icons.notifications_rounded,
                 color: AppColors.primary,
               ),
-              label: 'الإشعارات',
+              label: context.tr('nav_notifications'),
             ),
             NavigationDestination(
-              icon: Icon(Icons.person_rounded),
-              selectedIcon: Icon(
+              icon: const Icon(Icons.person_rounded),
+              selectedIcon: const Icon(
                 Icons.person_rounded,
                 color: AppColors.primary,
               ),
-              label: 'حسابي',
+              label: context.tr('nav_profile'),
             ),
           ],
           onDestinationSelected: (index) {

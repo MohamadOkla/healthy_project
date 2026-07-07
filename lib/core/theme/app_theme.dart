@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/app_colors.dart';
+import 'app_semantic_colors.dart';
 import 'app_text_styles.dart';
 
 abstract final class AppTheme {
@@ -10,7 +11,8 @@ abstract final class AppTheme {
       brightness: Brightness.light,
       primary: AppColors.primary,
       secondary: AppColors.secondary,
-      surface: AppColors.white,
+      surface: AppColors.surface,
+      error: AppColors.error,
     );
 
     return ThemeData(
@@ -24,6 +26,7 @@ abstract final class AppTheme {
       scaffoldBackgroundColor: AppColors.background,
       textTheme: AppTextStyles.textTheme,
       iconTheme: const IconThemeData(color: AppColors.textDark),
+      extensions: const [AppSemanticColors.light],
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         elevation: 0,
@@ -34,11 +37,11 @@ abstract final class AppTheme {
         actionsIconTheme: IconThemeData(color: AppColors.white),
       ),
       cardTheme: CardThemeData(
-        color: AppColors.white,
+        color: AppColors.surface,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(28),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
@@ -53,7 +56,7 @@ abstract final class AppTheme {
           );
         }),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
-          return AppTextStyles.bodyMedium.copyWith(
+          return const TextStyle(height: 1.5).copyWith(
             color: states.contains(WidgetState.selected)
                 ? AppColors.primary
                 : AppColors.textGrey,
@@ -72,7 +75,7 @@ abstract final class AppTheme {
         hoverElevation: 0,
         highlightElevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -96,25 +99,19 @@ abstract final class AppTheme {
         ),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.primary,
+        color: AppColors.secondary,
       ),
     );
   }
 
   static ThemeData get darkTheme {
-    const darkBackground = Color(0xFF0F172A);
-    const darkSurface = Color(0xFF1E293B);
-    const darkPrimary = Color(0xFF14B8A6);
-    const darkSecondary = Color(0xFF2DD4BF);
-    const darkText = Color(0xFFF8FAFC);
-    const darkTextGrey = Color(0xFFCBD5E1);
-
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: darkPrimary,
+      seedColor: AppColors.primaryDark,
       brightness: Brightness.dark,
-      primary: darkPrimary,
-      secondary: darkSecondary,
-      surface: darkSurface,
+      primary: AppColors.primaryDark,
+      secondary: AppColors.secondaryDark,
+      surface: AppColors.surfaceDarkTone,
+      error: const Color(0xFFEF7A73),
     );
 
     return ThemeData(
@@ -126,45 +123,46 @@ abstract final class AppTheme {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: darkBackground,
+      scaffoldBackgroundColor: AppColors.backgroundDark,
       textTheme: AppTextStyles.textTheme.apply(
-        bodyColor: darkText,
-        displayColor: darkText,
+        bodyColor: AppColors.textLight,
+        displayColor: AppColors.textLight,
       ),
-      iconTheme: const IconThemeData(color: darkText),
+      iconTheme: const IconThemeData(color: AppColors.textLight),
+      extensions: const [AppSemanticColors.dark],
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: darkPrimary,
-        foregroundColor: AppColors.white,
+        backgroundColor: AppColors.surfaceDarkTone,
+        foregroundColor: AppColors.textLight,
         surfaceTintColor: Colors.transparent,
-        iconTheme: IconThemeData(color: AppColors.white),
-        actionsIconTheme: IconThemeData(color: AppColors.white),
+        iconTheme: IconThemeData(color: AppColors.textLight),
+        actionsIconTheme: IconThemeData(color: AppColors.textLight),
       ),
       cardTheme: CardThemeData(
-        color: darkSurface,
+        color: AppColors.surfaceDarkTone,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(28),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        indicatorColor: darkPrimary.withValues(alpha: 0.18),
+        indicatorColor: AppColors.primaryDark.withValues(alpha: 0.18),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           return IconThemeData(
             color: states.contains(WidgetState.selected)
-                ? darkPrimary
-                : darkTextGrey,
+                ? AppColors.primaryDark
+                : AppColors.textGreyDark,
           );
         }),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
-          return AppTextStyles.bodyMedium.copyWith(
+          return const TextStyle(height: 1.5).copyWith(
             color: states.contains(WidgetState.selected)
-                ? darkPrimary
-                : darkTextGrey,
+                ? AppColors.primaryDark
+                : AppColors.textGreyDark,
             fontSize: 12,
             fontWeight: states.contains(WidgetState.selected)
                 ? FontWeight.w700
@@ -173,14 +171,14 @@ abstract final class AppTheme {
         }),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: darkPrimary,
-        foregroundColor: AppColors.white,
+        backgroundColor: AppColors.primaryDark,
+        foregroundColor: AppColors.backgroundDark,
         elevation: 0,
         focusElevation: 0,
         hoverElevation: 0,
         highlightElevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -204,7 +202,7 @@ abstract final class AppTheme {
         ),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: darkPrimary,
+        color: AppColors.secondaryDark,
       ),
     );
   }

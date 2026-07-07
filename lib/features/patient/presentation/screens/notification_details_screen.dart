@@ -30,7 +30,6 @@ class NotificationDetailsScreen extends StatelessWidget {
     final notification = this.notification ?? _fallbackNotification;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -49,7 +48,7 @@ class NotificationDetailsScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 30,
-                  backgroundColor: const Color(0xFFE0F2F1),
+                  backgroundColor: AppColors.primaryTint,
                   child: Icon(
                     iconForNotificationType(notification.type),
                     color: AppColors.primary,
@@ -58,18 +57,18 @@ class NotificationDetailsScreen extends StatelessWidget {
                 const SizedBox(height: AppSpacing.lg),
                 Text(
                   notification.title,
-                  style: AppTextStyles.headlineLarge,
+                  style: AppTextStyles.headlineLarge(context),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Text(
                   notification.description,
-                  style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium(context),
                 ),
                 if (notification.timeLabel.isNotEmpty) ...[
                   const SizedBox(height: AppSpacing.md),
                   Text(
                     notification.timeLabel,
-                    style: AppTextStyles.bodyMedium.copyWith(
+                    style: AppTextStyles.bodyMedium(context).copyWith(
                       color: AppColors.primary,
                     ),
                   ),

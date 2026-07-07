@@ -30,7 +30,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? null
           : Text(
               title!,
-              style: AppTextStyles.titleMedium.copyWith(
+              style: AppTextStyles.titleMedium(context).copyWith(
                 color: AppColors.white,
               ),
               textAlign: TextAlign.center,

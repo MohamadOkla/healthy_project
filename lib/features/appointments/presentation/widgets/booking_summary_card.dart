@@ -18,7 +18,7 @@ class BookingSummaryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('ملخص الحجز', style: AppTextStyles.titleMedium),
+          Text('ملخص الحجز', style: AppTextStyles.titleMedium(context)),
           const SizedBox(height: AppSpacing.md),
           AppointmentInfoRow(
             icon: Icons.person_rounded,
@@ -52,7 +52,7 @@ class BookingSummaryCard extends StatelessWidget {
             Text(
               'سيتم إرسال تذكير قبل موعد الزيارة.',
               style:
-                  AppTextStyles.bodyMedium.copyWith(color: AppColors.primary),
+                  AppTextStyles.bodyMedium(context).copyWith(color: AppColors.primary),
             ),
           ],
         ],

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -48,7 +49,7 @@ class _ResetPasswordContent extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(AppSpacing.lg),
                     decoration: BoxDecoration(
-                      color: AppColors.background,
+                      color: context.colors.background,
                       borderRadius: BorderRadius.circular(AppRadius.xl),
                     ),
                     child: BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
@@ -58,12 +59,12 @@ class _ResetPasswordContent extends StatelessWidget {
                           children: [
                             Text(
                               'تعيين كلمة مرور جديدة',
-                              style: AppTextStyles.headlineLarge,
+                              style: AppTextStyles.headlineLarge(context),
                             ),
                             const SizedBox(height: AppSpacing.sm),
                             Text(
                               'اختر كلمة مرور قوية لحماية حسابك.',
-                              style: AppTextStyles.bodyMedium,
+                              style: AppTextStyles.bodyMedium(context),
                             ),
                             const SizedBox(height: AppSpacing.xl),
                             AppTextField(

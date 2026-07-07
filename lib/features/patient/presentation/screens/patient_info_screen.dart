@@ -30,7 +30,6 @@ class PatientInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -58,13 +57,13 @@ class PatientInfoScreen extends StatelessWidget {
                   Text(
                     title,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.headlineLarge,
+                    style: AppTextStyles.headlineLarge(context),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   Text(
                     description,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.bodyMedium,
+                    style: AppTextStyles.bodyMedium(context),
                   ),
                   const SizedBox(height: AppSpacing.lg),
                   Container(
@@ -83,7 +82,7 @@ class PatientInfoScreen extends StatelessWidget {
                         Expanded(
                           child: Text(
                             'هذه واجهة مؤقتة قابلة للتوسعة عند ربط الخدمات الفعلية.',
-                            style: AppTextStyles.bodyMedium,
+                            style: AppTextStyles.bodyMedium(context),
                           ),
                         ),
                       ],

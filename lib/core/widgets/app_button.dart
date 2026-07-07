@@ -48,7 +48,7 @@ class AppButton extends StatelessWidget {
                 child: Text(
                   text,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.titleMedium.copyWith(
+                  style: AppTextStyles.titleMedium(context).copyWith(
                     color: foregroundColor,
                     fontSize: 16,
                   ),
@@ -60,7 +60,9 @@ class AppButton extends StatelessWidget {
     final style = isOutlined
         ? OutlinedButton.styleFrom(
             foregroundColor: AppColors.primary,
-            backgroundColor: AppColors.white,
+            backgroundColor:
+                Theme.of(context).cardTheme.color ??
+                    Theme.of(context).colorScheme.surface,
             minimumSize: const Size(0, AppSizes.buttonHeight),
             elevation: 0,
             shadowColor: Colors.transparent,

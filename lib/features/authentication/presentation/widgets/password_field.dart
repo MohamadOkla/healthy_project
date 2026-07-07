@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../cubit/login_cubit.dart';
@@ -17,7 +18,7 @@ class PasswordField extends StatelessWidget {
           previous.isPasswordVisible != current.isPasswordVisible,
       builder: (context, state) {
         return AppTextField(
-          label: 'كلمة المرور',
+          label: context.tr('password_label'),
           obscureText: !state.isPasswordVisible,
           textInputAction: TextInputAction.done,
           inputFormatters: Validators.passwordInputFormatters,

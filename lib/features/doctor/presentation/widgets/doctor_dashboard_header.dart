@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -49,10 +50,10 @@ class DoctorDashboardHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'صباح الخير، $doctorName',
+                '${context.tr('good_morning_greeting')} $doctorName',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.titleMedium.copyWith(
+                style: AppTextStyles.titleMedium(context).copyWith(
                   color: textColor,
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -63,7 +64,7 @@ class DoctorDashboardHeader extends StatelessWidget {
                 'لديك $todayAppointmentsCount موعدًا مجدولًا اليوم',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodyMedium(context).copyWith(
                   color: subtitleColor,
                 ),
               ),

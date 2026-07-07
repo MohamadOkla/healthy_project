@@ -135,7 +135,6 @@ class _PatientListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -153,7 +152,7 @@ class _PatientListScreen extends StatelessWidget {
           : ListView(
               padding: const EdgeInsets.all(AppSpacing.md),
               children: [
-                Text(title, style: AppTextStyles.headlineLarge),
+                Text(title, style: AppTextStyles.headlineLarge(context)),
                 const SizedBox(height: AppSpacing.md),
                 ...children.map(
                   (child) => Padding(
@@ -199,13 +198,13 @@ class _ListCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: AppTextStyles.titleMedium),
+                Text(title, style: AppTextStyles.titleMedium(context)),
                 if (subtitle.isNotEmpty)
-                  Text(subtitle, style: AppTextStyles.bodyMedium),
+                  Text(subtitle, style: AppTextStyles.bodyMedium(context)),
               ],
             ),
           ),
-          Text(trailing, style: AppTextStyles.bodyMedium),
+          Text(trailing, style: AppTextStyles.bodyMedium(context)),
           const Icon(Icons.chevron_left_rounded),
         ],
       ),

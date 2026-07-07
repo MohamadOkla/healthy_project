@@ -29,7 +29,8 @@ class AppEmptyState extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.xl),
           decoration: BoxDecoration(
-            color: AppColors.white,
+            color: Theme.of(context).cardTheme.color ??
+                Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(AppRadius.xl),
             border:
                 Border.all(color: AppColors.primary.withValues(alpha: 0.08)),
@@ -54,14 +55,14 @@ class AppEmptyState extends StatelessWidget {
               const SizedBox(height: AppSpacing.md),
               Text(
                 title,
-                style: AppTextStyles.titleMedium,
+                style: AppTextStyles.titleMedium(context),
                 textAlign: TextAlign.center,
               ),
               if (message != null) ...[
                 const SizedBox(height: AppSpacing.sm),
                 Text(
                   message!,
-                  style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium(context),
                   textAlign: TextAlign.center,
                 ),
               ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -27,7 +28,7 @@ class AuthSuccessCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.xl),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.xl),
         boxShadow: AppShadows.soft,
       ),
@@ -49,10 +50,10 @@ class AuthSuccessCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.lg),
           Text(title,
-              style: AppTextStyles.headlineLarge, textAlign: TextAlign.center),
+              style: AppTextStyles.headlineLarge(context), textAlign: TextAlign.center),
           const SizedBox(height: AppSpacing.sm),
           Text(message,
-              style: AppTextStyles.bodyMedium, textAlign: TextAlign.center),
+              style: AppTextStyles.bodyMedium(context), textAlign: TextAlign.center),
           const SizedBox(height: AppSpacing.xl),
           AppButton(text: buttonText, onPressed: onPressed),
         ],

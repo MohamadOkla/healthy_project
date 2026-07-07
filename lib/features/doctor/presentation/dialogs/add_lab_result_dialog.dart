@@ -80,7 +80,7 @@ class _AddLabResultFormState extends State<_AddLabResultForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('نتيجة تحليل جديدة', style: AppTextStyles.titleMedium),
+            Text('نتيجة تحليل جديدة', style: AppTextStyles.titleMedium(context)),
             const SizedBox(height: AppSpacing.md),
             AppTextField(
               controller: _testNameController,

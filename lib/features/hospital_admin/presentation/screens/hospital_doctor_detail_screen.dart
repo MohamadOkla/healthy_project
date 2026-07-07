@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -57,7 +58,6 @@ class _HospitalDoctorDetailScreenState
     final doctor = _doctor;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(doctor?.name ?? 'ملف الطبيب'),
         leading: IconButton(
@@ -83,15 +83,15 @@ class _HospitalDoctorDetailScreenState
                             AppColors.primary.withValues(alpha: 0.12),
                         child: Text(
                           doctor.initials,
-                          style: AppTextStyles.headlineLarge.copyWith(
+                          style: AppTextStyles.headlineLarge(context).copyWith(
                             color: AppColors.primary,
                           ),
                         ),
                       ),
                       const SizedBox(height: AppSpacing.md),
-                      Text(doctor.name, style: AppTextStyles.headlineLarge),
+                      Text(doctor.name, style: AppTextStyles.headlineLarge(context)),
                       const SizedBox(height: AppSpacing.xs),
-                      Text(doctor.specialty, style: AppTextStyles.bodyMedium),
+                      Text(doctor.specialty, style: AppTextStyles.bodyMedium(context)),
                       const SizedBox(height: AppSpacing.md),
                       _InfoRow(icon: Icons.phone_rounded, value: doctor.phone),
                       _InfoRow(
@@ -151,7 +151,7 @@ class _InfoRow extends StatelessWidget {
         children: [
           Icon(icon, size: 16, color: AppColors.primary),
           const SizedBox(width: AppSpacing.xs),
-          Text(value, style: AppTextStyles.bodyMedium),
+          Text(value, style: AppTextStyles.bodyMedium(context)),
         ],
       ),
     );
@@ -169,7 +169,7 @@ class _StatTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: context.colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.08)),
       ),
@@ -177,12 +177,12 @@ class _StatTile extends StatelessWidget {
         children: [
           Text(
             value,
-            style: AppTextStyles.headlineLarge.copyWith(
+            style: AppTextStyles.headlineLarge(context).copyWith(
               color: AppColors.primary,
             ),
           ),
           const SizedBox(height: AppSpacing.xs),
-          Text(label, style: AppTextStyles.bodyMedium),
+          Text(label, style: AppTextStyles.bodyMedium(context)),
         ],
       ),
     );

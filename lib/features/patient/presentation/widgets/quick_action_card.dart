@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -47,7 +48,7 @@ class _QuickActionCardState extends State<QuickActionCard> {
           child: Container(
             padding: const EdgeInsets.all(AppSpacing.md),
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: context.colors.surface,
               borderRadius: BorderRadius.circular(AppRadius.xl),
               border: Border.all(
                 color: AppColors.primary.withValues(alpha: 0.08),
@@ -83,7 +84,7 @@ class _QuickActionCardState extends State<QuickActionCard> {
                     Flexible(
                       child: Text(
                         widget.action.title,
-                        style: AppTextStyles.bodyMedium.copyWith(
+                        style: AppTextStyles.bodyMedium(context).copyWith(
                           color: AppColors.textDark,
                           fontWeight: FontWeight.w700,
                           fontSize: compact ? 13 : null,

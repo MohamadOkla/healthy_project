@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -61,8 +62,8 @@ class _OnboardingContentState extends State<OnboardingContent> {
                   child: TextButton(
                     onPressed: context.read<OnboardingCubit>().complete,
                     child: Text(
-                      'تخطي',
-                      style: AppTextStyles.bodyMedium
+                      context.tr('skip'),
+                      style: AppTextStyles.bodyMedium(context)
                           .copyWith(color: AppColors.primary),
                     ),
                   ),
@@ -76,8 +77,9 @@ class _OnboardingContentState extends State<OnboardingContent> {
                       final page = OnboardingCubit.pages[index];
                       return _OnboardingPage(
                         key: ValueKey(page.title),
-                        title: page.title,
-                        description: page.description,
+                        title: context.tr('onboarding_title_${index + 1}'),
+                        description:
+                            context.tr('onboarding_desc_${index + 1}'),
                         icon: page.icon,
                       );
                     },
@@ -165,13 +167,13 @@ class _GlassInfoCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: AppTextStyles.headlineLarge,
+                  style: AppTextStyles.headlineLarge(context),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
                   description,
-                  style: AppTextStyles.bodyMedium.copyWith(fontSize: 16),
+                  style: AppTextStyles.bodyMedium(context).copyWith(fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
               ],

@@ -41,7 +41,6 @@ class _BookAppointmentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -127,7 +126,7 @@ class _SelectionSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: AppTextStyles.titleMedium),
+          Text(title, style: AppTextStyles.titleMedium(context)),
           const SizedBox(height: AppSpacing.md),
           Wrap(runSpacing: AppSpacing.sm, children: children),
         ],

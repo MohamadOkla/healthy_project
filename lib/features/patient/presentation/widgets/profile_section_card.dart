@@ -24,7 +24,7 @@ class ProfileSectionCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTextStyles.titleMedium.copyWith(
+            style: AppTextStyles.titleMedium(context).copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w800,
             ),
@@ -48,10 +48,10 @@ class ProfileSectionCard extends StatelessWidget {
                 ),
                 child: Icon(item.icon, color: AppColors.primary, size: 22),
               ),
-              title: Text(item.title, style: AppTextStyles.bodyMedium),
+              title: Text(item.title, style: AppTextStyles.bodyMedium(context)),
               subtitle: item.subtitle == null
                   ? null
-                  : Text(item.subtitle!, style: AppTextStyles.bodyMedium),
+                  : Text(item.subtitle!, style: AppTextStyles.bodyMedium(context)),
               trailing: item.onTap == null
                   ? null
                   : const Icon(Icons.chevron_left_rounded),

@@ -44,10 +44,10 @@ class SimpleBarChart extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: AppTextStyles.titleMedium),
+          Text(title, style: AppTextStyles.titleMedium(context)),
           const SizedBox(height: AppSpacing.md),
           if (bars.isEmpty)
-            Text(emptyMessage, style: AppTextStyles.bodyMedium)
+            Text(emptyMessage, style: AppTextStyles.bodyMedium(context))
           else
             ...bars.map(
               (bar) => Padding(
@@ -77,11 +77,11 @@ class _BarRow extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: Text(bar.label, style: AppTextStyles.bodyMedium),
+              child: Text(bar.label, style: AppTextStyles.bodyMedium(context)),
             ),
             Text(
               '${bar.value}',
-              style: AppTextStyles.bodyMedium.copyWith(
+              style: AppTextStyles.bodyMedium(context).copyWith(
                 fontWeight: FontWeight.w800,
                 color: bar.color,
               ),

@@ -5,6 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/services/pdf_mock_service.dart';
 import '../../../../core/services/share_mock_service.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -158,7 +159,7 @@ class _TitleRow extends StatelessWidget {
         Expanded(
           child: Text(
             'نتيجة التحليل',
-            style: AppTextStyles.titleMedium.copyWith(color: AppColors.primary),
+            style: AppTextStyles.titleMedium(context).copyWith(color: AppColors.primary),
           ),
         ),
         _StatusChip(
@@ -181,7 +182,7 @@ class _ResultTableCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('جدول النتائج', style: AppTextStyles.titleMedium),
+          Text('جدول النتائج', style: AppTextStyles.titleMedium(context)),
           const SizedBox(height: AppSpacing.md),
           ...rows.map(
             (row) => _LabResultRowTile(
@@ -255,7 +256,7 @@ class _LabResultRowTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: context.colors.background,
         borderRadius: BorderRadius.circular(AppRadius.lg),
       ),
       child: Column(
@@ -263,7 +264,7 @@ class _LabResultRowTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(child: Text(name, style: AppTextStyles.titleMedium)),
+              Expanded(child: Text(name, style: AppTextStyles.titleMedium(context))),
               _StatusChip(label: status, color: color),
             ],
           ),
@@ -292,7 +293,7 @@ class _StatusChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.xl),
       ),
       child:
-          Text(label, style: AppTextStyles.bodyMedium.copyWith(color: color)),
+          Text(label, style: AppTextStyles.bodyMedium(context).copyWith(color: color)),
     );
   }
 }
@@ -311,12 +312,12 @@ class _InfoRow extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-              width: 112, child: Text(label, style: AppTextStyles.bodyMedium)),
+              width: 112, child: Text(label, style: AppTextStyles.bodyMedium(context))),
           Expanded(
             child: Text(
               value,
               style:
-                  AppTextStyles.bodyMedium.copyWith(color: AppColors.textDark),
+                  AppTextStyles.bodyMedium(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
             ),
           ),
         ],
@@ -338,9 +339,9 @@ class _SectionText extends StatelessWidget {
       children: [
         Text(title,
             style:
-                AppTextStyles.titleMedium.copyWith(color: AppColors.primary)),
+                AppTextStyles.titleMedium(context).copyWith(color: AppColors.primary)),
         const SizedBox(height: AppSpacing.sm),
-        Text(value, style: AppTextStyles.bodyMedium),
+        Text(value, style: AppTextStyles.bodyMedium(context)),
       ],
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../models/appointment_status.dart';
@@ -37,7 +38,7 @@ class AppointmentTabs extends StatelessWidget {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 220),
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.white : Colors.transparent,
+                color: isSelected ? context.colors.surface : Colors.transparent,
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 boxShadow: isSelected
                     ? [
@@ -53,8 +54,10 @@ class AppointmentTabs extends StatelessWidget {
                 onPressed: () => onChanged(entry.key),
                 child: Text(
                   entry.value,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: isSelected ? AppColors.primary : AppColors.textGrey,
+                  style: AppTextStyles.bodyMedium(context).copyWith(
+                    color: isSelected
+                        ? AppColors.primary
+                        : context.colors.textSecondary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

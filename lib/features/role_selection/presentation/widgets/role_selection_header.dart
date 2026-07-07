@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_sizes.dart';
@@ -47,11 +48,14 @@ class RoleSelectionHeader extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('اختر نوع الحساب', style: AppTextStyles.headlineLarge),
+                    Text(
+                      context.tr('choose_role_title'),
+                      style: AppTextStyles.headlineLarge(context),
+                    ),
                     const SizedBox(height: AppSpacing.xs),
                     Text(
-                      'حدد دورك داخل المنظومة للمتابعة إلى شاشة الدخول المناسبة',
-                      style: AppTextStyles.bodyMedium,
+                      context.tr('choose_role_subtitle'),
+                      style: AppTextStyles.bodyMedium(context),
                     ),
                   ],
                 ),

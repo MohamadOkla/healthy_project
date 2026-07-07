@@ -116,7 +116,7 @@ class _ConsultationRequestScreenState extends State<ConsultationRequestScreen> {
           title: const Text('تم إرسال طلب الاستشارة بنجاح'),
           content: Text(
             'وسوف يتم الرد من الطبيب لاحقاً.',
-            style: AppTextStyles.bodyMedium,
+            style: AppTextStyles.bodyMedium(context),
           ),
           actions: [
             FilledButton(
@@ -148,12 +148,12 @@ class _InfoRow extends StatelessWidget {
         children: [
           SizedBox(
             width: 112,
-            child: Text(label, style: AppTextStyles.bodyMedium),
+            child: Text(label, style: AppTextStyles.bodyMedium(context)),
           ),
           Expanded(
             child: Text(
               value,
-              style: AppTextStyles.bodyMedium.copyWith(
+              style: AppTextStyles.bodyMedium(context).copyWith(
                 color: AppColors.textDark,
               ),
             ),

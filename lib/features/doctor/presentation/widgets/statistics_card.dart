@@ -56,7 +56,7 @@ class StatisticsCard extends StatelessWidget {
             alignment: AlignmentDirectional.centerStart,
             child: Text(
               value,
-              style: AppTextStyles.headlineLarge.copyWith(
+              style: AppTextStyles.headlineLarge(context).copyWith(
                 color: theme.colorScheme.onSurface,
                 fontSize: 30,
                 fontWeight: FontWeight.w800,
@@ -68,7 +68,7 @@ class StatisticsCard extends StatelessWidget {
             title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.bodyMedium(context).copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.62),
               fontSize: 13,
               height: 1.25,

@@ -22,7 +22,6 @@ class DoctorConsultationsScreen extends StatelessWidget {
     final doctorRepository = DoctorRepositoryImpl();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('استشارات المرضى'),
         leading: IconButton(
@@ -61,7 +60,7 @@ class DoctorConsultationsScreen extends StatelessWidget {
                           Expanded(
                             child: Text(
                               consultation.subject,
-                              style: AppTextStyles.titleMedium,
+                              style: AppTextStyles.titleMedium(context),
                             ),
                           ),
                           Container(
@@ -76,7 +75,7 @@ class DoctorConsultationsScreen extends StatelessWidget {
                             ),
                             child: Text(
                               'بانتظار الرد',
-                              style: AppTextStyles.bodyMedium.copyWith(
+                              style: AppTextStyles.bodyMedium(context).copyWith(
                                 color: AppColors.warning,
                                 fontSize: 12,
                               ),
@@ -87,12 +86,12 @@ class DoctorConsultationsScreen extends StatelessWidget {
                       const SizedBox(height: AppSpacing.xs),
                       Text(
                         '$patientName · ${consultation.dateLabel}',
-                        style: AppTextStyles.bodyMedium,
+                        style: AppTextStyles.bodyMedium(context),
                       ),
                       const SizedBox(height: AppSpacing.sm),
                       Text(
                         consultation.patientQuestion,
-                        style: AppTextStyles.bodyMedium,
+                        style: AppTextStyles.bodyMedium(context),
                       ),
                     ],
                   ),

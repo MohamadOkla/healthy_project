@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -24,7 +25,7 @@ class HospitalDoctorTile extends StatelessWidget {
     final isActive = doctor.status == HospitalDoctorStatus.active;
 
     return Material(
-      color: AppColors.white,
+      color: context.colors.surface,
       borderRadius: BorderRadius.circular(AppRadius.lg),
       child: InkWell(
         onTap: onTap,
@@ -43,7 +44,7 @@ class HospitalDoctorTile extends StatelessWidget {
                 backgroundColor: accentColor.withValues(alpha: 0.14),
                 child: Text(
                   doctor.initials,
-                  style: AppTextStyles.titleMedium.copyWith(
+                  style: AppTextStyles.titleMedium(context).copyWith(
                     color: accentColor,
                     fontWeight: FontWeight.w800,
                   ),
@@ -54,11 +55,11 @@ class HospitalDoctorTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(doctor.name, style: AppTextStyles.titleMedium),
+                    Text(doctor.name, style: AppTextStyles.titleMedium(context)),
                     const SizedBox(height: AppSpacing.xs),
                     Text(
                       '${doctor.specialty} · ${doctor.patientsCount} مريض',
-                      style: AppTextStyles.bodyMedium,
+                      style: AppTextStyles.bodyMedium(context),
                     ),
                   ],
                 ),
@@ -75,7 +76,7 @@ class HospitalDoctorTile extends StatelessWidget {
                 ),
                 child: Text(
                   isActive ? 'نشط' : 'إجازة',
-                  style: AppTextStyles.bodyMedium.copyWith(
+                  style: AppTextStyles.bodyMedium(context).copyWith(
                     color: isActive ? AppColors.success : AppColors.textGrey,
                     fontSize: 12,
                     fontWeight: FontWeight.w700,

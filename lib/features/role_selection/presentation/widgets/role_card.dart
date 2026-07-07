@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_sizes.dart';
@@ -22,10 +23,13 @@ class RoleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final title = context.tr('role_${role.id}');
+    final description = context.tr('role_${role.id}_desc');
+
     return Semantics(
       button: true,
       selected: isSelected,
-      label: role.arabicTitle,
+      label: title,
       child: AnimatedScale(
         scale: isSelected ? 1.02 : 1,
         duration: const Duration(milliseconds: 180),
@@ -70,9 +74,9 @@ class RoleCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(role.arabicTitle, style: AppTextStyles.titleMedium),
+                      Text(title, style: AppTextStyles.titleMedium(context)),
                       const SizedBox(height: AppSpacing.xs),
-                      Text(role.description, style: AppTextStyles.bodyMedium),
+                      Text(description, style: AppTextStyles.bodyMedium(context)),
                     ],
                   ),
                 ),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/storage_keys.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/services/local_storage_service.dart';
 import '../../../../core/utils/user_role_helper.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -17,7 +18,7 @@ class RoleContinueButton extends StatelessWidget {
     return BlocBuilder<RoleSelectionCubit, RoleSelectionState>(
       builder: (context, state) {
         return AppButton(
-          text: 'متابعة',
+          text: context.tr('continue_button'),
           icon: Icons.arrow_back_rounded,
           onPressed: state.canContinue
               ? () async {

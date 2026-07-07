@@ -23,7 +23,7 @@ abstract final class ShareMockService {
               children: [
                 Text(
                   title,
-                  style: AppTextStyles.titleMedium.copyWith(
+                  style: AppTextStyles.titleMedium(context).copyWith(
                     color: AppColors.primary,
                   ),
                 ),
@@ -103,7 +103,7 @@ class _ShareOption extends StatelessWidget {
         backgroundColor: AppColors.primary.withValues(alpha: 0.10),
         child: Icon(icon, color: AppColors.primary),
       ),
-      title: Text(title, style: AppTextStyles.bodyMedium),
+      title: Text(title, style: AppTextStyles.bodyMedium(context)),
       trailing: const Icon(Icons.chevron_left_rounded),
       onTap: onTap,
     );

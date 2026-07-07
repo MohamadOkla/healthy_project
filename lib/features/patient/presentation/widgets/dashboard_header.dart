@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/constants/current_patient.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -57,8 +58,8 @@ class DashboardHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'مرحباً $firstName',
-                style: AppTextStyles.titleMedium.copyWith(
+                '${context.tr('welcome_greeting')} $firstName',
+                style: AppTextStyles.titleMedium(context).copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.w800,
                 ),
@@ -66,7 +67,7 @@ class DashboardHeader extends StatelessWidget {
               const SizedBox(height: AppSpacing.xs),
               Text(
                 'نتمنى لك يوماً صحياً سعيداً',
-                style: AppTextStyles.bodyMedium,
+                style: AppTextStyles.bodyMedium(context),
               ),
             ],
           ),
@@ -93,7 +94,7 @@ class DashboardHeader extends StatelessWidget {
                   ),
                   child: Text(
                     '$unreadNotifications',
-                    style: AppTextStyles.bodyMedium.copyWith(
+                    style: AppTextStyles.bodyMedium(context).copyWith(
                       color: AppColors.white,
                       fontSize: 10,
                       fontWeight: FontWeight.w800,

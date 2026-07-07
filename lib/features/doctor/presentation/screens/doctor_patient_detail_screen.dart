@@ -73,7 +73,6 @@ class _PatientDetailViewState extends State<_PatientDetailView>
         final patient = state.patient;
         if (patient == null) {
           return Scaffold(
-            backgroundColor: AppColors.background,
             appBar: AppBar(
               leading: IconButton(
                 tooltip: 'رجوع',
@@ -89,7 +88,6 @@ class _PatientDetailViewState extends State<_PatientDetailView>
         }
 
         return Scaffold(
-          backgroundColor: AppColors.background,
           appBar: AppBar(
             leading: IconButton(
               tooltip: 'رجوع',
@@ -151,7 +149,7 @@ class _PatientInfoCard extends StatelessWidget {
             backgroundColor: AppColors.primary.withValues(alpha: 0.12),
             child: Text(
               patient.initials,
-              style: AppTextStyles.titleMedium.copyWith(
+              style: AppTextStyles.titleMedium(context).copyWith(
                 color: AppColors.primary,
                 fontWeight: FontWeight.w800,
               ),
@@ -164,21 +162,21 @@ class _PatientInfoCard extends StatelessWidget {
               children: [
                 Text(
                   '${patient.name} · ${patient.age}',
-                  style: AppTextStyles.titleMedium,
+                  style: AppTextStyles.titleMedium(context),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   '${patient.gender} · فصيلة ${patient.bloodType} · ${patient.phone}',
-                  style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium(context),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'أمراض مزمنة: ${patient.chronicDiseases}',
-                  style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium(context),
                 ),
                 Text(
                   'حساسية: ${patient.allergies}',
-                  style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium(context),
                 ),
               ],
             ),
@@ -223,26 +221,26 @@ class _MedicalRecordsTab extends StatelessWidget {
                   Expanded(
                     child: Text(
                       record.diagnosis,
-                      style: AppTextStyles.titleMedium,
+                      style: AppTextStyles.titleMedium(context),
                     ),
                   ),
-                  Text(record.visitDate, style: AppTextStyles.bodyMedium),
+                  Text(record.visitDate, style: AppTextStyles.bodyMedium(context)),
                 ],
               ),
               const SizedBox(height: AppSpacing.xs),
               Text(
                 '${record.doctorName} · ${record.specialty} · ${record.hospital}',
-                style: AppTextStyles.bodyMedium,
+                style: AppTextStyles.bodyMedium(context),
               ),
               if (record.symptoms.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.sm),
                 Text('الأعراض: ${record.symptoms}',
-                    style: AppTextStyles.bodyMedium),
+                    style: AppTextStyles.bodyMedium(context)),
               ],
               if (record.doctorNotes.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.xs),
                 Text('ملاحظات: ${record.doctorNotes}',
-                    style: AppTextStyles.bodyMedium),
+                    style: AppTextStyles.bodyMedium(context)),
               ],
               if (record.vitals.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.sm),
@@ -262,7 +260,7 @@ class _MedicalRecordsTab extends StatelessWidget {
                           ),
                           child: Text(
                             '${vital.$1}: ${vital.$2}',
-                            style: AppTextStyles.bodyMedium.copyWith(
+                            style: AppTextStyles.bodyMedium(context).copyWith(
                               fontSize: 12,
                               color: AppColors.primary,
                             ),
@@ -314,7 +312,7 @@ class _PrescriptionsTab extends StatelessWidget {
                   Expanded(
                     child: Text(
                       prescription.doctorName,
-                      style: AppTextStyles.titleMedium,
+                      style: AppTextStyles.titleMedium(context),
                     ),
                   ),
                   Container(
@@ -331,7 +329,7 @@ class _PrescriptionsTab extends StatelessWidget {
                     ),
                     child: Text(
                       prescription.isActive ? 'نشطة' : 'منتهية',
-                      style: AppTextStyles.bodyMedium.copyWith(
+                      style: AppTextStyles.bodyMedium(context).copyWith(
                         fontSize: 12,
                         color: prescription.isActive
                             ? AppColors.success
@@ -344,7 +342,7 @@ class _PrescriptionsTab extends StatelessWidget {
               const SizedBox(height: AppSpacing.xs),
               Text(
                 'من ${prescription.issueDate} حتى ${prescription.expiryDate}',
-                style: AppTextStyles.bodyMedium,
+                style: AppTextStyles.bodyMedium(context),
               ),
               const SizedBox(height: AppSpacing.sm),
               ...prescription.medicines.map(
@@ -353,7 +351,7 @@ class _PrescriptionsTab extends StatelessWidget {
                   child: Text(
                     '• ${medicine.name} — ${medicine.dose}، '
                     '${medicine.frequency}، ${medicine.duration}',
-                    style: AppTextStyles.bodyMedium,
+                    style: AppTextStyles.bodyMedium(context),
                   ),
                 ),
               ),
@@ -361,7 +359,7 @@ class _PrescriptionsTab extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'ملاحظات: ${prescription.notes}',
-                  style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium(context),
                 ),
               ],
             ],
@@ -406,16 +404,16 @@ class _LabResultsTab extends StatelessWidget {
                   Expanded(
                     child: Text(
                       result.testName,
-                      style: AppTextStyles.titleMedium,
+                      style: AppTextStyles.titleMedium(context),
                     ),
                   ),
-                  Text(result.testDate, style: AppTextStyles.bodyMedium),
+                  Text(result.testDate, style: AppTextStyles.bodyMedium(context)),
                 ],
               ),
               const SizedBox(height: AppSpacing.xs),
-              Text(result.labName, style: AppTextStyles.bodyMedium),
+              Text(result.labName, style: AppTextStyles.bodyMedium(context)),
               const SizedBox(height: AppSpacing.sm),
-              Text(result.summary, style: AppTextStyles.bodyMedium),
+              Text(result.summary, style: AppTextStyles.bodyMedium(context)),
               if (result.rows.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.sm),
                 ...result.rows.map(
@@ -426,12 +424,12 @@ class _LabResultsTab extends StatelessWidget {
                         Expanded(
                           child: Text(
                             row.name,
-                            style: AppTextStyles.bodyMedium,
+                            style: AppTextStyles.bodyMedium(context),
                           ),
                         ),
                         Text(
                           '${row.value}  (${row.normalRange})',
-                          style: AppTextStyles.bodyMedium.copyWith(
+                          style: AppTextStyles.bodyMedium(context).copyWith(
                             color: row.isNormal
                                 ? AppColors.success
                                 : AppColors.error,
@@ -447,7 +445,7 @@ class _LabResultsTab extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'التوصية: ${result.recommendation}',
-                  style: AppTextStyles.bodyMedium,
+                  style: AppTextStyles.bodyMedium(context),
                 ),
               ],
             ],

@@ -29,7 +29,6 @@ class HospitalReportsScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => ReportsCubit(),
       child: Scaffold(
-        backgroundColor: AppColors.background,
         appBar: AppBar(
           title: const Text('التقارير'),
           leading: IconButton(
@@ -104,7 +103,7 @@ class _AppointmentsBreakdownCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('مواعيد اليوم حسب الحالة', style: AppTextStyles.titleMedium),
+          Text('مواعيد اليوم حسب الحالة', style: AppTextStyles.titleMedium(context)),
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [
@@ -154,7 +153,7 @@ class _ConsultationsBreakdownCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('معدّل الرد على الاستشارات', style: AppTextStyles.titleMedium),
+          Text('معدّل الرد على الاستشارات', style: AppTextStyles.titleMedium(context)),
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [
@@ -215,13 +214,13 @@ class _MiniStat extends StatelessWidget {
         children: [
           Text(
             '$value',
-            style: AppTextStyles.headlineLarge.copyWith(color: color),
+            style: AppTextStyles.headlineLarge(context).copyWith(color: color),
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
             label,
             textAlign: TextAlign.center,
-            style: AppTextStyles.bodyMedium.copyWith(fontSize: 12),
+            style: AppTextStyles.bodyMedium(context).copyWith(fontSize: 12),
           ),
         ],
       ),

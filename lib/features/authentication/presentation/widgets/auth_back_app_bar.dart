@@ -42,7 +42,7 @@ class AuthBackAppBar extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: AppTextStyles.titleMedium.copyWith(color: AppColors.white),
+              style: AppTextStyles.titleMedium(context).copyWith(color: AppColors.white),
               overflow: TextOverflow.ellipsis,
             ),
           ),

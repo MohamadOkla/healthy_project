@@ -17,7 +17,7 @@ class SocialLoginSection extends StatelessWidget {
             const Expanded(child: Divider()),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-              child: Text('أو', style: AppTextStyles.bodyMedium),
+              child: Text('أو', style: AppTextStyles.bodyMedium(context)),
             ),
             const Expanded(child: Divider()),
           ],
@@ -64,7 +64,7 @@ class _SocialButton extends StatelessWidget {
         icon: Icon(icon, color: AppColors.textDark),
         label: Text(
           label,
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textDark),
+          style: AppTextStyles.bodyMedium(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
           textDirection: TextDirection.ltr,
         ),
         style: OutlinedButton.styleFrom(

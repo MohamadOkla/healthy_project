@@ -87,7 +87,7 @@ class _AddPrescriptionFormState extends State<_AddPrescriptionForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('وصفة طبية جديدة', style: AppTextStyles.titleMedium),
+            Text('وصفة طبية جديدة', style: AppTextStyles.titleMedium(context)),
             const SizedBox(height: AppSpacing.md),
             AppTextField(
               controller: _medicineController,

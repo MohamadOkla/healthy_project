@@ -37,7 +37,6 @@ class DoctorAppointmentsScreen extends StatelessWidget {
         (repository ?? DoctorRepositoryImpl()).getTodayAppointments();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('جدول اليوم'),
         leading: IconButton(
@@ -73,12 +72,12 @@ class DoctorAppointmentsScreen extends StatelessWidget {
                           children: [
                             Text(
                               appointment.patientName,
-                              style: AppTextStyles.titleMedium,
+                              style: AppTextStyles.titleMedium(context),
                             ),
                             const SizedBox(height: AppSpacing.xs),
                             Text(
                               '${appointment.time} · ${appointment.visitType}',
-                              style: AppTextStyles.bodyMedium,
+                              style: AppTextStyles.bodyMedium(context),
                             ),
                           ],
                         ),
@@ -94,7 +93,7 @@ class DoctorAppointmentsScreen extends StatelessWidget {
                         ),
                         child: Text(
                           statusLabel,
-                          style: AppTextStyles.bodyMedium.copyWith(
+                          style: AppTextStyles.bodyMedium(context).copyWith(
                             color: statusColor,
                             fontWeight: FontWeight.w700,
                             fontSize: 12,

@@ -230,7 +230,7 @@ class _SectionTitle extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: AppTextStyles.titleMedium.copyWith(color: AppColors.primary),
+            style: AppTextStyles.titleMedium(context).copyWith(color: AppColors.primary),
           ),
         ),
       ],
@@ -252,12 +252,12 @@ class _InfoRow extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-              width: 110, child: Text(label, style: AppTextStyles.bodyMedium)),
+              width: 110, child: Text(label, style: AppTextStyles.bodyMedium(context))),
           Expanded(
             child: Text(
               value,
               style:
-                  AppTextStyles.bodyMedium.copyWith(color: AppColors.textDark),
+                  AppTextStyles.bodyMedium(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
             ),
           ),
         ],
@@ -283,11 +283,11 @@ class _VitalChip extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(label, style: AppTextStyles.bodyMedium),
+          Text(label, style: AppTextStyles.bodyMedium(context)),
           const SizedBox(height: AppSpacing.xs),
           Text(
             value,
-            style: AppTextStyles.titleMedium.copyWith(color: AppColors.primary),
+            style: AppTextStyles.titleMedium(context).copyWith(color: AppColors.primary),
           ),
         ],
       ),
@@ -306,7 +306,7 @@ class _BulletList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: AppTextStyles.titleMedium),
+        Text(title, style: AppTextStyles.titleMedium(context)),
         const SizedBox(height: AppSpacing.sm),
         ...items.map(
           (item) => Padding(
@@ -319,7 +319,7 @@ class _BulletList extends StatelessWidget {
                   size: 18,
                 ),
                 const SizedBox(width: AppSpacing.sm),
-                Expanded(child: Text(item, style: AppTextStyles.bodyMedium)),
+                Expanded(child: Text(item, style: AppTextStyles.bodyMedium(context))),
               ],
             ),
           ),

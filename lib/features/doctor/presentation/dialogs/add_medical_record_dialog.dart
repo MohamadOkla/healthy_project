@@ -83,7 +83,7 @@ class _AddMedicalRecordFormState extends State<_AddMedicalRecordForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('سجل طبي جديد', style: AppTextStyles.titleMedium),
+            Text('سجل طبي جديد', style: AppTextStyles.titleMedium(context)),
             const SizedBox(height: AppSpacing.md),
             AppTextField(
               controller: _diagnosisController,

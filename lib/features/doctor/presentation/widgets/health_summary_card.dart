@@ -59,7 +59,7 @@ class HealthSummaryCard extends StatelessWidget {
                   children: [
                     Text(
                       'ملخص العيادة',
-                      style: AppTextStyles.titleMedium.copyWith(
+                      style: AppTextStyles.titleMedium(context).copyWith(
                         color: AppColors.white,
                         fontWeight: FontWeight.w800,
                       ),
@@ -67,7 +67,7 @@ class HealthSummaryCard extends StatelessWidget {
                     const SizedBox(height: AppSpacing.xs),
                     Text(
                       'نظرة سريعة على نشاطك الطبي',
-                      style: AppTextStyles.bodyMedium.copyWith(
+                      style: AppTextStyles.bodyMedium(context).copyWith(
                         color: AppColors.white.withValues(alpha: 0.78),
                         fontSize: 13,
                       ),
@@ -164,7 +164,7 @@ class _SummaryMetric extends StatelessWidget {
             alignment: AlignmentDirectional.centerStart,
             child: Text(
               value,
-              style: AppTextStyles.headlineLarge.copyWith(
+              style: AppTextStyles.headlineLarge(context).copyWith(
                 color: AppColors.white,
                 fontSize: 26,
                 fontWeight: FontWeight.w900,
@@ -176,7 +176,7 @@ class _SummaryMetric extends StatelessWidget {
             title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.bodyMedium(context).copyWith(
               color: AppColors.white.withValues(alpha: 0.78),
               fontSize: 12,
               height: 1.25,

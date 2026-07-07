@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/localization/app_translations.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -36,43 +37,43 @@ class DoctorBottomNavigation extends StatelessWidget {
           height: 76,
           indicatorColor: AppColors.primary.withValues(alpha: 0.12),
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          destinations: const [
+          destinations: [
             NavigationDestination(
-              icon: Icon(Icons.dashboard_rounded),
-              selectedIcon: Icon(
+              icon: const Icon(Icons.dashboard_rounded),
+              selectedIcon: const Icon(
                 Icons.dashboard_rounded,
                 color: AppColors.primary,
               ),
-              label: 'الرئيسية',
+              label: context.tr('nav_dashboard'),
             ),
             NavigationDestination(
-              icon: Icon(Icons.group_rounded),
-              selectedIcon: Icon(Icons.group_rounded, color: AppColors.primary),
-              label: 'المرضى',
+              icon: const Icon(Icons.group_rounded),
+              selectedIcon: const Icon(Icons.group_rounded, color: AppColors.primary),
+              label: context.tr('nav_patients'),
             ),
             NavigationDestination(
-              icon: Icon(Icons.calendar_month_rounded),
-              selectedIcon: Icon(
+              icon: const Icon(Icons.calendar_month_rounded),
+              selectedIcon: const Icon(
                 Icons.calendar_month_rounded,
                 color: AppColors.primary,
               ),
-              label: 'الجدول',
+              label: context.tr('nav_schedule'),
             ),
             NavigationDestination(
-              icon: Icon(Icons.notifications_rounded),
-              selectedIcon: Icon(
+              icon: const Icon(Icons.notifications_rounded),
+              selectedIcon: const Icon(
                 Icons.notifications_rounded,
                 color: AppColors.primary,
               ),
-              label: 'الإشعارات',
+              label: context.tr('nav_notifications'),
             ),
             NavigationDestination(
-              icon: Icon(Icons.person_rounded),
-              selectedIcon: Icon(
+              icon: const Icon(Icons.person_rounded),
+              selectedIcon: const Icon(
                 Icons.person_rounded,
                 color: AppColors.primary,
               ),
-              label: 'حسابي',
+              label: context.tr('nav_profile'),
             ),
           ],
           onDestinationSelected: (index) {

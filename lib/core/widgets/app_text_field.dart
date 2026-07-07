@@ -40,6 +40,7 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
@@ -50,14 +51,15 @@ class AppTextField extends StatelessWidget {
       validator: validator,
       onChanged: onChanged,
       inputFormatters: inputFormatters,
-      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textDark),
+      style: AppTextStyles.bodyMedium(context)
+          .copyWith(color: theme.colorScheme.onSurface),
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         filled: true,
-        fillColor: AppColors.white,
+        fillColor: theme.cardTheme.color ?? theme.colorScheme.surface,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md,
           vertical: AppSpacing.md,
@@ -65,8 +67,8 @@ class AppTextField extends StatelessWidget {
         border: _border(AppColors.textGrey.withValues(alpha: 0.22)),
         enabledBorder: _border(AppColors.textGrey.withValues(alpha: 0.22)),
         focusedBorder: _border(AppColors.primary),
-        errorBorder: _border(Colors.red),
-        focusedErrorBorder: _border(Colors.red),
+        errorBorder: _border(AppColors.error),
+        focusedErrorBorder: _border(AppColors.error),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 
@@ -31,14 +32,15 @@ class BookingStepIndicator extends StatelessWidget {
                       width: 34,
                       height: 34,
                       decoration: BoxDecoration(
-                        color: isActive ? AppColors.primary : AppColors.white,
+                        color:
+                            isActive ? AppColors.primary : context.colors.surface,
                         borderRadius: BorderRadius.circular(AppRadius.xl),
                         border: Border.all(color: AppColors.primary),
                       ),
                       child: Center(
                         child: Text(
                           step.toString(),
-                          style: AppTextStyles.bodyMedium.copyWith(
+                          style: AppTextStyles.bodyMedium(context).copyWith(
                             color:
                                 isActive ? AppColors.white : AppColors.primary,
                             fontWeight: FontWeight.w800,
@@ -47,7 +49,7 @@ class BookingStepIndicator extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: AppSpacing.xs),
-                    Text(labels[index], style: AppTextStyles.bodyMedium),
+                    Text(labels[index], style: AppTextStyles.bodyMedium(context)),
                   ],
                 ),
               ),

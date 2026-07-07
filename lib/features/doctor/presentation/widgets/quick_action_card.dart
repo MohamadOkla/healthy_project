@@ -53,7 +53,7 @@ class QuickActionCard extends StatelessWidget {
                   title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.bodyMedium.copyWith(
+                  style: AppTextStyles.bodyMedium(context).copyWith(
                     color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w800,
                     height: 1.25,

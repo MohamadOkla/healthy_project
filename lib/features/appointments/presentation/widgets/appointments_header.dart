@@ -14,7 +14,7 @@ class AppointmentsHeader extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [AppColors.primary, AppColors.secondary],
+          colors: [AppColors.primary, AppColors.primaryDark],
         ),
         borderRadius: BorderRadius.circular(AppRadius.xl),
       ),
@@ -39,7 +39,7 @@ class AppointmentsHeader extends StatelessWidget {
               children: [
                 Text(
                   'إدارة مواعيدك الطبية',
-                  style: AppTextStyles.titleMedium.copyWith(
+                  style: AppTextStyles.titleMedium(context).copyWith(
                     color: AppColors.white,
                     fontSize: 20,
                   ),
@@ -47,7 +47,7 @@ class AppointmentsHeader extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'تابع مواعيدك واحجز زيارة جديدة بسهولة',
-                  style: AppTextStyles.bodyMedium.copyWith(
+                  style: AppTextStyles.bodyMedium(context).copyWith(
                     color: AppColors.white.withValues(alpha: 0.88),
                   ),
                 ),

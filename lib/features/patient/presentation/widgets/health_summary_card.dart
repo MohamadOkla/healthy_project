@@ -53,7 +53,7 @@ class HealthSummaryCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             'حالتك الصحية مستقرة',
-                            style: AppTextStyles.titleMedium.copyWith(
+                            style: AppTextStyles.titleMedium(context).copyWith(
                               color: AppColors.white,
                               fontWeight: FontWeight.w800,
                             ),
@@ -64,7 +64,7 @@ class HealthSummaryCard extends StatelessWidget {
                     const SizedBox(height: AppSpacing.md),
                     Text(
                       'آخر زيارة: ${summary.lastVisit}',
-                      style: AppTextStyles.bodyMedium.copyWith(
+                      style: AppTextStyles.bodyMedium(context).copyWith(
                         color: AppColors.white.withValues(alpha: 0.86),
                       ),
                     ),
@@ -125,7 +125,7 @@ class _HealthScoreRing extends StatelessWidget {
             ),
             Text(
               '${(value * 100).round()}%',
-              style: AppTextStyles.titleMedium.copyWith(
+              style: AppTextStyles.titleMedium(context).copyWith(
                 color: AppColors.white,
                 fontWeight: FontWeight.w800,
               ),
@@ -181,14 +181,14 @@ class _SummaryStat extends StatelessWidget {
               const SizedBox(height: AppSpacing.xs),
               Text(
                 value,
-                style: AppTextStyles.titleMedium.copyWith(
+                style: AppTextStyles.titleMedium(context).copyWith(
                   color: AppColors.white,
                   fontWeight: FontWeight.w800,
                 ),
               ),
               Text(
                 label,
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodyMedium(context).copyWith(
                   color: AppColors.white.withValues(alpha: 0.86),
                   fontSize: 12,
                 ),

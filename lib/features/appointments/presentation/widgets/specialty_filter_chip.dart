@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 
@@ -25,12 +26,12 @@ class SpecialtyFilterChip extends StatelessWidget {
         selected: isSelected,
         onSelected: (_) => onSelected(),
         label: Text(label),
-        labelStyle: AppTextStyles.bodyMedium.copyWith(
-          color: isSelected ? AppColors.white : AppColors.textDark,
+        labelStyle: AppTextStyles.bodyMedium(context).copyWith(
+          color: isSelected ? AppColors.white : context.colors.textPrimary,
           fontWeight: FontWeight.w700,
         ),
         selectedColor: AppColors.primary,
-        backgroundColor: AppColors.white,
+        backgroundColor: context.colors.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.xl),
         ),

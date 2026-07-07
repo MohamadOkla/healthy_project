@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_text_field.dart';
 
@@ -25,8 +26,11 @@ class RegisterProfileInfoForm extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           DropdownButtonFormField<String>(
-            decoration:
-                _inputDecoration('الاختصاص', Icons.medical_services_rounded),
+            decoration: _inputDecoration(
+              context,
+              'الاختصاص',
+              Icons.medical_services_rounded,
+            ),
             items: const [
               DropdownMenuItem(value: 'cardiology', child: Text('قلبية')),
               DropdownMenuItem(value: 'dermatology', child: Text('جلدية')),
@@ -46,7 +50,10 @@ class RegisterProfileInfoForm extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           DropdownButtonFormField<String>(
             decoration: _inputDecoration(
-                'المشفى المرتبط', Icons.local_hospital_rounded),
+              context,
+              'المشفى المرتبط',
+              Icons.local_hospital_rounded,
+            ),
             items: const [
               DropdownMenuItem(
                 value: 'damascus',
@@ -65,7 +72,7 @@ class RegisterProfileInfoForm extends StatelessWidget {
     return Column(
       children: [
         DropdownButtonFormField<String>(
-          decoration: _inputDecoration('الجنس', Icons.wc_rounded),
+          decoration: _inputDecoration(context, 'الجنس', Icons.wc_rounded),
           items: const [
             DropdownMenuItem(value: 'male', child: Text('ذكر')),
             DropdownMenuItem(value: 'female', child: Text('أنثى')),
@@ -83,7 +90,11 @@ class RegisterProfileInfoForm extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         DropdownButtonFormField<String>(
-          decoration: _inputDecoration('المحافظة', Icons.location_city_rounded),
+          decoration: _inputDecoration(
+            context,
+            'المحافظة',
+            Icons.location_city_rounded,
+          ),
           items: const [
             DropdownMenuItem(value: 'riyadh', child: Text('الرياض')),
             DropdownMenuItem(value: 'jeddah', child: Text('جدة')),
@@ -96,12 +107,16 @@ class RegisterProfileInfoForm extends StatelessWidget {
     );
   }
 
-  InputDecoration _inputDecoration(String label, IconData icon) {
+  InputDecoration _inputDecoration(
+    BuildContext context,
+    String label,
+    IconData icon,
+  ) {
     return InputDecoration(
       labelText: label,
       prefixIcon: Icon(icon, color: AppColors.primary),
       filled: true,
-      fillColor: AppColors.white,
+      fillColor: context.colors.surface,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppRadius.md),
       ),

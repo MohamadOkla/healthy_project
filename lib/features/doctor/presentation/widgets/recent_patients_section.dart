@@ -34,7 +34,7 @@ class RecentPatientsSection extends StatelessWidget {
             Expanded(
               child: Text(
                 'مرضى حديثون',
-                style: AppTextStyles.titleMedium.copyWith(
+                style: AppTextStyles.titleMedium(context).copyWith(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.w800,
                 ),
@@ -48,7 +48,7 @@ class RecentPatientsSection extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         if (visible.isEmpty)
-          Text('لا يوجد مرضى بعد', style: AppTextStyles.bodyMedium)
+          Text('لا يوجد مرضى بعد', style: AppTextStyles.bodyMedium(context))
         else
           ListView.separated(
             itemCount: visible.length,

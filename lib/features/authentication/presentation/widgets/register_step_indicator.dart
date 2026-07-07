@@ -37,7 +37,7 @@ class RegisterStepIndicator extends StatelessWidget {
               const SizedBox(height: AppSpacing.sm),
               Text(
                 labels[index],
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.bodyMedium(context).copyWith(
                   color: isActive ? AppColors.primary : AppColors.textGrey,
                   fontSize: 12,
                 ),

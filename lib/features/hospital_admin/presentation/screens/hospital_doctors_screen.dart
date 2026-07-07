@@ -58,7 +58,6 @@ class _HospitalDoctorsScreenState extends State<HospitalDoctorsScreen> {
             .toList(growable: false);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('الأطباء'),
         leading: IconButton(
@@ -81,7 +80,7 @@ class _HospitalDoctorsScreenState extends State<HospitalDoctorsScreen> {
             const SizedBox(height: AppSpacing.md),
             Text(
               '${visibleDoctors.length} من ${_allDoctors.length} طبيب',
-              style: AppTextStyles.bodyMedium,
+              style: AppTextStyles.bodyMedium(context),
             ),
             const SizedBox(height: AppSpacing.md),
             Expanded(

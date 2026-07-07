@@ -9,17 +9,25 @@ class OnboardingBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       body: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [
-              AppColors.background,
-              Color(0xFFE6FFFA),
-              AppColors.white,
-            ],
+            colors: isDark
+                ? const [
+                    AppColors.backgroundDark,
+                    AppColors.primaryTintDark,
+                    AppColors.surfaceDarkTone,
+                  ]
+                : const [
+                    AppColors.background,
+                    AppColors.primaryTint,
+                    AppColors.white,
+                  ],
           ),
         ),
         child: Stack(

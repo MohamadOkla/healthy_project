@@ -35,11 +35,11 @@ class AppErrorState extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.md),
             Text(title,
-                style: AppTextStyles.titleMedium, textAlign: TextAlign.center),
+                style: AppTextStyles.titleMedium(context), textAlign: TextAlign.center),
             if (message != null) ...[
               const SizedBox(height: AppSpacing.sm),
               Text(message!,
-                  style: AppTextStyles.bodyMedium, textAlign: TextAlign.center),
+                  style: AppTextStyles.bodyMedium(context), textAlign: TextAlign.center),
             ],
             if (onRetry != null) ...[
               const SizedBox(height: AppSpacing.lg),

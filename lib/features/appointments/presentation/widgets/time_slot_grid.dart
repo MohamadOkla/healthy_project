@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../models/time_slot_ui_model.dart';
@@ -25,7 +26,7 @@ class TimeSlotGrid extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: AppTextStyles.titleMedium),
+        Text(title, style: AppTextStyles.titleMedium(context)),
         const SizedBox(height: AppSpacing.md),
         GridView.builder(
           itemCount: slots.length,
@@ -45,9 +46,9 @@ class TimeSlotGrid extends StatelessWidget {
               onPressed: slot.isAvailable ? () => onSelected(fullLabel) : null,
               style: OutlinedButton.styleFrom(
                 backgroundColor:
-                    isSelected ? AppColors.primary : AppColors.white,
+                    isSelected ? AppColors.primary : context.colors.surface,
                 foregroundColor:
-                    isSelected ? AppColors.white : AppColors.textDark,
+                    isSelected ? AppColors.white : context.colors.textPrimary,
                 side: BorderSide(
                   color: isSelected
                       ? AppColors.primary

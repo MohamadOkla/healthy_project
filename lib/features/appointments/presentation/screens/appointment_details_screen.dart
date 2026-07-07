@@ -23,7 +23,6 @@ class AppointmentDetailsScreen extends StatelessWidget {
         this.appointment ?? AppointmentsCubit.sampleAppointment;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
           tooltip: 'رجوع',
@@ -44,7 +43,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
                   children: [
                     const CircleAvatar(
                       radius: 28,
-                      backgroundColor: Color(0xFFE0F2F1),
+                      backgroundColor: AppColors.primaryTint,
                       child: Icon(
                         Icons.medical_services_rounded,
                         color: AppColors.primary,
@@ -57,11 +56,11 @@ class AppointmentDetailsScreen extends StatelessWidget {
                         children: [
                           Text(
                             appointment.doctorName,
-                            style: AppTextStyles.titleMedium,
+                            style: AppTextStyles.titleMedium(context),
                           ),
                           Text(
                             appointment.specialty,
-                            style: AppTextStyles.bodyMedium,
+                            style: AppTextStyles.bodyMedium(context),
                           ),
                         ],
                       ),
@@ -107,9 +106,9 @@ class AppointmentDetailsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('ملاحظات الموعد', style: AppTextStyles.titleMedium),
+                Text('ملاحظات الموعد', style: AppTextStyles.titleMedium(context)),
                 const SizedBox(height: AppSpacing.sm),
-                Text(appointment.notes, style: AppTextStyles.bodyMedium),
+                Text(appointment.notes, style: AppTextStyles.bodyMedium(context)),
               ],
             ),
           ),
@@ -118,7 +117,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('تعليمات قبل الزيارة', style: AppTextStyles.titleMedium),
+                Text('تعليمات قبل الزيارة', style: AppTextStyles.titleMedium(context)),
                 const SizedBox(height: AppSpacing.sm),
                 ...appointment.instructions.map(
                   (instruction) => Padding(
@@ -134,7 +133,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
                         Expanded(
                           child: Text(
                             instruction,
-                            style: AppTextStyles.bodyMedium,
+                            style: AppTextStyles.bodyMedium(context),
                           ),
                         ),
                       ],
