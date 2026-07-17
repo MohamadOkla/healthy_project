@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app/cubit/app_settings_cubit.dart';
-import '../../app/cubit/app_settings_state.dart';
 
 /// A small, hand-written translation table (no code generation step, since
 /// this environment can't run `flutter gen-l10n` to verify generated code

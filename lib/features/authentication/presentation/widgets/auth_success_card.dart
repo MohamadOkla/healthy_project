@@ -40,7 +40,7 @@ class AuthSuccessCard extends StatelessWidget {
             height: 86,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.secondary.withValues(alpha: 0.14),
+              color: AppColors.primary.withValues(alpha: 0.14),
             ),
             child: const Icon(
               Icons.check_circle_rounded,

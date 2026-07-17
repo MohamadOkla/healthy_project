@@ -22,13 +22,13 @@ class QuickActionsGrid extends StatelessWidget {
       _QuickActionItem(
         title: 'المواعيد',
         icon: Icons.event_available_rounded,
-        color: const Color(0xFF2563EB),
+        color: AppColors.accentBlue,
         onTap: () => context.go(AppRoutes.doctorAppointments),
       ),
       _QuickActionItem(
         title: 'الوصفات',
         icon: Icons.medication_rounded,
-        color: const Color(0xFF7C3AED),
+        color: AppColors.accentViolet,
         onTap: () => context.go(AppRoutes.doctorPatients),
       ),
       _QuickActionItem(
@@ -40,7 +40,7 @@ class QuickActionsGrid extends StatelessWidget {
       _QuickActionItem(
         title: 'السجل الطبي',
         icon: Icons.folder_shared_rounded,
-        color: const Color(0xFF0891B2),
+        color: AppColors.accentCyan,
         onTap: () => context.go(AppRoutes.doctorPatients),
       ),
       _QuickActionItem(

@@ -5,6 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/constants/current_patient.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_card.dart';
@@ -110,7 +111,7 @@ class _ConsultationCard extends StatelessWidget {
               child: Text(
                 'رد الطبيب: ${consultation.doctorAnswer}',
                 style: AppTextStyles.bodyMedium(context).copyWith(
-                  color: AppColors.textDark,
+                  color: context.colors.textPrimary,
                 ),
               ),
             ),

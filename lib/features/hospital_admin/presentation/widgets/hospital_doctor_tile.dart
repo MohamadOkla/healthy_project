@@ -70,14 +70,14 @@ class HospitalDoctorTile extends StatelessWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: (isActive ? AppColors.success : AppColors.textGrey)
+                  color: (isActive ? AppColors.success : context.colors.textSecondary)
                       .withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Text(
                   isActive ? 'نشط' : 'إجازة',
                   style: AppTextStyles.bodyMedium(context).copyWith(
-                    color: isActive ? AppColors.success : AppColors.textGrey,
+                    color: isActive ? AppColors.success : context.colors.textSecondary,
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                   ),

@@ -67,7 +67,7 @@ class NotificationCard extends StatelessWidget {
                         width: 9,
                         height: 9,
                         decoration: const BoxDecoration(
-                          color: AppColors.secondary,
+                          color: AppColors.primary,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -77,7 +77,9 @@ class NotificationCard extends StatelessWidget {
                 Text(
                   description,
                   style: AppTextStyles.bodyMedium(context).copyWith(
-                    color: isRead ? AppColors.textGrey : AppColors.textDark,
+                    color: isRead
+                        ? context.colors.textSecondary
+                        : context.colors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.sm),

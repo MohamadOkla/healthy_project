@@ -107,7 +107,7 @@ class AppButton extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: isEnabled
                   ? const LinearGradient(
-                      colors: [AppColors.primary, AppColors.secondary],
+                      colors: [AppColors.primary, AppColors.primaryDark],
                     )
                   : null,
               color:

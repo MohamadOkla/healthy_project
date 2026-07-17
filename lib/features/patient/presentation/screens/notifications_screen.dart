@@ -31,11 +31,11 @@ Color colorForNotificationType(AppNotificationType type) {
     case AppNotificationType.appointment:
       return AppColors.primary;
     case AppNotificationType.prescription:
-      return AppColors.secondary;
+      return AppColors.primaryDark;
     case AppNotificationType.labResult:
       return AppColors.warning;
     case AppNotificationType.medicalRecord:
-      return const Color(0xFF0891B2);
+      return AppColors.accentCyan;
     case AppNotificationType.general:
       return AppColors.success;
   }

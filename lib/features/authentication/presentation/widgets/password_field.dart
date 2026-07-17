@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/localization/app_translations.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../cubit/login_cubit.dart';
@@ -35,7 +36,7 @@ class PasswordField extends StatelessWidget {
               state.isPasswordVisible
                   ? Icons.visibility_off_outlined
                   : Icons.visibility_outlined,
-              color: AppColors.textGrey,
+              color: context.colors.textSecondary,
             ),
           ),
           validator: Validators.validatePassword,

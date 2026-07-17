@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import 'app_semantic_colors.dart';
 import 'app_text_styles.dart';
+import '../extensions/context_extensions.dart';
 
 abstract final class AppTheme {
   static ThemeData get lightTheme {
@@ -10,7 +11,7 @@ abstract final class AppTheme {
       seedColor: AppColors.primary,
       brightness: Brightness.light,
       primary: AppColors.primary,
-      secondary: AppColors.secondary,
+      secondary: AppColors.primaryDark,
       surface: AppColors.surface,
       error: AppColors.error,
     );
@@ -99,7 +100,7 @@ abstract final class AppTheme {
         ),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.secondary,
+        color: AppColors.primary,
       ),
     );
   }
@@ -109,9 +110,9 @@ abstract final class AppTheme {
       seedColor: AppColors.primaryDark,
       brightness: Brightness.dark,
       primary: AppColors.primaryDark,
-      secondary: AppColors.secondaryDark,
+      secondary: AppColors.primary,
       surface: AppColors.surfaceDarkTone,
-      error: const Color(0xFFEF7A73),
+      error: AppColors.errorDark,
     );
 
     return ThemeData(
@@ -202,7 +203,7 @@ abstract final class AppTheme {
         ),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.secondaryDark,
+        color: AppColors.primaryDark,
       ),
     );
   }

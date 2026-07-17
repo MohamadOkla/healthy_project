@@ -9,7 +9,6 @@ import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../cubit/profile_cubit.dart';
-import '../cubit/profile_state.dart';
 import 'patient_logout_dialog.dart';
 
 class PatientDrawer extends StatelessWidget {
@@ -28,7 +27,7 @@ class PatientDrawer extends StatelessWidget {
               padding: const EdgeInsets.all(AppSpacing.lg),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [AppColors.primary, AppColors.secondary],
+                  colors: [AppColors.primary, AppColors.primaryDark],
                 ),
                 borderRadius: BorderRadius.circular(AppRadius.xl),
               ),
@@ -191,7 +190,7 @@ class _DrawerItem extends StatelessWidget {
           title: Text(
             title,
             style: AppTextStyles.bodyMedium(context).copyWith(
-              color: AppColors.textDark,
+              color: context.colors.textPrimary,
               fontWeight: FontWeight.w700,
             ),
           ),

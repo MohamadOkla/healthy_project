@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_card.dart';
@@ -75,10 +76,10 @@ class DoctorCard extends StatelessWidget {
                       key: ValueKey('selected'),
                       color: AppColors.primary,
                     )
-                  : const Icon(
+                  : Icon(
                       Icons.radio_button_unchecked_rounded,
-                      key: ValueKey('idle'),
-                      color: AppColors.textGrey,
+                      key: const ValueKey('idle'),
+                      color: context.colors.textSecondary,
                     ),
             ),
           ],

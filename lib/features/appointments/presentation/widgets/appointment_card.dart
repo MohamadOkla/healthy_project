@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_semantic_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_card.dart';
@@ -60,9 +61,9 @@ class AppointmentCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.event_rounded,
-                color: AppColors.textGrey,
+                color: context.colors.textSecondary,
                 size: 20,
               ),
               const SizedBox(width: AppSpacing.xs),
@@ -72,9 +73,9 @@ class AppointmentCard extends StatelessWidget {
                   style: AppTextStyles.bodyMedium(context),
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.schedule_rounded,
-                color: AppColors.textGrey,
+                color: context.colors.textSecondary,
                 size: 20,
               ),
               const SizedBox(width: AppSpacing.xs),

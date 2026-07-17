@@ -12,7 +12,6 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../notifications/data/repositories/notifications_repository_impl.dart';
 import '../cubit/profile_cubit.dart';
-import '../cubit/profile_state.dart';
 
 class DashboardHeader extends StatelessWidget {
   const DashboardHeader({super.key});
@@ -41,7 +40,7 @@ class DashboardHeader extends StatelessWidget {
             padding: const EdgeInsets.all(3),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [AppColors.primary, AppColors.secondary],
+                colors: [AppColors.primary, AppColors.primaryDark],
               ),
               shape: BoxShape.circle,
             ),

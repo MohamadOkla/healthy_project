@@ -69,7 +69,7 @@ class _QuickActionCardState extends State<QuickActionCard> {
                         gradient: LinearGradient(
                           colors: [
                             AppColors.primary.withValues(alpha: 0.14),
-                            AppColors.secondary.withValues(alpha: 0.18),
+                            AppColors.primaryDark.withValues(alpha: 0.22),
                           ],
                         ),
                         shape: BoxShape.circle,
@@ -85,7 +85,7 @@ class _QuickActionCardState extends State<QuickActionCard> {
                       child: Text(
                         widget.action.title,
                         style: AppTextStyles.bodyMedium(context).copyWith(
-                          color: AppColors.textDark,
+                          color: context.colors.textPrimary,
                           fontWeight: FontWeight.w700,
                           fontSize: compact ? 13 : null,
                         ),

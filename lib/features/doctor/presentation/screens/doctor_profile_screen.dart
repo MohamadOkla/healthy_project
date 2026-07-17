@@ -43,7 +43,7 @@ class DoctorProfileScreen extends StatelessWidget {
                   height: 84,
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [AppColors.primary, AppColors.secondary],
+                      colors: [AppColors.primary, AppColors.primaryDark],
                     ),
                     shape: BoxShape.circle,
                   ),

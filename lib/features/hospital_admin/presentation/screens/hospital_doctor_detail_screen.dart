@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_routes.dart';
-import '../../../../core/theme/app_radius.dart';
-import '../../../../core/theme/app_semantic_colors.dart';
-import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/app_empty_state.dart';
 import '../../data/repositories/hospital_admin_repository_impl.dart';
 import '../../domain/entities/hospital_doctor.dart';
+import '../widgets/hospital_doctor_info_row.dart';
+import '../widgets/hospital_doctor_stat_tile.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_routes.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/repositories/hospital_admin_repository.dart';
 
 class HospitalDoctorDetailScreen extends StatefulWidget {
@@ -93,8 +93,8 @@ class _HospitalDoctorDetailScreenState
                       const SizedBox(height: AppSpacing.xs),
                       Text(doctor.specialty, style: AppTextStyles.bodyMedium(context)),
                       const SizedBox(height: AppSpacing.md),
-                      _InfoRow(icon: Icons.phone_rounded, value: doctor.phone),
-                      _InfoRow(
+                      HospitalDoctorInfoRow(icon: Icons.phone_rounded, value: doctor.phone),
+                      HospitalDoctorInfoRow(
                         icon: Icons.email_outlined,
                         value: doctor.email,
                       ),
@@ -105,14 +105,14 @@ class _HospitalDoctorDetailScreenState
                 Row(
                   children: [
                     Expanded(
-                      child: _StatTile(
+                      child: HospitalDoctorStatTile(
                         label: 'عدد المرضى',
                         value: '${doctor.patientsCount}',
                       ),
                     ),
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
-                      child: _StatTile(
+                      child: HospitalDoctorStatTile(
                         label: 'مواعيد اليوم',
                         value: '${doctor.todayAppointmentsCount}',
                       ),
@@ -132,59 +132,6 @@ class _HospitalDoctorDetailScreenState
                 ),
               ],
             ),
-    );
-  }
-}
-
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.icon, required this.value});
-
-  final IconData icon;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.xs),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16, color: AppColors.primary),
-          const SizedBox(width: AppSpacing.xs),
-          Text(value, style: AppTextStyles.bodyMedium(context)),
-        ],
-      ),
-    );
-  }
-}
-
-class _StatTile extends StatelessWidget {
-  const _StatTile({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: context.colors.surface,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.08)),
-      ),
-      child: Column(
-        children: [
-          Text(
-            value,
-            style: AppTextStyles.headlineLarge(context).copyWith(
-              color: AppColors.primary,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(label, style: AppTextStyles.bodyMedium(context)),
-        ],
-      ),
     );
   }
 }

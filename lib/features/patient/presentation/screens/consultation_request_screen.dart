@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_routes.dart';
 import '../../../../core/constants/current_patient.dart';
-import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_app_bar.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
@@ -13,6 +9,11 @@ import '../../../../core/widgets/app_scaffold.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../laboratory/domain/entities/lab_result_entry.dart';
 import '../../data/repositories/consultations_repository_impl.dart';
+import '../widgets/consultation_info_row.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_routes.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 
 class ConsultationRequestScreen extends StatefulWidget {
   const ConsultationRequestScreen({super.key, this.labResult});
@@ -60,12 +61,12 @@ class _ConsultationRequestScreenState extends State<ConsultationRequestScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _InfoRow(
+                ConsultationInfoRow(
                   label: 'اسم التحليل',
                   value: labResult?.testName ?? 'استشارة عامة',
                 ),
                 if (labResult?.summary.isNotEmpty ?? false)
-                  _InfoRow(label: 'ملخص النتيجة', value: labResult!.summary),
+                  ConsultationInfoRow(label: 'ملخص النتيجة', value: labResult!.summary),
               ],
             ),
           ),
@@ -130,36 +131,5 @@ class _ConsultationRequestScreenState extends State<ConsultationRequestScreen> {
 
     if (!mounted) return;
     context.go(AppRoutes.patientConsultations);
-  }
-}
-
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 112,
-            child: Text(label, style: AppTextStyles.bodyMedium(context)),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: AppTextStyles.bodyMedium(context).copyWith(
-                color: AppColors.textDark,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

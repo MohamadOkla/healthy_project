@@ -4,14 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/constants/app_colors.dart';
 import '../core/constants/app_routes.dart';
 import '../core/constants/storage_keys.dart';
 import '../core/services/local_storage_service.dart';
-import '../core/theme/app_radius.dart';
-import '../core/theme/app_spacing.dart';
-import '../core/theme/app_text_styles.dart';
-import '../core/widgets/app_button.dart';
 import '../core/utils/route_persistence_helper.dart';
 import '../features/appointments/presentation/cubit/book_appointment_cubit.dart';
 import '../features/appointments/presentation/cubit/book_appointment_state.dart';
@@ -46,6 +41,8 @@ import '../features/hospital_admin/presentation/screens/hospital_doctors_screen.
 import '../features/reports/presentation/screens/hospital_reports_screen.dart';
 import '../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../features/patient/presentation/screens/medical_records_screen.dart';
+import '../features/patient/presentation/screens/prescriptions_screen.dart';
+import '../features/patient/presentation/screens/laboratory_results_screen.dart';
 import '../features/patient/presentation/screens/medical_record_details_screen.dart';
 import '../features/patient/presentation/screens/consultation_request_screen.dart';
 import '../features/patient/presentation/screens/my_consultations_screen.dart';
@@ -62,9 +59,9 @@ import '../features/patient/presentation/screens/profile/help_support_screen.dar
 import '../features/patient/presentation/screens/profile/language_settings_screen.dart';
 import '../features/patient/presentation/screens/profile/notification_settings_screen.dart';
 import '../features/patient/presentation/screens/profile/privacy_policy_screen.dart';
+import '../features/patient/presentation/screens/profile/terms_conditions_screen.dart';
 import '../features/patient/presentation/screens/profile_screen.dart';
 import '../features/patient/presentation/screens/settings_screen.dart';
-import '../features/patient/presentation/widgets/patient_bottom_navigation.dart';
 import '../features/role_selection/presentation/screens/role_selection_screen.dart';
 import '../features/splash/presentation/screens/splash_screen.dart';
 
@@ -500,83 +497,3 @@ abstract final class AppRouter {
   }
 }
 
-class PatientPlaceholderScreen extends StatelessWidget {
-  const PatientPlaceholderScreen({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.icon,
-    required this.selectedIndex,
-  });
-
-  final String title;
-  final String description;
-  final IconData icon;
-  final int selectedIndex;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          tooltip: 'رجوع',
-          onPressed: () => context.go(AppRoutes.patientDashboard),
-          icon: const Icon(Icons.arrow_back_rounded),
-        ),
-        title: Text(title),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 520),
-            child: Container(
-              padding: const EdgeInsets.all(AppSpacing.xl),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(AppRadius.xl),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.10),
-                    blurRadius: 24,
-                    offset: const Offset(0, 14),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircleAvatar(
-                    radius: 34,
-                    backgroundColor: AppColors.primary.withValues(alpha: 0.10),
-                    child: Icon(icon, color: AppColors.primary, size: 34),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.headlineLarge(context),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Text(
-                    description,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.bodyMedium(context),
-                  ),
-                  const SizedBox(height: AppSpacing.xl),
-                  AppButton(
-                    text: 'العودة للرئيسية',
-                    icon: Icons.home_rounded,
-                    onPressed: () => context.go(AppRoutes.patientDashboard),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      bottomNavigationBar:
-          PatientBottomNavigation(selectedIndex: selectedIndex),
-    );
-  }
-}

@@ -39,7 +39,7 @@ class OnboardingIllustration extends StatelessWidget {
               height: size,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.secondary.withValues(alpha: 0.12),
+                color: AppColors.primary.withValues(alpha: 0.12),
               ),
             ),
             Container(
@@ -106,7 +106,7 @@ class _FloatingMedicalIcon extends StatelessWidget {
           color: AppColors.white.withValues(alpha: 0.92),
           boxShadow: AppShadows.soft,
         ),
-        child: Icon(icon, color: AppColors.secondary, size: size),
+        child: Icon(icon, color: AppColors.primary, size: size),
       ),
     );
   }

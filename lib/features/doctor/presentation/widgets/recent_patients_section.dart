@@ -8,12 +8,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/patient_summary.dart';
 import 'patient_tile.dart';
 
-const List<Color> _accentPalette = [
-  AppColors.primary,
-  Color(0xFF2563EB),
-  Color(0xFF7C3AED),
-  Color(0xFFEA580C),
-];
+const List<Color> _accentPalette = AppColors.accentPalette;
 
 class RecentPatientsSection extends StatelessWidget {
   const RecentPatientsSection({super.key, required this.patients});

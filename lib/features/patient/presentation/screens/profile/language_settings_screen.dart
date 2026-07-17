@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../app/cubit/app_settings_cubit.dart';
 import '../../../../../app/cubit/app_settings_state.dart';
-import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/constants/app_routes.dart';
 import '../../../../../core/theme/app_spacing.dart';
 

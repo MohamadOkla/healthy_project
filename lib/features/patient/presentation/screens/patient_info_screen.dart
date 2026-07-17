@@ -69,7 +69,7 @@ class PatientInfoScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(AppSpacing.md),
                     decoration: BoxDecoration(
-                      color: AppColors.secondary.withValues(alpha: 0.08),
+                      color: AppColors.primary.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(AppRadius.lg),
                     ),
                     child: Row(

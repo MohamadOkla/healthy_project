@@ -64,7 +64,7 @@ class RecentActivitySection extends StatelessWidget {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: AppColors.secondary.withValues(alpha: 0.14),
+                          color: AppColors.primary.withValues(alpha: 0.14),
                           shape: BoxShape.circle,
                         ),
                         child:

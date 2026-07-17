@@ -20,7 +20,7 @@ class HealthProgressIndicator extends StatelessWidget {
             CircularProgressIndicator(
               value: value,
               strokeWidth: 9,
-              backgroundColor: AppColors.secondary.withValues(alpha: 0.16),
+              backgroundColor: AppColors.primary.withValues(alpha: 0.16),
               color: AppColors.primary,
             ),
             Text(

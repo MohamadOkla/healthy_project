@@ -13,14 +13,7 @@ import '../../domain/repositories/hospital_admin_repository.dart';
 import '../widgets/hospital_admin_bottom_navigation.dart';
 import '../widgets/hospital_doctor_tile.dart';
 
-const List<Color> _accentPalette = [
-  AppColors.primary,
-  Color(0xFF2563EB),
-  Color(0xFF7C3AED),
-  Color(0xFFEA580C),
-  Color(0xFF0891B2),
-  AppColors.success,
-];
+const List<Color> _accentPalette = AppColors.accentPalette;
 
 class HospitalDoctorsScreen extends StatefulWidget {
   const HospitalDoctorsScreen({super.key, this.repository});

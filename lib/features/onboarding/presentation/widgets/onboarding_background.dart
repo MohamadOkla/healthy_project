@@ -62,7 +62,7 @@ class _BackgroundCircle extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColors.secondary.withValues(alpha: 0.10),
+        color: AppColors.primary.withValues(alpha: 0.10),
       ),
     );
   }
