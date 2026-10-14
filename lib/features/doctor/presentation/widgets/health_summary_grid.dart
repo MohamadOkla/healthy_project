@@ -27,7 +27,7 @@ class HealthSummaryGrid extends StatelessWidget {
           crossAxisSpacing: AppSpacing.md,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          childAspectRatio: constraints.maxWidth >= 520 ? 1.25 : 1.85,
+          childAspectRatio: constraints.maxWidth >= 520 ? 1.1 : 1.5,
           children: [
             HealthSummaryMetric(
               title: 'مواعيد اليوم',

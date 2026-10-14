@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/hospital_admin_dashboard_cubit.dart';
 import '../widgets/hospital_admin_bottom_navigation.dart';
 import '../widgets/admin_dashboard_body.dart';
-import '../../../../core/constants/app_colors.dart';
 
 class HospitalAdminDashboardScreen extends StatelessWidget {
   const HospitalAdminDashboardScreen({super.key});

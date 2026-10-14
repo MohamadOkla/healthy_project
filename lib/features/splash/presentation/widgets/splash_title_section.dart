@@ -14,23 +14,12 @@ class SplashTitleSection extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppStrings.appNameAr,
-            style: AppTextStyles.headlineLarge(context),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 8),
-          Text(
             AppStrings.appNameEn,
             style: AppTextStyles.bodyMedium(context),
             textAlign: TextAlign.center,
             textDirection: TextDirection.ltr,
           ),
           SizedBox(height: 20),
-          Text(
-            AppStrings.ministryName,
-            style: AppTextStyles.titleMedium(context),
-            textAlign: TextAlign.center,
-          ),
         ],
       ),
     );

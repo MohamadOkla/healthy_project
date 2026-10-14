@@ -20,7 +20,7 @@ class AdminStatsGrid extends StatelessWidget {
           mainAxisSpacing: AppSpacing.md,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          childAspectRatio: constraints.maxWidth >= 620 ? 1.08 : 1.18,
+          childAspectRatio: constraints.maxWidth >= 620 ? 1.08 : 1.0,
           children: [
             StatisticsCard(
               title: 'إجمالي الأطباء',

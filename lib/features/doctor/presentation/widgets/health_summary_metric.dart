@@ -21,24 +21,28 @@ class HealthSummaryMetric extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: AlignmentDirectional.centerStart,
-            child: Text(
-              value,
-              style: AppTextStyles.headlineLarge(context).copyWith(
-                color: AppColors.white,
-                fontSize: 26,
-                fontWeight: FontWeight.w900,
+          // مهم: لازم Expanded حول FittedBox، لأنو كـ عنصر حر بـ Column
+          // بياخد ارتفاع غير محدود أثناء القياس وما بينكمش فعليًا، وهاد
+          // كان سبب الـ overflow لأنو ما في هون حتى Spacer يمتص الفرق.
+          Expanded(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: AlignmentDirectional.centerStart,
+              child: Text(
+                value,
+                style: AppTextStyles.headlineLarge(context).copyWith(
+                  color: AppColors.white,
+                  fontSize: 26,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
             title,
-            maxLines: 2,
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.bodyMedium(context).copyWith(
               color: AppColors.white.withValues(alpha: 0.78),

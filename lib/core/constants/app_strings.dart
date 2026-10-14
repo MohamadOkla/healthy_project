@@ -1,5 +1,5 @@
 abstract final class AppStrings {
-  static const String appNameAr = 'منظومة الصحة الرقمية';
-  static const String appNameEn = 'Digital Health System';
+  static const String appNameAr = 'هيلثي';
+  static const String appNameEn = 'Healthy App';
   static const String ministryName = 'وزارة الصحة';
 }

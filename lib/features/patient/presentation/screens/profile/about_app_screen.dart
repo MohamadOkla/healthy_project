@@ -56,7 +56,7 @@ class AboutAppScreen extends StatelessWidget {
             icon: Icons.article_rounded,
             onPressed: () => showLicensePage(
               context: context,
-              applicationName: 'Digital Health System',
+              applicationName: AppStrings.appNameEn,
               applicationVersion: '1.0.0',
             ),
           ),

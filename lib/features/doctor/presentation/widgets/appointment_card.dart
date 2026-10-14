@@ -68,7 +68,7 @@ class AppointmentCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: AppSpacing.md),
           _InfoRow(icon: Icons.access_time_rounded, text: time),
           const SizedBox(height: AppSpacing.sm),
           _InfoRow(icon: Icons.medical_information_rounded, text: visitType),

@@ -53,7 +53,7 @@ class TodayScheduleSection extends StatelessWidget {
           Text('لا توجد مواعيد اليوم', style: AppTextStyles.bodyMedium(context))
         else
           SizedBox(
-            height: 176,
+            height: 200,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: appointments.length,
