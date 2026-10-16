@@ -9,6 +9,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../cubit/appointments_cubit.dart';
 import '../models/appointment_ui_model.dart';
+import '../../data/calendar_event_service.dart';
 import '../widgets/appointment_info_row.dart';
 import '../widgets/appointment_status_chip.dart';
 
@@ -19,8 +20,7 @@ class AppointmentDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appointment =
-        this.appointment ?? AppointmentsCubit.sampleAppointment;
+    final appointment = this.appointment ?? AppointmentsCubit.sampleAppointment;
 
     return Scaffold(
       appBar: AppBar(
@@ -98,6 +98,14 @@ class AppointmentDetailsScreen extends StatelessWidget {
                   label: 'رقم الموعد',
                   value: appointment.appointmentNumber,
                 ),
+                if (appointment.visitType.isNotEmpty) ...[
+                  const SizedBox(height: AppSpacing.md),
+                  AppointmentInfoRow(
+                    icon: Icons.medical_information_rounded,
+                    label: 'نوع الزيارة',
+                    value: appointment.visitType,
+                  ),
+                ],
               ],
             ),
           ),
@@ -106,9 +114,11 @@ class AppointmentDetailsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('ملاحظات الموعد', style: AppTextStyles.titleMedium(context)),
+                Text('ملاحظات الموعد',
+                    style: AppTextStyles.titleMedium(context)),
                 const SizedBox(height: AppSpacing.sm),
-                Text(appointment.notes, style: AppTextStyles.bodyMedium(context)),
+                Text(appointment.notes,
+                    style: AppTextStyles.bodyMedium(context)),
               ],
             ),
           ),
@@ -117,7 +127,8 @@ class AppointmentDetailsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('تعليمات قبل الزيارة', style: AppTextStyles.titleMedium(context)),
+                Text('تعليمات قبل الزيارة',
+                    style: AppTextStyles.titleMedium(context)),
                 const SizedBox(height: AppSpacing.sm),
                 ...appointment.instructions.map(
                   (instruction) => Padding(
@@ -144,6 +155,30 @@ class AppointmentDetailsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
+          if (appointment.startAt != null)
+            AppButton(
+              text: 'إضافة إلى التقويم',
+              icon: Icons.event_available_rounded,
+              isOutlined: true,
+              onPressed: () async {
+                final messenger = ScaffoldMessenger.of(context);
+                try {
+                  final status = await addAppointmentToCalendar(appointment);
+                  if (context.mounted) {
+                    messenger.showSnackBar(
+                        SnackBar(content: Text(calendarEventFeedback(status))));
+                  }
+                } on Object {
+                  if (context.mounted) {
+                    messenger.showSnackBar(const SnackBar(
+                        content: Text(
+                            'تعذر فتح تطبيق التقويم. تحقق من توفره وحاول مرة أخرى.')));
+                  }
+                }
+              },
+            ),
+          if (appointment.startAt != null)
+            const SizedBox(height: AppSpacing.sm),
           AppButton(
             text: 'تعديل الموعد',
             icon: Icons.edit_calendar_rounded,

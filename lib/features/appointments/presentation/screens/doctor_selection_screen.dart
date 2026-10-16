@@ -9,6 +9,7 @@ import '../../../../core/widgets/app_empty_state.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../cubit/book_appointment_cubit.dart';
 import '../cubit/book_appointment_state.dart';
+import '../models/booking_ids.dart';
 import '../widgets/booking_step_indicator.dart';
 import '../widgets/doctor_card.dart';
 import '../widgets/specialty_filter_chip.dart';
@@ -66,7 +67,7 @@ class _DoctorSelectionView extends StatelessWidget {
                   children: BookAppointmentCubit.specialties
                       .map(
                         (specialty) => SpecialtyFilterChip(
-                          label: specialty,
+                          label: specialty.label,
                           isSelected: state.selectedSpecialty == specialty,
                           onSelected: () => cubit.selectSpecialty(specialty),
                         ),
@@ -76,11 +77,20 @@ class _DoctorSelectionView extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.md),
               if (doctors.isEmpty)
-                const AppEmptyState(
-                  title: 'لا توجد نتائج',
-                  message: 'غيّر كلمة البحث أو الاختصاص لعرض أطباء آخرين.',
-                  icon: Icons.search_off_rounded,
-                )
+                Column(children: [
+                  const AppEmptyState(
+                      title: 'لا توجد نتائج',
+                      message:
+                          'لا يوجد طبيب يطابق المشفى والاختصاص وكلمة البحث. عدّل الفلاتر للمتابعة.',
+                      icon: Icons.search_off_rounded),
+                  const SizedBox(height: AppSpacing.md),
+                  AppButton(
+                      text: 'تعديل المشفى والاختصاص',
+                      icon: Icons.tune_rounded,
+                      isOutlined: true,
+                      onPressed: () => context
+                          .go(AppRoutes.patientBookAppointment, extra: cubit)),
+                ])
               else
                 ...doctors.map(
                   (doctor) => Padding(
@@ -88,6 +98,9 @@ class _DoctorSelectionView extends StatelessWidget {
                     child: DoctorCard(
                       doctor: doctor,
                       isSelected: state.selectedDoctor?.id == doctor.id,
+                      earliestAvailable: cubit.earliestAvailable(doctor) == null
+                          ? null
+                          : _formatEarliest(cubit.earliestAvailable(doctor)!),
                       onTap: () => cubit.selectDoctor(doctor),
                     ),
                   ),
@@ -109,4 +122,7 @@ class _DoctorSelectionView extends StatelessWidget {
       ),
     );
   }
+
+  String _formatEarliest(DateTime date) =>
+      'أقرب موعد: ${date.day}/${date.month} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
 }

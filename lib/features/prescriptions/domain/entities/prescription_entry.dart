@@ -20,8 +20,10 @@ class PrescriptionEntry {
   const PrescriptionEntry({
     required this.id,
     required this.patientId,
+    this.doctorId,
     required this.doctorName,
     required this.issueDate,
+    this.issuedAt,
     required this.expiryDate,
     required this.isActive,
     required this.medicines,
@@ -31,8 +33,10 @@ class PrescriptionEntry {
 
   final String id;
   final String patientId;
+  final String? doctorId;
   final String doctorName;
   final String issueDate;
+  final DateTime? issuedAt;
   final String expiryDate;
   final bool isActive;
   final List<PrescriptionMedicine> medicines;

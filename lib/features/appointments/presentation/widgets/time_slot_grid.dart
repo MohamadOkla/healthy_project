@@ -18,8 +18,8 @@ class TimeSlotGrid extends StatelessWidget {
 
   final String title;
   final List<TimeSlotUiModel> slots;
-  final String? selectedTime;
-  final ValueChanged<String> onSelected;
+  final DateTime? selectedTime;
+  final ValueChanged<DateTime> onSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +40,12 @@ class TimeSlotGrid extends StatelessWidget {
           ),
           itemBuilder: (context, index) {
             final slot = slots[index];
-            final fullLabel = '${slot.label} ${slot.period}';
-            final isSelected = selectedTime == fullLabel;
+            final fullLabel = slot.displayLabel;
+            final isSelected =
+                selectedTime?.isAtSameMomentAs(slot.startAt) == true;
             return OutlinedButton(
-              onPressed: slot.isAvailable ? () => onSelected(fullLabel) : null,
+              onPressed:
+                  slot.isAvailable ? () => onSelected(slot.startAt) : null,
               style: OutlinedButton.styleFrom(
                 backgroundColor:
                     isSelected ? AppColors.primary : context.colors.surface,

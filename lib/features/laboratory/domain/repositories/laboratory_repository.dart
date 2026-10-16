@@ -5,6 +5,7 @@ abstract interface class LaboratoryRepository {
 
   LabResultEntry addResult({
     required String patientId,
+    String? doctorId,
     required String testName,
     required String labName,
     required String summary,

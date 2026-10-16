@@ -13,7 +13,7 @@ class ProfileState extends Equatable {
     this.gender = 'ذكر',
     this.height = '176 سم',
     this.weight = '78 كغ',
-    this.allergies = 'لا توجد حساسية مسجلة',
+    this.allergies = 'لم تُسجل معلومات الحساسية',
     this.chronicDiseases = 'لا توجد أمراض مزمنة',
     this.language = 'العربية',
     this.appointmentNotifications = true,

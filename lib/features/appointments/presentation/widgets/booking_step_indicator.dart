@@ -16,7 +16,7 @@ class BookingStepIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const labels = ['الخدمة', 'الطبيب', 'الموعد'];
+    const labels = ['الخدمة', 'الطبيب', 'الوقت', 'المراجعة'];
     return Row(
       children: List.generate(labels.length, (index) {
         final step = index + 1;
@@ -32,8 +32,9 @@ class BookingStepIndicator extends StatelessWidget {
                       width: 34,
                       height: 34,
                       decoration: BoxDecoration(
-                        color:
-                            isActive ? AppColors.primary : context.colors.surface,
+                        color: isActive
+                            ? AppColors.primary
+                            : context.colors.surface,
                         borderRadius: BorderRadius.circular(AppRadius.xl),
                         border: Border.all(color: AppColors.primary),
                       ),
@@ -49,7 +50,8 @@ class BookingStepIndicator extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: AppSpacing.xs),
-                    Text(labels[index], style: AppTextStyles.bodyMedium(context)),
+                    Text(labels[index],
+                        style: AppTextStyles.bodyMedium(context)),
                   ],
                 ),
               ),

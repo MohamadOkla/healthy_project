@@ -14,11 +14,13 @@ class DoctorCard extends StatelessWidget {
     required this.doctor,
     required this.isSelected,
     required this.onTap,
+    this.earliestAvailable,
   });
 
   final DoctorUiModel doctor;
   final bool isSelected;
   final VoidCallback onTap;
+  final String? earliestAvailable;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,8 @@ class DoctorCard extends StatelessWidget {
                           label: doctor.experience),
                       _Meta(
                         icon: Icons.schedule_rounded,
-                        label: doctor.earliestAvailable,
+                        label: earliestAvailable ??
+                            'لا توجد مواعيد ضمن الأسبوعين القادمين',
                       ),
                     ],
                   ),
@@ -102,7 +105,8 @@ class _Meta extends StatelessWidget {
       children: [
         Icon(icon, size: 16, color: AppColors.warning),
         const SizedBox(width: AppSpacing.xs),
-        Text(label, style: AppTextStyles.bodyMedium(context).copyWith(fontSize: 12)),
+        Text(label,
+            style: AppTextStyles.bodyMedium(context).copyWith(fontSize: 12)),
       ],
     );
   }

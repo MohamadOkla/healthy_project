@@ -16,6 +16,7 @@ class LaboratoryRepositoryImpl implements LaboratoryRepository {
   @override
   LabResultEntry addResult({
     required String patientId,
+    String? doctorId,
     required String testName,
     required String labName,
     required String summary,
@@ -25,6 +26,7 @@ class LaboratoryRepositoryImpl implements LaboratoryRepository {
   }) {
     return _dataSource.addResult(
       patientId: patientId,
+      doctorId: doctorId,
       testName: testName,
       labName: labName,
       summary: summary,

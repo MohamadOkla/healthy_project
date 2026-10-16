@@ -5,6 +5,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../cubit/book_appointment_state.dart';
+import '../models/booking_ids.dart';
 import 'appointment_info_row.dart';
 
 class BookingSummaryCard extends StatelessWidget {
@@ -29,7 +30,7 @@ class BookingSummaryCard extends StatelessWidget {
           AppointmentInfoRow(
             icon: Icons.medical_services_rounded,
             label: 'الاختصاص',
-            value: state.selectedSpecialty ??
+            value: state.selectedSpecialty?.label ??
                 state.selectedDoctor?.specialty ??
                 'غير محدد',
           ),
@@ -37,7 +38,7 @@ class BookingSummaryCard extends StatelessWidget {
           AppointmentInfoRow(
             icon: Icons.local_hospital_rounded,
             label: 'المشفى',
-            value: state.selectedHospital ??
+            value: state.selectedHospital?.label ??
                 state.selectedDoctor?.hospital ??
                 'غير محدد',
           ),
@@ -45,14 +46,16 @@ class BookingSummaryCard extends StatelessWidget {
           AppointmentInfoRow(
             icon: Icons.schedule_rounded,
             label: 'الوقت',
-            value: state.selectedTime ?? 'اختر الوقت',
+            value: state.selectedTime == null
+                ? 'اختر الوقت'
+                : '${state.selectedTime!.hour.toString().padLeft(2, '0')}:${state.selectedTime!.minute.toString().padLeft(2, '0')}',
           ),
           if (state.canConfirm) ...[
             const SizedBox(height: AppSpacing.md),
             Text(
               'سيتم إرسال تذكير قبل موعد الزيارة.',
-              style:
-                  AppTextStyles.bodyMedium(context).copyWith(color: AppColors.primary),
+              style: AppTextStyles.bodyMedium(context)
+                  .copyWith(color: AppColors.primary),
             ),
           ],
         ],

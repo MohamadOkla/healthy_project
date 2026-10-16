@@ -19,8 +19,9 @@ class DateSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
     final dates =
-        List.generate(7, (index) => now.add(Duration(days: index + 1)));
+        List.generate(14, (index) => today.add(Duration(days: index)));
 
     return SizedBox(
       height: 96,
@@ -82,14 +83,16 @@ class _DateItem extends StatelessWidget {
             Text(
               dayName,
               style: AppTextStyles.bodyMedium(context).copyWith(
-                color: isSelected ? AppColors.white : context.colors.textSecondary,
+                color:
+                    isSelected ? AppColors.white : context.colors.textSecondary,
               ),
             ),
             const SizedBox(height: AppSpacing.xs),
             Text(
               date.day.toString(),
               style: AppTextStyles.titleMedium(context).copyWith(
-                color: isSelected ? AppColors.white : context.colors.textPrimary,
+                color:
+                    isSelected ? AppColors.white : context.colors.textPrimary,
               ),
             ),
           ],

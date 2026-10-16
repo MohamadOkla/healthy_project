@@ -10,11 +10,13 @@ class PrescriptionsLocalDataSource {
 
   final Map<String, List<PrescriptionEntry>> _prescriptionsByPatient = {
     'p1': [
-      const PrescriptionEntry(
+      PrescriptionEntry(
         id: 'rx1',
         patientId: 'p1',
+        doctorId: 'doc1',
         doctorName: 'د. سارة منصور',
         issueDate: '5 يوليو 2026',
+        issuedAt: DateTime(2026, 7, 5),
         expiryDate: '5 أغسطس 2026',
         isActive: true,
         medicines: [
@@ -32,11 +34,13 @@ class PrescriptionsLocalDataSource {
       ),
     ],
     'p3': [
-      const PrescriptionEntry(
+      PrescriptionEntry(
         id: 'rx2',
         patientId: 'p3',
+        doctorId: 'doc1',
         doctorName: 'د. سارة منصور',
         issueDate: '1 يوليو 2026',
+        issuedAt: DateTime(2026, 7, 1),
         expiryDate: '15 يوليو 2026',
         isActive: true,
         medicines: [
@@ -59,24 +63,27 @@ class PrescriptionsLocalDataSource {
 
   PrescriptionEntry addPrescription({
     required String patientId,
+    String? doctorId,
     required String doctorName,
     required String expiryDate,
     required List<PrescriptionMedicine> medicines,
     required String notes,
     String warnings = '',
   }) {
+    final list = _prescriptionsByPatient.putIfAbsent(patientId, () => []);
     final entry = PrescriptionEntry(
       id: 'rx${_nextId++}',
       patientId: patientId,
+      doctorId: doctorId,
       doctorName: doctorName,
       issueDate: 'اليوم',
+      issuedAt: DateTime.now(),
       expiryDate: expiryDate,
       isActive: true,
       medicines: medicines,
       notes: notes,
       warnings: warnings,
     );
-    final list = _prescriptionsByPatient.putIfAbsent(patientId, () => []);
     list.insert(0, entry);
     return entry;
   }

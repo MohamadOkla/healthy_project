@@ -18,8 +18,10 @@ class LabResultEntry {
   const LabResultEntry({
     required this.id,
     required this.patientId,
+    this.doctorId,
     required this.testName,
     required this.testDate,
+    this.performedAt,
     required this.labName,
     required this.isCompleted,
     required this.summary,
@@ -30,8 +32,10 @@ class LabResultEntry {
 
   final String id;
   final String patientId;
+  final String? doctorId;
   final String testName;
   final String testDate;
+  final DateTime? performedAt;
   final String labName;
   final bool isCompleted;
   final String summary;

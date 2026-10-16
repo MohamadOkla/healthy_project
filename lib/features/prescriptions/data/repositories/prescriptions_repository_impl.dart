@@ -16,6 +16,7 @@ class PrescriptionsRepositoryImpl implements PrescriptionsRepository {
   @override
   PrescriptionEntry addPrescription({
     required String patientId,
+    String? doctorId,
     required String doctorName,
     required String expiryDate,
     required List<PrescriptionMedicine> medicines,
@@ -24,6 +25,7 @@ class PrescriptionsRepositoryImpl implements PrescriptionsRepository {
   }) {
     return _dataSource.addPrescription(
       patientId: patientId,
+      doctorId: doctorId,
       doctorName: doctorName,
       expiryDate: expiryDate,
       medicines: medicines,

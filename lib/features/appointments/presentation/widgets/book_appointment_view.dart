@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../cubit/book_appointment_cubit.dart';
 import '../cubit/book_appointment_state.dart';
+import '../models/booking_ids.dart';
 import 'booking_step_indicator.dart';
 import 'specialty_filter_chip.dart';
 import 'booking_selection_section.dart';
@@ -11,7 +12,7 @@ import '../../../../core/constants/app_routes.dart';
 import '../../../../core/theme/app_spacing.dart';
 
 class BookAppointmentView extends StatelessWidget {
-  const BookAppointmentView();
+  const BookAppointmentView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class BookAppointmentView extends StatelessWidget {
                 children: BookAppointmentCubit.specialties
                     .map(
                       (specialty) => SpecialtyFilterChip(
-                        label: specialty,
+                        label: specialty.label,
                         isSelected: state.selectedSpecialty == specialty,
                         onSelected: () => cubit.selectSpecialty(specialty),
                       ),
@@ -50,7 +51,7 @@ class BookAppointmentView extends StatelessWidget {
                 children: BookAppointmentCubit.hospitals
                     .map(
                       (hospital) => SpecialtyFilterChip(
-                        label: hospital,
+                        label: hospital.label,
                         isSelected: state.selectedHospital == hospital,
                         onSelected: () => cubit.selectHospital(hospital),
                       ),

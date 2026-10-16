@@ -27,7 +27,7 @@ class DoctorLocalDataSource {
       primaryDiagnosis: 'متابعة ضغط الدم',
       bloodType: 'O+',
       chronicDiseases: 'لا توجد أمراض مزمنة',
-      allergies: 'لا توجد حساسية مسجلة',
+      allergies: 'لم تُسجل معلومات الحساسية',
     );
     return PatientSummary(
       id: 'p1',
@@ -160,11 +160,12 @@ class DoctorLocalDataSource {
     final currentName = _currentPatient().name;
     return List.unmodifiable(
       _todayAppointments.map((appointment) {
-        if (appointment.patientId != 'p1') return appointment;
         return DoctorAppointment(
           id: appointment.id,
           patientId: appointment.patientId,
-          patientName: currentName,
+          patientName: appointment.patientId == 'p1'
+              ? currentName
+              : appointment.patientName,
           time: appointment.time,
           visitType: appointment.visitType,
           status: appointment.status,

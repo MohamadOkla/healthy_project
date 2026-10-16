@@ -16,13 +16,15 @@ class MedicalRecordsLocalDataSource {
 
   final Map<String, List<MedicalRecordEntry>> _recordsByPatient = {
     'p1': [
-      const MedicalRecordEntry(
+      MedicalRecordEntry(
         id: 'mr1',
         patientId: 'p1',
+        doctorId: 'doc1',
         doctorName: 'د. سارة منصور',
         specialty: 'قلبية',
         hospital: 'مشفى دمشق الجامعي',
         visitDate: '5 يوليو 2026',
+        occurredAt: DateTime(2026, 7, 5),
         diagnosis: 'اضطراب بسيط في ضغط الدم مع حالة مستقرة',
         symptoms: 'إرهاق خفيف، صداع متقطع',
         doctorNotes: 'ينصح بالمتابعة بعد أسبوعين ومراقبة الضغط يوميًا.',
@@ -37,13 +39,15 @@ class MedicalRecordsLocalDataSource {
       ),
     ],
     'p2': [
-      const MedicalRecordEntry(
+      MedicalRecordEntry(
         id: 'mr2',
         patientId: 'p2',
+        doctorId: 'doc1',
         doctorName: 'د. سارة منصور',
         specialty: 'باطنية',
         hospital: 'مشفى دمشق الجامعي',
         visitDate: '3 يوليو 2026',
+        occurredAt: DateTime(2026, 7, 3),
         diagnosis: 'متابعة خطة علاج السكري',
         symptoms: 'عطش زائد بشكل خفيف',
         doctorNotes: 'الالتزام بالحمية جيد، تعديل بسيط بجرعة الأنسولين.',
@@ -62,6 +66,7 @@ class MedicalRecordsLocalDataSource {
 
   MedicalRecordEntry addRecord({
     required String patientId,
+    String? doctorId,
     required String doctorName,
     required String specialty,
     required String hospital,
@@ -72,13 +77,16 @@ class MedicalRecordsLocalDataSource {
     List<String> medications = const [],
     List<String> testsRequired = const [],
   }) {
+    final list = _recordsByPatient.putIfAbsent(patientId, () => []);
     final entry = MedicalRecordEntry(
       id: 'mr${_nextId++}',
       patientId: patientId,
+      doctorId: doctorId,
       doctorName: doctorName,
       specialty: specialty,
       hospital: hospital,
       visitDate: 'اليوم',
+      occurredAt: DateTime.now(),
       diagnosis: diagnosis,
       symptoms: symptoms,
       doctorNotes: doctorNotes,
@@ -86,7 +94,6 @@ class MedicalRecordsLocalDataSource {
       medications: medications,
       testsRequired: testsRequired,
     );
-    final list = _recordsByPatient.putIfAbsent(patientId, () => []);
     list.insert(0, entry);
     return entry;
   }

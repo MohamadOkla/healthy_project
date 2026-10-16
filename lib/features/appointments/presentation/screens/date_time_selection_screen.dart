@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/app_card.dart';
 import '../cubit/book_appointment_cubit.dart';
 import '../cubit/book_appointment_state.dart';
 import '../widgets/booking_step_indicator.dart';
@@ -44,12 +45,11 @@ class _DateTimeSelectionView extends StatelessWidget {
       body: BlocBuilder<BookAppointmentCubit, BookAppointmentState>(
         builder: (context, state) {
           final cubit = context.read<BookAppointmentCubit>();
-          final morningSlots = BookAppointmentCubit.timeSlots
-              .where((slot) => slot.period == 'صباحاً')
-              .toList();
-          final eveningSlots = BookAppointmentCubit.timeSlots
-              .where((slot) => slot.period == 'مساءً')
-              .toList();
+          final slots = cubit.availableSlots;
+          final morningSlots =
+              slots.where((slot) => slot.startAt.hour < 12).toList();
+          final eveningSlots =
+              slots.where((slot) => slot.startAt.hour >= 12).toList();
 
           return ListView(
             padding: const EdgeInsets.all(AppSpacing.md),
@@ -61,29 +61,47 @@ class _DateTimeSelectionView extends StatelessWidget {
                 onDateSelected: cubit.selectDate,
               ),
               const SizedBox(height: AppSpacing.lg),
-              TimeSlotGrid(
-                title: 'الفترة الصباحية',
-                slots: morningSlots,
-                selectedTime: state.selectedTime,
-                onSelected: cubit.selectTime,
-              ),
+              if (state.selectedDate != null &&
+                  !slots.any((slot) => slot.isAvailable)) ...[
+                AppCard(
+                    child: Column(children: [
+                  const Text('لا توجد أوقات متاحة في هذا اليوم.'),
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(cubit.nextAvailableDate() == null
+                      ? 'لا توجد مواعيد لهذا الطبيب ضمن الأسبوعين القادمين.'
+                      : 'يمكنك الانتقال إلى أقرب يوم متاح.'),
+                  if (cubit.nextAvailableDate() != null)
+                    TextButton.icon(
+                        onPressed: cubit.chooseNextAvailableDate,
+                        icon: const Icon(Icons.event_available_rounded),
+                        label: const Text('الانتقال إلى أقرب يوم متاح')),
+                ])),
+              ],
+              if (morningSlots.isNotEmpty)
+                TimeSlotGrid(
+                  title: 'الفترة الصباحية',
+                  slots: morningSlots,
+                  selectedTime: state.selectedTime,
+                  onSelected: cubit.selectTime,
+                ),
               const SizedBox(height: AppSpacing.lg),
-              TimeSlotGrid(
-                title: 'الفترة المسائية',
-                slots: eveningSlots,
-                selectedTime: state.selectedTime,
-                onSelected: cubit.selectTime,
-              ),
+              if (eveningSlots.isNotEmpty)
+                TimeSlotGrid(
+                  title: 'الفترة المسائية',
+                  slots: eveningSlots,
+                  selectedTime: state.selectedTime,
+                  onSelected: cubit.selectTime,
+                ),
               const SizedBox(height: AppSpacing.lg),
               BookingSummaryCard(state: state),
               const SizedBox(height: AppSpacing.lg),
               AppButton(
-                text: 'تأكيد الحجز',
+                text: 'متابعة للمراجعة',
                 icon: Icons.check_circle_rounded,
-                onPressed: state.canConfirm
+                onPressed: cubit.canContinueFromDateTime
                     ? () => context.go(
-                          AppRoutes.patientBookingSuccess,
-                          extra: state,
+                          AppRoutes.patientBookingReview,
+                          extra: cubit,
                         )
                     : null,
               ),

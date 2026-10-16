@@ -11,6 +11,7 @@ abstract interface class MedicalRecordsRepository {
 
   MedicalRecordEntry addRecord({
     required String patientId,
+    String? doctorId,
     required String doctorName,
     required String specialty,
     required String hospital,

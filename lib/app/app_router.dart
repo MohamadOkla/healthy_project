@@ -9,11 +9,11 @@ import '../core/constants/storage_keys.dart';
 import '../core/services/local_storage_service.dart';
 import '../core/utils/route_persistence_helper.dart';
 import '../features/appointments/presentation/cubit/book_appointment_cubit.dart';
-import '../features/appointments/presentation/cubit/book_appointment_state.dart';
 import '../features/appointments/presentation/models/appointment_ui_model.dart';
 import '../features/appointments/presentation/screens/appointment_details_screen.dart';
 import '../features/appointments/presentation/screens/book_appointment_screen.dart';
 import '../features/appointments/presentation/screens/booking_success_screen.dart';
+import '../features/appointments/presentation/screens/booking_review_screen.dart';
 import '../features/appointments/presentation/screens/date_time_selection_screen.dart';
 import '../features/laboratory/domain/entities/lab_result_entry.dart';
 import '../features/medical_records/domain/entities/medical_record_entry.dart';
@@ -163,8 +163,7 @@ abstract final class AppRouter {
         builder: (context, state) {
           final appointment = state.extra;
           return AppointmentDetailsScreen(
-            appointment:
-                appointment is AppointmentUiModel ? appointment : null,
+            appointment: appointment is AppointmentUiModel ? appointment : null,
           );
         },
       ),
@@ -205,6 +204,15 @@ abstract final class AppRouter {
         },
       ),
       GoRoute(
+        path: AppRoutes.patientBookingReview,
+        name: AppRoutes.patientBookingReviewName,
+        builder: (context, state) {
+          final cubit = state.extra;
+          return BookingReviewScreen(
+              cubit: cubit is BookAppointmentCubit ? cubit : _bookingCubit);
+        },
+      ),
+      GoRoute(
         path: AppRoutes.patientBookingSuccess,
         name: AppRoutes.patientBookingSuccessName,
         builder: (context, state) {
@@ -212,9 +220,9 @@ abstract final class AppRouter {
           return BlocProvider.value(
             value: _bookingCubit,
             child: BookingSuccessScreen(
-              booking: booking is BookAppointmentState
+              booking: booking is AppointmentUiModel
                   ? booking
-                  : _bookingCubit.state,
+                  : _bookingCubit.state.confirmedAppointment,
             ),
           );
         },
@@ -496,4 +504,3 @@ abstract final class AppRouter {
     return null;
   }
 }
-

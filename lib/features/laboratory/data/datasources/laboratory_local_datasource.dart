@@ -10,11 +10,13 @@ class LaboratoryLocalDataSource {
 
   final Map<String, List<LabResultEntry>> _resultsByPatient = {
     'p1': [
-      const LabResultEntry(
+      LabResultEntry(
         id: 'lab0',
         patientId: 'p1',
+        doctorId: 'doc1',
         testName: 'CBC + Vitamin D + HbA1c',
         testDate: '4 يوليو 2026',
+        performedAt: DateTime(2026, 7, 4),
         labName: 'مخبر مشفى دمشق الجامعي',
         isCompleted: true,
         summary: 'معظم القيم ضمن الطبيعي مع انخفاض بسيط في Vitamin D.',
@@ -50,14 +52,17 @@ class LaboratoryLocalDataSource {
       ),
     ],
     'p2': [
-      const LabResultEntry(
+      LabResultEntry(
         id: 'lab1',
         patientId: 'p2',
+        doctorId: 'doc1',
         testName: 'HbA1c + Fasting Glucose',
         testDate: '2 يوليو 2026',
+        performedAt: DateTime(2026, 7, 2),
         labName: 'مخبر مشفى دمشق الجامعي',
         isCompleted: true,
-        summary: 'تحسّن طفيف عن الفحص السابق مع بقاء السكر التراكمي مرتفعًا قليلًا.',
+        summary:
+            'تحسّن طفيف عن الفحص السابق مع بقاء السكر التراكمي مرتفعًا قليلًا.',
         rows: [
           LabResultRow(
             name: 'HbA1c',
@@ -72,7 +77,8 @@ class LaboratoryLocalDataSource {
             isNormal: false,
           ),
         ],
-        recommendation: 'مراجعة الجرعة الحالية بعد 6 أسابيع من الالتزام بالحمية.',
+        recommendation:
+            'مراجعة الجرعة الحالية بعد 6 أسابيع من الالتزام بالحمية.',
         doctorNotes: 'ينصح بإعادة الفحص بعد إجراء التعديل الغذائي المتفق عليه.',
       ),
     ],
@@ -84,6 +90,7 @@ class LaboratoryLocalDataSource {
 
   LabResultEntry addResult({
     required String patientId,
+    String? doctorId,
     required String testName,
     required String labName,
     required String summary,
@@ -94,8 +101,10 @@ class LaboratoryLocalDataSource {
     final entry = LabResultEntry(
       id: 'lab${_nextId++}',
       patientId: patientId,
+      doctorId: doctorId,
       testName: testName,
       testDate: 'اليوم',
+      performedAt: DateTime.now(),
       labName: labName,
       isCompleted: true,
       summary: summary,

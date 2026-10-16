@@ -59,6 +59,8 @@ abstract final class AppRoutes {
 
   static const String patientBookingSuccess = '/patient/appointments/success';
   static const String patientBookingSuccessName = 'patient-booking-success';
+  static const String patientBookingReview = '/patient/appointments/review';
+  static const String patientBookingReviewName = 'patient-booking-review';
 
   static const String patientMedicalRecords = '/patient/medical-records';
   static const String patientMedicalRecordsName = 'patient-medical-records';

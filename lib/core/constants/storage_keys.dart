@@ -33,4 +33,5 @@ abstract final class StorageKeys {
       'profilePrescriptionNotifications';
   static const profileGeneralNotifications = 'profileGeneralNotifications';
   static const profileAppointmentReminder = 'profileAppointmentReminder';
+  static const localAppointments = 'localAppointments';
 }

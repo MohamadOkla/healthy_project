@@ -16,6 +16,7 @@ class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
   @override
   MedicalRecordEntry addRecord({
     required String patientId,
+    String? doctorId,
     required String doctorName,
     required String specialty,
     required String hospital,
@@ -28,6 +29,7 @@ class MedicalRecordsRepositoryImpl implements MedicalRecordsRepository {
   }) {
     return _dataSource.addRecord(
       patientId: patientId,
+      doctorId: doctorId,
       doctorName: doctorName,
       specialty: specialty,
       hospital: hospital,

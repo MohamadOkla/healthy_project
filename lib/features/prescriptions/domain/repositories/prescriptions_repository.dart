@@ -5,6 +5,7 @@ abstract interface class PrescriptionsRepository {
 
   PrescriptionEntry addPrescription({
     required String patientId,
+    String? doctorId,
     required String doctorName,
     required String expiryDate,
     required List<PrescriptionMedicine> medicines,

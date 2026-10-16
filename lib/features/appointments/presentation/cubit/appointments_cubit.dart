@@ -1,12 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/local_appointments_repository.dart';
 import '../models/appointment_status.dart';
 import '../models/appointment_ui_model.dart';
 import 'appointments_state.dart';
 
 class AppointmentsCubit extends Cubit<AppointmentsState> {
-  AppointmentsCubit()
-      : super(AppointmentsState(appointments: _fakeAppointments));
+  AppointmentsCubit({LocalAppointmentsRepository? repository})
+      : super(AppointmentsState(appointments: [
+          ..._fakeAppointments,
+          ...(repository ?? LocalAppointmentsRepository()).load()
+        ]));
 
   void changeStatus(AppointmentStatus status) {
     emit(state.copyWith(selectedStatus: status));

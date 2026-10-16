@@ -4,10 +4,12 @@ class MedicalRecordEntry {
   const MedicalRecordEntry({
     required this.id,
     required this.patientId,
+    this.doctorId,
     required this.doctorName,
     required this.specialty,
     required this.hospital,
     required this.visitDate,
+    this.occurredAt,
     required this.diagnosis,
     required this.symptoms,
     required this.doctorNotes,
@@ -18,10 +20,12 @@ class MedicalRecordEntry {
 
   final String id;
   final String patientId;
+  final String? doctorId;
   final String doctorName;
   final String specialty;
   final String hospital;
   final String visitDate;
+  final DateTime? occurredAt;
   final String diagnosis;
   final String symptoms;
   final String doctorNotes;
