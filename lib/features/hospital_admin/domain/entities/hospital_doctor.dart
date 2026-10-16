@@ -4,6 +4,7 @@ enum HospitalDoctorStatus { active, onLeave }
 class HospitalDoctor {
   const HospitalDoctor({
     required this.id,
+    required this.hospitalId,
     required this.name,
     required this.specialty,
     required this.phone,
@@ -14,6 +15,7 @@ class HospitalDoctor {
   });
 
   final String id;
+  final String hospitalId;
   final String name;
   final String specialty;
   final String phone;
@@ -37,6 +39,7 @@ class HospitalDoctor {
   HospitalDoctor copyWith({HospitalDoctorStatus? status}) {
     return HospitalDoctor(
       id: id,
+      hospitalId: hospitalId,
       name: name,
       specialty: specialty,
       phone: phone,

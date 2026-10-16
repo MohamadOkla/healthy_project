@@ -12,6 +12,8 @@ class DoctorUiModel {
     required this.rating,
     required this.experience,
     required this.icon,
+    this.phone = '—',
+    this.email = '—',
   });
 
   final String id;
@@ -23,4 +25,6 @@ class DoctorUiModel {
   final double rating;
   final String experience;
   final IconData icon;
+  final String phone;
+  final String email;
 }

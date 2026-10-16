@@ -15,12 +15,16 @@ class DoctorCard extends StatelessWidget {
     required this.isSelected,
     required this.onTap,
     this.earliestAvailable,
+    this.leaveNotice,
+    this.onDetailsTap,
   });
 
   final DoctorUiModel doctor;
   final bool isSelected;
   final VoidCallback onTap;
   final String? earliestAvailable;
+  final String? leaveNotice;
+  final VoidCallback? onDetailsTap;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +54,36 @@ class DoctorCard extends StatelessWidget {
                     '${doctor.specialty} • ${doctor.hospital}',
                     style: AppTextStyles.bodyMedium(context),
                   ),
+                  if (leaveNotice != null) ...[
+                    const SizedBox(height: AppSpacing.xs),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.sm,
+                        vertical: AppSpacing.xs,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.warning.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(AppRadius.sm),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(Icons.event_busy_rounded,
+                              size: 16, color: AppColors.warning),
+                          const SizedBox(width: AppSpacing.xs),
+                          Expanded(
+                            child: Text(
+                              leaveNotice!,
+                              style: AppTextStyles.bodyMedium(context).copyWith(
+                                color: context.colors.textPrimary,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: AppSpacing.xs),
                   Wrap(
                     spacing: AppSpacing.sm,
@@ -71,19 +105,31 @@ class DoctorCard extends StatelessWidget {
                 ],
               ),
             ),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 180),
-              child: isSelected
-                  ? const Icon(
-                      Icons.check_circle_rounded,
-                      key: ValueKey('selected'),
-                      color: AppColors.primary,
-                    )
-                  : Icon(
-                      Icons.radio_button_unchecked_rounded,
-                      key: const ValueKey('idle'),
-                      color: context.colors.textSecondary,
-                    ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (onDetailsTap != null)
+                  IconButton(
+                    tooltip: 'تفاصيل الطبيب',
+                    visualDensity: VisualDensity.compact,
+                    onPressed: onDetailsTap,
+                    icon: const Icon(Icons.info_outline_rounded),
+                  ),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 180),
+                  child: isSelected
+                      ? const Icon(
+                          Icons.check_circle_rounded,
+                          key: ValueKey('selected'),
+                          color: AppColors.primary,
+                        )
+                      : Icon(
+                          Icons.radio_button_unchecked_rounded,
+                          key: const ValueKey('idle'),
+                          color: context.colors.textSecondary,
+                        ),
+                ),
+              ],
             ),
           ],
         ),

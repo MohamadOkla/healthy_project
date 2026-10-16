@@ -7,6 +7,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_empty_state.dart';
 import '../../../../core/widgets/app_text_field.dart';
+import '../../../appointments/data/doctor_leave_repository.dart';
 import '../../data/repositories/hospital_admin_repository_impl.dart';
 import '../../domain/entities/hospital_doctor.dart';
 import '../../domain/repositories/hospital_admin_repository.dart';
@@ -27,7 +28,18 @@ class HospitalDoctorsScreen extends StatefulWidget {
 class _HospitalDoctorsScreenState extends State<HospitalDoctorsScreen> {
   late final HospitalAdminRepository _repository =
       widget.repository ?? HospitalAdminRepositoryImpl();
-  late final List<HospitalDoctor> _allDoctors = _repository.getDoctors();
+  late final List<HospitalDoctor> _allDoctors = () {
+    final leaves = DoctorLeaveRepository(hospitals: _repository);
+    final today = DateTime.now();
+    return _repository.getDoctors().map((doctor) {
+      final onLeave = leaves.isOnLeave(doctor.id, today);
+      return doctor.copyWith(
+        status: onLeave
+            ? HospitalDoctorStatus.onLeave
+            : HospitalDoctorStatus.active,
+      );
+    }).toList(growable: false);
+  }();
   final _searchController = TextEditingController();
   String _query = '';
 
@@ -104,7 +116,8 @@ class _HospitalDoctorsScreenState extends State<HospitalDoctorsScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: const HospitalAdminBottomNavigation(selectedIndex: 1),
+      bottomNavigationBar:
+          const HospitalAdminBottomNavigation(selectedIndex: 1),
     );
   }
 }

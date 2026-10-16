@@ -7,6 +7,8 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_empty_state.dart';
 import '../../../../core/widgets/app_text_field.dart';
+import '../../data/doctor_leave.dart';
+import '../../data/doctor_leave_repository.dart';
 import '../cubit/book_appointment_cubit.dart';
 import '../cubit/book_appointment_state.dart';
 import '../models/booking_ids.dart';
@@ -49,6 +51,7 @@ class _DoctorSelectionView extends StatelessWidget {
         builder: (context, state) {
           final cubit = context.read<BookAppointmentCubit>();
           final doctors = cubit.visibleDoctors;
+          final leaves = DoctorLeaveRepository();
 
           return ListView(
             padding: const EdgeInsets.all(AppSpacing.md),
@@ -101,6 +104,16 @@ class _DoctorSelectionView extends StatelessWidget {
                       earliestAvailable: cubit.earliestAvailable(doctor) == null
                           ? null
                           : _formatEarliest(cubit.earliestAvailable(doctor)!),
+                      leaveNotice: leaves.upcomingForDoctor(doctor.id).isEmpty
+                          ? null
+                          : _leaveNotice(
+                              leaves.upcomingForDoctor(doctor.id).first),
+                      onDetailsTap: () => context.push(
+                        AppRoutes.patientDoctorDetails.replaceFirst(
+                          ':doctorId',
+                          doctor.id,
+                        ),
+                      ),
                       onTap: () => cubit.selectDoctor(doctor),
                     ),
                   ),
@@ -125,4 +138,9 @@ class _DoctorSelectionView extends StatelessWidget {
 
   String _formatEarliest(DateTime date) =>
       'أقرب موعد: ${date.day}/${date.month} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+
+  String _leaveNotice(DoctorLeave leave) =>
+      'الطبيب في إجازة من ${DoctorLeave.formatDate(leave.startsOn)} '
+      'إلى ${DoctorLeave.formatDate(leave.endsOn)}.'
+      '${leave.reason.isEmpty ? '' : '\nالسبب: ${leave.reason}'}';
 }

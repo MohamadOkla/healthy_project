@@ -20,6 +20,7 @@ import '../features/medical_records/domain/entities/medical_record_entry.dart';
 import '../features/notifications/domain/entities/app_notification.dart';
 import '../features/prescriptions/domain/entities/prescription_entry.dart';
 import '../features/appointments/presentation/screens/doctor_selection_screen.dart';
+import '../features/appointments/presentation/screens/doctor_details_screen.dart';
 import '../features/appointments/presentation/screens/my_appointments_screen.dart';
 import '../features/authentication/presentation/screens/account_created_screen.dart';
 import '../features/authentication/presentation/screens/forgot_password_screen.dart';
@@ -29,11 +30,14 @@ import '../features/authentication/presentation/screens/password_changed_screen.
 import '../features/authentication/presentation/screens/register_screen.dart';
 import '../features/authentication/presentation/screens/reset_password_screen.dart';
 import '../features/doctor/presentation/screens/doctor_appointments_screen.dart';
+import '../features/doctor/presentation/screens/doctor_chat_screen.dart';
 import '../features/doctor/presentation/screens/doctor_consultations_screen.dart';
 import '../features/doctor/presentation/screens/doctor_dashboard_screen.dart';
+import '../features/doctor/presentation/screens/doctor_messages_screen.dart';
 import '../features/doctor/presentation/screens/doctor_patient_detail_screen.dart';
 import '../features/doctor/presentation/screens/doctor_patients_screen.dart';
 import '../features/doctor/presentation/screens/doctor_profile_screen.dart';
+import '../features/doctor/presentation/screens/new_doctor_message_screen.dart';
 import '../features/hospital_admin/presentation/screens/hospital_admin_dashboard_screen.dart';
 import '../features/hospital_admin/presentation/screens/hospital_admin_profile_screen.dart';
 import '../features/hospital_admin/presentation/screens/hospital_doctor_detail_screen.dart';
@@ -192,6 +196,13 @@ abstract final class AppRouter {
             cubit: cubit is BookAppointmentCubit ? cubit : _bookingCubit,
           );
         },
+      ),
+      GoRoute(
+        path: AppRoutes.patientDoctorDetails,
+        name: AppRoutes.patientDoctorDetailsName,
+        builder: (context, state) => DoctorDetailsScreen(
+          doctorId: state.pathParameters['doctorId'] ?? '',
+        ),
       ),
       GoRoute(
         path: AppRoutes.patientSelectDateTime,
@@ -392,6 +403,23 @@ abstract final class AppRouter {
         path: AppRoutes.doctorProfile,
         name: AppRoutes.doctorProfileName,
         builder: (context, state) => const DoctorProfileScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.doctorMessages,
+        name: AppRoutes.doctorMessagesName,
+        builder: (context, state) => const DoctorMessagesScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.doctorMessageNew,
+        name: AppRoutes.doctorMessageNewName,
+        builder: (context, state) => const NewDoctorMessageScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.doctorMessageChat,
+        name: AppRoutes.doctorMessageChatName,
+        builder: (context, state) => DoctorChatScreen(
+          peerId: state.pathParameters['peerId'] ?? '',
+        ),
       ),
       GoRoute(
         path: AppRoutes.hospitalAdmin,

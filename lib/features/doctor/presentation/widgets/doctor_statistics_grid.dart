@@ -14,6 +14,8 @@ class DoctorStatisticsGrid extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final crossAxisCount = constraints.maxWidth >= 620 ? 4 : 2;
+        final textScale = MediaQuery.textScalerOf(context).scale(14) / 14;
+        final baseAspectRatio = crossAxisCount == 4 ? 0.82 : 0.9;
 
         return GridView.count(
           crossAxisCount: crossAxisCount,
@@ -21,7 +23,7 @@ class DoctorStatisticsGrid extends StatelessWidget {
           mainAxisSpacing: AppSpacing.md,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          childAspectRatio: constraints.maxWidth >= 620 ? 0.95 : 1.0,
+          childAspectRatio: baseAspectRatio / textScale,
           children: [
             StatisticsCard(
               title: 'مواعيد اليوم',

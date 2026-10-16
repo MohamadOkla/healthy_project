@@ -20,7 +20,9 @@ class BookingLocalDataSource {
         hospital: 'مشفى دمشق الجامعي',
         rating: 4.8,
         experience: '12 سنة خبرة',
-        icon: Icons.monitor_heart_rounded),
+        icon: Icons.monitor_heart_rounded,
+        phone: '+963 944 010 101',
+        email: 'a.khaled@hospital.example'),
     DoctorUiModel(
         id: 'd2',
         name: 'د. رانيا يوسف',
@@ -30,7 +32,9 @@ class BookingLocalDataSource {
         hospital: 'مشفى المواساة',
         rating: 4.7,
         experience: '9 سنوات خبرة',
-        icon: Icons.health_and_safety_rounded),
+        icon: Icons.health_and_safety_rounded,
+        phone: '+963 955 030 303',
+        email: 'r.yousef@hospital.example'),
     DoctorUiModel(
         id: 'd3',
         name: 'د. سامر علي',
@@ -40,7 +44,9 @@ class BookingLocalDataSource {
         hospital: 'مشفى الأسد الجامعي',
         rating: 4.6,
         experience: '10 سنوات خبرة',
-        icon: Icons.accessibility_new_rounded),
+        icon: Icons.accessibility_new_rounded,
+        phone: '+963 966 040 404',
+        email: 's.ali@hospital.example'),
     DoctorUiModel(
         id: 'd4',
         name: 'د. ليلى حسن',
@@ -50,7 +56,9 @@ class BookingLocalDataSource {
         hospital: 'مشفى دمشق الجامعي',
         rating: 4.9,
         experience: '14 سنة خبرة',
-        icon: Icons.child_care_rounded),
+        icon: Icons.child_care_rounded,
+        phone: '+963 944 050 505',
+        email: 'l.hassan@hospital.example'),
     DoctorUiModel(
         id: 'd5',
         name: 'د. كريم منصور',
@@ -60,7 +68,9 @@ class BookingLocalDataSource {
         hospital: 'مشفى المواساة',
         rating: 4.5,
         experience: '8 سنوات خبرة',
-        icon: Icons.monitor_heart_rounded),
+        icon: Icons.monitor_heart_rounded,
+        phone: '+963 933 060 606',
+        email: 'k.mansour@hospital.example'),
     DoctorUiModel(
         id: 'd6',
         name: 'د. نور إبراهيم',
@@ -70,7 +80,9 @@ class BookingLocalDataSource {
         hospital: 'مشفى دمشق الجامعي',
         rating: 4.6,
         experience: '7 سنوات خبرة',
-        icon: Icons.monitor_heart_rounded),
+        icon: Icons.monitor_heart_rounded,
+        phone: '+963 933 020 202',
+        email: 'n.ibrahim@hospital.example'),
   ];
 
   // Offsets are relative to today so fixtures never become stale. d3 has no

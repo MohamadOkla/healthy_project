@@ -44,12 +44,10 @@ class QuickActionsGrid extends StatelessWidget {
         onTap: () => context.go(AppRoutes.doctorPatients),
       ),
       _QuickActionItem(
-        title: 'الرسائل',
+        title: 'مراسلة الأطباء',
         icon: Icons.chat_bubble_rounded,
         color: AppColors.success,
-        onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('ميزة الرسائل قريبًا')),
-        ),
+        onTap: () => context.go(AppRoutes.doctorMessages),
       ),
     ];
 

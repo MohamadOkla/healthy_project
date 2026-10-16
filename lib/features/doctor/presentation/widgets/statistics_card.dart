@@ -23,7 +23,7 @@ class StatisticsCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(AppSpacing.sm),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.xl),
@@ -39,44 +39,44 @@ class StatisticsCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 38,
-            height: 38,
+            width: 52,
+            height: 52,
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(AppRadius.lg),
             ),
-            child: Icon(icon, color: color, size: 20),
+            child: Icon(icon, color: color, size: 30),
           ),
-          const SizedBox(height: AppSpacing.xs),
+          const SizedBox(height: AppSpacing.sm),
           // مهم: Expanded هون ضروري (مش Spacer + FittedBox حر) لأنو بدونه
           // Column بيعطي هالعنصر ارتفاع غير محدود أثناء القياس، فـ FittedBox
           // ما بينكمش فعليًا وما بيحمي من overflow عند ضيق المساحة.
-          Expanded(
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              alignment: AlignmentDirectional.centerStart,
-              child: Text(
-                value,
-                style: AppTextStyles.headlineLarge(context).copyWith(
-                  color: theme.colorScheme.onSurface,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800,
-                ),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              value,
+              style: AppTextStyles.headlineLarge(context).copyWith(
+                color: theme.colorScheme.onSurface,
+                fontSize: 30,
+                fontWeight: FontWeight.w800,
               ),
             ),
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
             title,
-            maxLines: 1,
+            textAlign: TextAlign.center,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.bodyMedium(context).copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.62),
-              fontSize: 12,
-              height: 1.2,
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              height: 1.25,
             ),
           ),
         ],

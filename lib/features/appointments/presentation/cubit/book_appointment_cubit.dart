@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/local_appointments_repository.dart';
+import '../../data/doctor_leave_repository.dart';
 import '../data/booking_local_data_source.dart';
 import '../models/appointment_ui_model.dart';
 import '../models/doctor_ui_model.dart';
@@ -15,6 +16,7 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
         super(const BookAppointmentState());
 
   final LocalAppointmentsRepository _repository;
+  final DoctorLeaveRepository _leaveRepository = DoctorLeaveRepository();
 
   static const specialties = BookingLocalDataSource.specialties;
   static const hospitals = BookingLocalDataSource.hospitals;
@@ -108,24 +110,13 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
     final doctor = state.selectedDoctor;
     final date = state.selectedDate;
     if (doctor == null || date == null) return const [];
-    final booked = _repository
-        .load()
-        .where((item) => item.doctorId == doctor.id && item.startAt != null)
-        .map((item) => item.startAt!);
-    return BookingLocalDataSource.slotsFor(
-        doctorId: doctor.id, date: date, alreadyBooked: booked);
+    return availableFor(doctor.id, date);
   }
 
   DateTime? earliestAvailable(DoctorUiModel doctor) {
-    final booked = _repository
-        .load()
-        .where((item) => item.doctorId == doctor.id && item.startAt != null)
-        .map((item) => item.startAt!)
-        .toList();
     for (var offset = 0; offset < 14; offset++) {
       final day = BookingLocalDataSource.dateAtOffset(offset);
-      final first = BookingLocalDataSource.slotsFor(
-              doctorId: doctor.id, date: day, alreadyBooked: booked)
+      final first = availableFor(doctor.id, day)
           .where((slot) => slot.isAvailable)
           .firstOrNull;
       if (first != null) return first.startAt;
@@ -157,8 +148,18 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
         .load()
         .where((item) => item.doctorId == doctorId && item.startAt != null)
         .map((item) => item.startAt!);
-    return BookingLocalDataSource.slotsFor(
-        doctorId: doctorId, date: date, alreadyBooked: booked);
+    final slots = BookingLocalDataSource.slotsFor(
+      doctorId: doctorId,
+      date: date,
+      alreadyBooked: booked,
+    );
+    if (!_leaveRepository.isOnLeave(doctorId, date)) return slots;
+    return slots
+        .map((slot) => TimeSlotUiModel(
+              startAt: slot.startAt,
+              isAvailable: false,
+            ))
+        .toList(growable: false);
   }
 
   Future<AppointmentUiModel?> confirmBooking() async {

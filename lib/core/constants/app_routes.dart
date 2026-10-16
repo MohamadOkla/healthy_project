@@ -53,6 +53,9 @@ abstract final class AppRoutes {
       '/patient/appointments/select-doctor';
   static const String patientSelectDoctorName = 'patient-select-doctor';
 
+  static const String patientDoctorDetails = '/patient/doctors/:doctorId';
+  static const String patientDoctorDetailsName = 'patient-doctor-details';
+
   static const String patientSelectDateTime =
       '/patient/appointments/select-date-time';
   static const String patientSelectDateTimeName = 'patient-select-date-time';
@@ -154,6 +157,13 @@ abstract final class AppRoutes {
 
   static const String doctorProfile = '/doctor/profile';
   static const String doctorProfileName = 'doctor-profile';
+
+  static const String doctorMessages = '/doctor/messages';
+  static const String doctorMessagesName = 'doctor-messages';
+  static const String doctorMessageNew = '/doctor/messages/new';
+  static const String doctorMessageNewName = 'doctor-message-new';
+  static const String doctorMessageChat = '/doctor/messages/chat/:peerId';
+  static const String doctorMessageChatName = 'doctor-message-chat';
 
   static const String hospitalAdmin = '/hospital-admin';
   static const String hospitalAdminName = 'hospital-admin';

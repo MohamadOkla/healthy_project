@@ -9,6 +9,10 @@ class HospitalAdminRepositoryImpl implements HospitalAdminRepository {
   final HospitalAdminLocalDataSource _dataSource;
 
   @override
+  String get currentHospitalId =>
+      HospitalAdminLocalDataSource.managerHospitalId;
+
+  @override
   List<HospitalDoctor> getDoctors() => _dataSource.getDoctors();
 
   @override
