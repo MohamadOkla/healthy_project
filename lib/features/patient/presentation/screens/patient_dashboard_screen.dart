@@ -47,7 +47,12 @@ class _PatientDashboardView extends StatelessWidget {
                     child: CustomScrollView(
                       slivers: [
                         SliverPadding(
-                          padding: const EdgeInsets.all(AppSpacing.lg),
+                          padding: const EdgeInsets.fromLTRB(
+                            AppSpacing.lg,
+                            AppSpacing.sm,
+                            AppSpacing.lg,
+                            AppSpacing.lg,
+                          ),
                           sliver: SliverList.list(
                             children: [
                               const DashboardHeader(),

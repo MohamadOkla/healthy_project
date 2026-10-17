@@ -6,6 +6,7 @@ import '../../../../core/constants/app_routes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../data/doctor_leave.dart';
 import '../cubit/book_appointment_cubit.dart';
 import '../cubit/book_appointment_state.dart';
 import '../widgets/booking_step_indicator.dart';
@@ -46,6 +47,8 @@ class _DateTimeSelectionView extends StatelessWidget {
         builder: (context, state) {
           final cubit = context.read<BookAppointmentCubit>();
           final slots = cubit.availableSlots;
+          final leaves = cubit.upcomingLeavesForSelectedDoctor;
+          final selectedLeave = cubit.leaveForSelectedDate;
           final morningSlots =
               slots.where((slot) => slot.startAt.hour < 12).toList();
           final eveningSlots =
@@ -59,9 +62,39 @@ class _DateTimeSelectionView extends StatelessWidget {
               DateSelector(
                 selectedDate: state.selectedDate,
                 onDateSelected: cubit.selectDate,
+                leaves: leaves,
               ),
+              if (leaves.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.sm),
+                AppCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('إجازات الطبيب المسجلة'),
+                      const SizedBox(height: AppSpacing.xs),
+                      for (final leave in leaves)
+                        Padding(
+                          padding: const EdgeInsets.only(top: AppSpacing.xs),
+                          child: Text(
+                            'إجازة من ${DoctorLeave.formatDate(leave.startsOn)} إلى ${DoctorLeave.formatDate(leave.endsOn)}',
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
               const SizedBox(height: AppSpacing.lg),
+              if (selectedLeave != null) ...[
+                AppCard(
+                  child: Text(
+                    'الطبيب في إجازة من ${DoctorLeave.formatDate(selectedLeave.startsOn)} إلى ${DoctorLeave.formatDate(selectedLeave.endsOn)}، ولا تتوفر مواعيد خلال هذه الفترة',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+              ],
               if (state.selectedDate != null &&
+                  selectedLeave == null &&
                   !slots.any((slot) => slot.isAvailable)) ...[
                 AppCard(
                     child: Column(children: [

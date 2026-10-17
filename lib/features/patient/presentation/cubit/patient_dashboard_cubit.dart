@@ -1,10 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_routes.dart';
 import '../../../../core/constants/current_patient.dart';
-import '../../../laboratory/data/repositories/laboratory_repository_impl.dart';
-import '../../../laboratory/domain/repositories/laboratory_repository.dart';
+import '../../../appointments/data/local_appointments_repository.dart';
+import '../../../appointments/presentation/models/appointment_status.dart';
+import '../../../appointments/presentation/models/appointment_ui_model.dart';
+import '../../../medical_records/data/repositories/medical_records_repository_impl.dart';
+import '../../../medical_records/domain/entities/medical_record_entry.dart';
+import '../../../medical_records/domain/repositories/medical_records_repository.dart';
+import '../../../notifications/data/repositories/notifications_repository_impl.dart';
+import '../../../notifications/domain/entities/app_notification.dart';
+import '../../../notifications/domain/repositories/notifications_repository.dart';
 import '../../../prescriptions/data/repositories/prescriptions_repository_impl.dart';
 import '../../../prescriptions/domain/repositories/prescriptions_repository.dart';
 import '../models/appointment_model.dart';
@@ -13,24 +22,40 @@ import '../models/quick_action_model.dart';
 import 'patient_dashboard_state.dart';
 
 class PatientDashboardCubit extends Cubit<PatientDashboardState> {
-  PatientDashboardCubit({
+  factory PatientDashboardCubit({
     PrescriptionsRepository? prescriptionsRepository,
-    LaboratoryRepository? laboratoryRepository,
-  })  : _prescriptionsRepository =
-            prescriptionsRepository ?? PrescriptionsRepositoryImpl(),
-        _laboratoryRepository = laboratoryRepository ?? LaboratoryRepositoryImpl(),
+    MedicalRecordsRepository? medicalRecordsRepository,
+    NotificationsRepository? notificationsRepository,
+    LocalAppointmentsRepository? appointmentsRepository,
+  }) {
+    return PatientDashboardCubit._(
+      prescriptionsRepository:
+          prescriptionsRepository ?? PrescriptionsRepositoryImpl(),
+      medicalRecordsRepository:
+          medicalRecordsRepository ?? MedicalRecordsRepositoryImpl(),
+      notificationsRepository:
+          notificationsRepository ?? NotificationsRepositoryImpl(),
+      appointmentsRepository:
+          appointmentsRepository ?? LocalAppointmentsRepository(),
+    );
+  }
+
+  PatientDashboardCubit._({
+    required PrescriptionsRepository prescriptionsRepository,
+    required MedicalRecordsRepository medicalRecordsRepository,
+    required NotificationsRepository notificationsRepository,
+    required LocalAppointmentsRepository appointmentsRepository,
+  })  : _prescriptionsRepository = prescriptionsRepository,
+        _medicalRecordsRepository = medicalRecordsRepository,
+        _notificationsRepository = notificationsRepository,
+        _appointmentsRepository = appointmentsRepository,
         super(
-          const PatientDashboardState(
-            healthSummary: HealthSummaryModel(
-              status: 'حالتك الصحية مستقرة',
-              lastVisit: 'منذ 12 يوماً',
-              score: 0.92,
-              // Matches AppointmentsCubit's one confirmed appointment - see
-              // the note on PatientDashboardCubit.load() for why this one
-              // count isn't pulled from a shared repository yet.
-              upcomingAppointments: 1,
-              activePrescriptions: 0,
-              newResults: 0,
+          PatientDashboardState(
+            healthSummary: _buildSummary(
+              prescriptionsRepository,
+              medicalRecordsRepository,
+              notificationsRepository,
+              appointmentsRepository.load(),
             ),
             quickActions: [
               QuickActionModel(
@@ -54,41 +79,118 @@ class PatientDashboardCubit extends Cubit<PatientDashboardState> {
                 route: AppRoutes.patientLaboratory,
               ),
             ],
-            upcomingAppointment: AppointmentModel(
-              doctorName: 'د. أحمد خالد',
-              specialty: 'قلبية',
-              day: 'الثلاثاء',
-              time: '10:30 صباحاً',
-            ),
+            upcomingAppointment:
+                _upcomingAppointment(appointmentsRepository.load()),
           ),
         ) {
-    _loadRealCounts();
+    _appointmentsSubscription = _appointmentsRepository.changes.listen((_) {
+      if (!isClosed) refresh();
+    });
   }
 
   final PrescriptionsRepository _prescriptionsRepository;
-  final LaboratoryRepository _laboratoryRepository;
+  final MedicalRecordsRepository _medicalRecordsRepository;
+  final NotificationsRepository _notificationsRepository;
+  final LocalAppointmentsRepository _appointmentsRepository;
+  late final StreamSubscription<List<AppointmentUiModel>>
+      _appointmentsSubscription;
 
-  // AppointmentsCubit currently keeps its sample appointments to itself
-  // rather than behind a shared repository (see CHANGELOG), so
-  // `upcomingAppointments` above is a constant kept in sync with it by hand
-  // rather than computed here. Prescriptions and lab results *are* behind
-  // real shared repositories, so those two are computed for real.
-  void _loadRealCounts() {
-    final activePrescriptions = _prescriptionsRepository
+  @override
+  Future<void> close() async {
+    await _appointmentsSubscription.cancel();
+    await super.close();
+  }
+
+  void refresh() {
+    final appointments = _appointmentsRepository.load();
+    final upcomingAppointment = _upcomingAppointment(appointments);
+    emit(state.copyWith(
+      healthSummary: _buildSummary(
+        _prescriptionsRepository,
+        _medicalRecordsRepository,
+        _notificationsRepository,
+        appointments,
+      ),
+      upcomingAppointment: upcomingAppointment,
+      clearUpcomingAppointment: upcomingAppointment == null,
+    ));
+  }
+
+  static AppointmentModel? _upcomingAppointment(
+    List<AppointmentUiModel> appointments,
+  ) {
+    final upcoming = appointments
+        .where((appointment) =>
+            appointment.patientId == currentPatientId &&
+            appointment.status == AppointmentStatus.confirmed &&
+            appointment.startAt != null &&
+            appointment.startAt!.isAfter(DateTime.now()))
+        .toList()
+      ..sort((a, b) => a.startAt!.compareTo(b.startAt!));
+    return upcoming.isEmpty
+        ? null
+        : AppointmentModel(appointment: upcoming.first);
+  }
+
+  static HealthSummaryModel _buildSummary(
+    PrescriptionsRepository prescriptions,
+    MedicalRecordsRepository medicalRecords,
+    NotificationsRepository notifications,
+    List<AppointmentUiModel> appointments,
+  ) {
+    final lastVisit = _lastVisitLabel(
+      medicalRecords.getRecordsForPatient(currentPatientId),
+    );
+    final upcomingAppointments = appointments.where((appointment) {
+      final startAt = appointment.startAt;
+      return appointment.patientId == currentPatientId &&
+          appointment.status == AppointmentStatus.confirmed &&
+          startAt != null &&
+          startAt.isAfter(DateTime.now());
+    }).length;
+    final activePrescriptions = prescriptions
         .getPrescriptionsForPatient(currentPatientId)
         .where((prescription) => prescription.isActive)
         .length;
-    final newResults = _laboratoryRepository
-        .getResultsForPatient(currentPatientId)
+    final unreadResults = notifications
+        .getNotificationsForPatient(currentPatientId)
+        .where((notification) =>
+            notification.type == AppNotificationType.labResult &&
+            !notification.isRead)
         .length;
 
-    emit(
-      state.copyWith(
-        healthSummary: state.healthSummary.copyWith(
-          activePrescriptions: activePrescriptions,
-          newResults: newResults,
-        ),
-      ),
+    return HealthSummaryModel(
+      lastVisit: lastVisit,
+      upcomingAppointments: upcomingAppointments,
+      activePrescriptions: activePrescriptions,
+      newResults: unreadResults,
     );
+  }
+
+  static String _lastVisitLabel(List<MedicalRecordEntry> records) {
+    final now = DateTime.now();
+    final dated = records
+        .where((record) =>
+            record.patientId == currentPatientId &&
+            record.occurredAt != null &&
+            !record.occurredAt!.isAfter(now))
+        .toList()
+      ..sort((a, b) => b.occurredAt!.compareTo(a.occurredAt!));
+    if (dated.isNotEmpty) {
+      final days = now.difference(dated.first.occurredAt!).inDays;
+      if (days == 0) return 'اليوم';
+      if (days == 1) return 'منذ يوم واحد';
+      if (days == 2) return 'منذ يومين';
+      if (days <= 10) return 'منذ $days أيام';
+      return 'منذ $days يومًا';
+    }
+
+    for (final record in records) {
+      if (record.patientId == currentPatientId &&
+          record.visitDate.trim().isNotEmpty) {
+        return record.visitDate.trim();
+      }
+    }
+    return 'لا توجد زيارات سابقة';
   }
 }

@@ -1,13 +1,14 @@
-class AppointmentModel {
-  const AppointmentModel({
-    required this.doctorName,
-    required this.specialty,
-    required this.day,
-    required this.time,
-  });
+import '../../../appointments/presentation/models/appointment_ui_model.dart';
 
-  final String doctorName;
-  final String specialty;
-  final String day;
-  final String time;
+class AppointmentModel {
+  const AppointmentModel({required this.appointment});
+
+  final AppointmentUiModel appointment;
+
+  String get doctorName => appointment.doctorName;
+  String get specialty => appointment.specialty;
+  String get hospital => appointment.hospital;
+  String get day => appointment.day;
+  String get date => appointment.date;
+  String get time => appointment.time;
 }

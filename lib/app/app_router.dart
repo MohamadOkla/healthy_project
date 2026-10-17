@@ -89,7 +89,9 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutes.roleSelection,
         name: AppRoutes.roleSelectionName,
-        builder: (context, state) => const RoleSelectionScreen(),
+        builder: (context, state) => RoleSelectionScreen(
+          forRegistration: state.uri.queryParameters['flow'] == 'register',
+        ),
       ),
       GoRoute(
         path: AppRoutes.auth,

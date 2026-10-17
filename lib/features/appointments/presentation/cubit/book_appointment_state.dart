@@ -13,6 +13,7 @@ class BookAppointmentState extends Equatable {
       this.selectedTime,
       this.doctorSearchQuery = '',
       this.isConfirming = false,
+      this.availabilityRevision = 0,
       this.confirmedAppointment});
 
   final SpecialtyId? selectedSpecialty;
@@ -23,6 +24,7 @@ class BookAppointmentState extends Equatable {
   final DateTime? selectedTime;
   final String doctorSearchQuery;
   final bool isConfirming;
+  final int availabilityRevision;
   final AppointmentUiModel? confirmedAppointment;
 
   bool get canContinueFromBooking =>
@@ -50,6 +52,7 @@ class BookAppointmentState extends Equatable {
           DateTime? selectedTime,
           String? doctorSearchQuery,
           bool? isConfirming,
+          int? availabilityRevision,
           AppointmentUiModel? confirmedAppointment,
           bool clearConfirmedAppointment = false,
           bool clearSpecialty = false,
@@ -71,6 +74,7 @@ class BookAppointmentState extends Equatable {
         selectedTime: clearTime ? null : selectedTime ?? this.selectedTime,
         doctorSearchQuery: doctorSearchQuery ?? this.doctorSearchQuery,
         isConfirming: isConfirming ?? this.isConfirming,
+        availabilityRevision: availabilityRevision ?? this.availabilityRevision,
         confirmedAppointment: clearConfirmedAppointment
             ? null
             : confirmedAppointment ?? this.confirmedAppointment,
@@ -86,6 +90,7 @@ class BookAppointmentState extends Equatable {
         selectedTime,
         doctorSearchQuery,
         isConfirming,
+        availabilityRevision,
         confirmedAppointment
       ];
 }

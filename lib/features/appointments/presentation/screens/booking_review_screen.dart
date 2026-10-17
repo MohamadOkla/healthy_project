@@ -93,10 +93,10 @@ class _ReviewView extends StatelessWidget {
                 const SizedBox(height: AppSpacing.md),
                 const AppCard(
                     child: Text(
-                        'هذا حجز تجريبي محفوظ على جهازك، ولا يمثل تأكيداً من مشفى حقيقي.')),
+                        'يُحفظ الموعد على هذا الجهاز ويظهر للطبيب المحدد في التطبيق.')),
                 const SizedBox(height: AppSpacing.lg),
                 AppButton(
-                    text: 'تأكيد الحجز التجريبي',
+                    text: 'تأكيد الموعد',
                     icon: Icons.check_circle_rounded,
                     isLoading: state.isConfirming,
                     onPressed: state.canConfirm
@@ -111,6 +111,8 @@ class _ReviewView extends StatelessWidget {
                                     const SnackBar(
                                         content: Text(
                                             'أصبح هذا الوقت غير متاح. اختر وقتاً آخر.')));
+                                context.go(AppRoutes.patientSelectDateTime,
+                                    extra: cubit);
                               }
                             } on Object {
                               if (context.mounted) {

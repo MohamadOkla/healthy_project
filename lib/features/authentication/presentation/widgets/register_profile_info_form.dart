@@ -10,9 +10,15 @@ class RegisterProfileInfoForm extends StatelessWidget {
   const RegisterProfileInfoForm({
     super.key,
     this.isDoctorRegistration = false,
+    this.isHospitalAdminRegistration = false,
+    this.hospitalNameController,
+    this.jobTitleController,
   });
 
   final bool isDoctorRegistration;
+  final bool isHospitalAdminRegistration;
+  final TextEditingController? hospitalNameController;
+  final TextEditingController? jobTitleController;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +70,27 @@ class RegisterProfileInfoForm extends StatelessWidget {
                   value: 'assad', child: Text('مشفى الأسد الجامعي')),
             ],
             onChanged: (_) {},
+          ),
+        ],
+      );
+    }
+
+    if (isHospitalAdminRegistration) {
+      return Column(
+        children: [
+          AppTextField(
+            controller: hospitalNameController,
+            label: 'اسم المشفى',
+            prefixIcon:
+                Icon(Icons.local_hospital_outlined, color: AppColors.primary),
+            textInputAction: TextInputAction.next,
+          ),
+          const SizedBox(height: AppSpacing.md),
+          AppTextField(
+            controller: jobTitleController,
+            label: 'المسمى الوظيفي',
+            prefixIcon: Icon(Icons.badge_outlined, color: AppColors.primary),
+            textInputAction: TextInputAction.next,
           ),
         ],
       );

@@ -14,6 +14,8 @@ abstract final class StorageKeys {
   static const profileFullName = 'profileFullName';
   static const profilePhone = 'profilePhone';
   static const profileEmail = 'profileEmail';
+  static const profileHospitalName = 'profileHospitalName';
+  static const profileJobTitle = 'profileJobTitle';
   static const profileProvince = 'profileProvince';
   static const profileCity = 'profileCity';
   static const profileAddress = 'profileAddress';

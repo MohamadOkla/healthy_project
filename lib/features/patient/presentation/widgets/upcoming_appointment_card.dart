@@ -14,10 +14,11 @@ import '../models/appointment_model.dart';
 class UpcomingAppointmentCard extends StatelessWidget {
   const UpcomingAppointmentCard({super.key, required this.appointment});
 
-  final AppointmentModel appointment;
+  final AppointmentModel? appointment;
 
   @override
   Widget build(BuildContext context) {
+    final upcoming = appointment;
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
@@ -30,40 +31,58 @@ class UpcomingAppointmentCard extends StatelessWidget {
         children: [
           Text('الموعد القادم', style: AppTextStyles.titleMedium(context)),
           const SizedBox(height: AppSpacing.md),
-          Row(
-            children: [
-              const CircleAvatar(
-                backgroundColor: AppColors.primaryTint,
-                child: Icon(
-                  Icons.medical_services_rounded,
-                  color: AppColors.primary,
+          if (upcoming == null) ...[
+            Text(
+              'لا يوجد لديك موعد قادم حاليًا.',
+              style: AppTextStyles.bodyMedium(context),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppButton(
+              text: 'حجز موعد',
+              isOutlined: true,
+              onPressed: () => context.go(AppRoutes.patientBookAppointment),
+            ),
+          ] else ...[
+            Row(
+              children: [
+                const CircleAvatar(
+                  backgroundColor: AppColors.primaryTint,
+                  child: Icon(
+                    Icons.medical_services_rounded,
+                    color: AppColors.primary,
+                  ),
                 ),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(appointment.doctorName,
-                        style: AppTextStyles.titleMedium(context)),
-                    Text(appointment.specialty,
-                        style: AppTextStyles.bodyMedium(context)),
-                  ],
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(upcoming.doctorName,
+                          style: AppTextStyles.titleMedium(context)),
+                      Text(upcoming.specialty,
+                          style: AppTextStyles.bodyMedium(context)),
+                      Text(upcoming.hospital,
+                          style: AppTextStyles.bodyMedium(context)),
+                    ],
+                  ),
                 ),
+                Text(
+                  '${upcoming.day}\n${upcoming.date}\n${upcoming.time}',
+                  style: AppTextStyles.bodyMedium(context),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppButton(
+              text: 'عرض التفاصيل',
+              isOutlined: true,
+              onPressed: () => context.go(
+                AppRoutes.patientAppointmentDetails,
+                extra: upcoming.appointment,
               ),
-              Text(
-                '${appointment.day}\n${appointment.time}',
-                style: AppTextStyles.bodyMedium(context),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.md),
-          AppButton(
-            text: 'عرض التفاصيل',
-            isOutlined: true,
-            onPressed: () => context.go(AppRoutes.patientAppointmentDetails),
-          ),
+            ),
+          ],
         ],
       ),
     );

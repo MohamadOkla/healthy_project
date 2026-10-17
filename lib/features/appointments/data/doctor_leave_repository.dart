@@ -53,17 +53,17 @@ class DoctorLeaveRepository {
 
   List<DoctorLeave> upcomingForDoctor(String doctorId, {DateTime? now}) {
     final today = DoctorLeave.dateOnly(now ?? DateTime.now());
-    return load()
-        .where((leave) =>
-            leave.doctorId == doctorId && !leave.endsOn.isBefore(today))
+    return forDoctor(doctorId)
+        .where((leave) => !leave.endsOn.isBefore(today))
         .toList()
       ..sort((left, right) => left.startsOn.compareTo(right.startsOn));
   }
 
-  bool isOnLeave(String doctorId, DateTime date) => load().any((leave) =>
-      leave.doctorId == doctorId &&
-      leave.hospitalId == managerHospitalId &&
-      leave.includes(date));
+  DoctorLeave? leaveForDate(String doctorId, DateTime date) =>
+      forDoctor(doctorId).where((leave) => leave.includes(date)).firstOrNull;
+
+  bool isOnLeave(String doctorId, DateTime date) =>
+      leaveForDate(doctorId, date) != null;
 
   Future<DoctorLeaveSaveResult> save({
     required String doctorId,

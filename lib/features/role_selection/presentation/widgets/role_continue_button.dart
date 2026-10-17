@@ -11,7 +11,9 @@ import '../cubit/role_selection_cubit.dart';
 import '../cubit/role_selection_state.dart';
 
 class RoleContinueButton extends StatelessWidget {
-  const RoleContinueButton({super.key});
+  const RoleContinueButton({super.key, this.forRegistration = false});
+
+  final bool forRegistration;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,9 @@ class RoleContinueButton extends StatelessWidget {
                     normalizedRole,
                   );
                   if (!context.mounted) return;
-                  context.go(UserRoleHelper.loginRouteFor(normalizedRole));
+                  context.go(forRegistration
+                      ? UserRoleHelper.registerRouteFor(normalizedRole)
+                      : UserRoleHelper.loginRouteFor(normalizedRole));
                 }
               : null,
         );

@@ -24,7 +24,23 @@ class RegisterContent extends StatefulWidget {
 }
 
 class _RegisterContentState extends State<RegisterContent> {
+  final _stepFormKey = GlobalKey<FormState>();
+  final _fullNameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _hospitalNameController = TextEditingController();
+  final _jobTitleController = TextEditingController();
   String _password = '';
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    _hospitalNameController.dispose();
+    _jobTitleController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +53,7 @@ class _RegisterContentState extends State<RegisterContent> {
                 title: 'إنشاء حساب',
                 onBackPressed: () {
                   if (state.isFirstStep) {
-                    context
-                        .go(UserRoleHelper.loginRouteFor(state.selectedRole));
+                    context.go(UserRoleHelper.registrationRoleSelectionRoute);
                     return;
                   }
                   context.read<RegisterCubit>().previousStep();
@@ -60,28 +75,47 @@ class _RegisterContentState extends State<RegisterContent> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Text(
-                              state.isDoctorRegistration
-                                  ? 'إنشاء حساب طبيب'
-                                  : 'إنشاء حساب مريض',
+                              switch (state.selectedRole) {
+                                UserRoleHelper.doctor => 'إنشاء حساب طبيب',
+                                UserRoleHelper.hospitalAdmin =>
+                                  'إنشاء حساب مدير مشفى',
+                                _ => 'إنشاء حساب مريض',
+                              },
                               style: AppTextStyles.headlineLarge(context),
                             ),
                             const SizedBox(height: AppSpacing.sm),
                             Text(
-                              state.isDoctorRegistration
-                                  ? 'أكمل بياناتك المهنية ليتم إنشاء الحساب ومراجعته من الإدارة.'
-                                  : 'أكمل البيانات التالية لإنشاء حسابك داخل المنظومة.',
+                              switch (state.selectedRole) {
+                                UserRoleHelper.doctor =>
+                                  'أكمل بياناتك المهنية ليتم إنشاء الحساب ومراجعته من الإدارة.',
+                                UserRoleHelper.hospitalAdmin =>
+                                  'أكمل بياناتك وبيانات المشفى لإنشاء حساب الإدارة.',
+                                _ =>
+                                  'أكمل البيانات التالية لإنشاء حسابك داخل المنظومة.',
+                              },
                               style: AppTextStyles.bodyMedium(context),
                             ),
                             const SizedBox(height: AppSpacing.lg),
                             RegisterStepIndicator(
                                 currentStep: state.currentStep),
                             const SizedBox(height: AppSpacing.xl),
-                            RegisterStepBody(
-                              step: state.currentStep,
-                              isDoctorRegistration: state.isDoctorRegistration,
-                              password: _password,
-                              onPasswordChanged: (value) =>
-                                  setState(() => _password = value),
+                            Form(
+                              key: _stepFormKey,
+                              child: RegisterStepBody(
+                                step: state.currentStep,
+                                isDoctorRegistration:
+                                    state.isDoctorRegistration,
+                                isHospitalAdminRegistration:
+                                    state.isHospitalAdminRegistration,
+                                fullNameController: _fullNameController,
+                                phoneController: _phoneController,
+                                emailController: _emailController,
+                                hospitalNameController: _hospitalNameController,
+                                jobTitleController: _jobTitleController,
+                                password: _password,
+                                onPasswordChanged: (value) =>
+                                    setState(() => _password = value),
+                              ),
                             ),
                             const SizedBox(height: AppSpacing.xl),
                             Row(
@@ -105,31 +139,50 @@ class _RegisterContentState extends State<RegisterContent> {
                                         : 'التالي',
                                     isLoading: state.isLoading,
                                     onPressed: () async {
+                                      if (!(_stepFormKey.currentState
+                                              ?.validate() ??
+                                          true)) {
+                                        return;
+                                      }
                                       if (state.isLastStep) {
-                                        await context
-                                            .read<RegisterCubit>()
-                                            .submit();
-                                        await LocalStorageService.instance
-                                            .setString(
-                                          StorageKeys.selectedRole,
-                                          state.selectedRole,
-                                        );
-                                        await LocalStorageService.instance
-                                            .setString(
-                                          StorageKeys.currentUserRole,
-                                          state.selectedRole,
-                                        );
-                                        await LocalStorageService.instance
-                                            .setString(
-                                          StorageKeys.lastRoute,
-                                          AppRoutes.otp,
-                                        );
-                                        if (context.mounted) {
-                                          context.go(
-                                            UserRoleHelper.otpRouteForRegister(
-                                              state.selectedRole,
-                                            ),
+                                        try {
+                                          await context
+                                              .read<RegisterCubit>()
+                                              .submit(
+                                                fullName:
+                                                    _fullNameController.text,
+                                                phone: _phoneController.text,
+                                                email: _emailController.text,
+                                                hospitalName:
+                                                    _hospitalNameController
+                                                        .text,
+                                                jobTitle:
+                                                    _jobTitleController.text,
+                                              );
+                                          await LocalStorageService.instance
+                                              .setString(
+                                            StorageKeys.lastRoute,
+                                            AppRoutes.otp,
                                           );
+                                          if (context.mounted) {
+                                            context.go(
+                                              UserRoleHelper
+                                                  .otpRouteForRegister(
+                                                state.selectedRole,
+                                              ),
+                                            );
+                                          }
+                                        } on Object {
+                                          if (context.mounted) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  'تعذر حفظ بيانات الحساب. حاول مرة أخرى.',
+                                                ),
+                                              ),
+                                            );
+                                          }
                                         }
                                         return;
                                       }

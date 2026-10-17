@@ -6,13 +6,23 @@ import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_text_field.dart';
 
 class RegisterPersonalInfoForm extends StatelessWidget {
-  const RegisterPersonalInfoForm({super.key});
+  const RegisterPersonalInfoForm({
+    super.key,
+    required this.fullNameController,
+    required this.phoneController,
+    required this.emailController,
+  });
+
+  final TextEditingController fullNameController;
+  final TextEditingController phoneController;
+  final TextEditingController emailController;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const AppTextField(
+        AppTextField(
+          controller: fullNameController,
           label: 'الاسم الكامل',
           prefixIcon: Icon(
             Icons.person_outline_rounded,
@@ -21,7 +31,8 @@ class RegisterPersonalInfoForm extends StatelessWidget {
           textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: AppSpacing.md),
-        const AppTextField(
+        AppTextField(
+          controller: phoneController,
           label: 'رقم الهاتف',
           prefixIcon: Icon(Icons.phone_outlined, color: AppColors.primary),
           keyboardType: TextInputType.phone,
@@ -29,6 +40,7 @@ class RegisterPersonalInfoForm extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         AppTextField(
+          controller: emailController,
           label: 'البريد الإلكتروني',
           prefixIcon: const Icon(
             Icons.mail_outline_rounded,

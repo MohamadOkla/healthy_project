@@ -1,6 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/constants/current_patient.dart';
+import '../../../../core/constants/storage_keys.dart';
+import '../../../../core/services/local_storage_service.dart';
 import '../../data/local_appointments_repository.dart';
+import '../../data/doctor_leave.dart';
 import '../../data/doctor_leave_repository.dart';
 import '../data/booking_local_data_source.dart';
 import '../models/appointment_ui_model.dart';
@@ -13,10 +19,20 @@ import 'book_appointment_state.dart';
 class BookAppointmentCubit extends Cubit<BookAppointmentState> {
   BookAppointmentCubit({LocalAppointmentsRepository? repository})
       : _repository = repository ?? LocalAppointmentsRepository(),
-        super(const BookAppointmentState());
+        super(const BookAppointmentState()) {
+    _repositorySubscription = _repository.changes.listen((_) {
+      if (!isClosed) {
+        emit(state.copyWith(
+          availabilityRevision: state.availabilityRevision + 1,
+        ));
+      }
+    });
+  }
 
   final LocalAppointmentsRepository _repository;
   final DoctorLeaveRepository _leaveRepository = DoctorLeaveRepository();
+  late final StreamSubscription<List<AppointmentUiModel>>
+      _repositorySubscription;
 
   static const specialties = BookingLocalDataSource.specialties;
   static const hospitals = BookingLocalDataSource.hospitals;
@@ -106,11 +122,26 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
         .toList(growable: false);
   }
 
+  List<DoctorLeave> get upcomingLeavesForSelectedDoctor {
+    final doctor = state.selectedDoctor;
+    if (doctor == null) return const [];
+    return _leaveRepository.upcomingForDoctor(doctor.id);
+  }
+
+  DoctorLeave? get leaveForSelectedDate {
+    final doctor = state.selectedDoctor;
+    final date = state.selectedDate;
+    if (doctor == null || date == null) return null;
+    return _leaveRepository.leaveForDate(doctor.id, date);
+  }
+
   List<TimeSlotUiModel> get availableSlots {
     final doctor = state.selectedDoctor;
     final date = state.selectedDate;
     if (doctor == null || date == null) return const [];
-    return availableFor(doctor.id, date);
+    return availableFor(doctor.id, date)
+        .where((slot) => slot.isAvailable)
+        .toList(growable: false);
   }
 
   DateTime? earliestAvailable(DoctorUiModel doctor) {
@@ -146,7 +177,10 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
   List<TimeSlotUiModel> availableFor(String doctorId, DateTime date) {
     final booked = _repository
         .load()
-        .where((item) => item.doctorId == doctorId && item.startAt != null)
+        .where((item) =>
+            item.doctorId == doctorId &&
+            item.startAt != null &&
+            item.status == AppointmentStatus.confirmed)
         .map((item) => item.startAt!);
     final slots = BookingLocalDataSource.slotsFor(
       doctorId: doctorId,
@@ -197,13 +231,21 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
             '${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')}',
         appointmentNumber: 'LOCAL-${start.microsecondsSinceEpoch % 100000}',
         status: AppointmentStatus.confirmed,
-        notes: 'حجز تجريبي محفوظ محلياً؛ لا يمثل تأكيداً من مشفى حقيقي.',
+        notes: 'تم تأكيد الموعد وحفظه محلياً على هذا الجهاز.',
         instructions: const [],
         visitType: state.selectedVisitType!,
         startAt: start,
         durationMinutes: 30,
+        patientId: currentPatientId,
+        patientName: LocalStorageService.instance
+                .getString(StorageKeys.profileFullName) ??
+            'المريض',
       );
-      await _repository.add(appointment);
+      final saved = await _repository.add(appointment);
+      if (!saved) {
+        emit(state.copyWith(isConfirming: false, clearTime: true));
+        return null;
+      }
       emit(state.copyWith(
           isConfirming: false, confirmedAppointment: appointment));
       return appointment;
@@ -257,4 +299,10 @@ class BookAppointmentCubit extends Cubit<BookAppointmentState> {
       left.year == right.year &&
       left.month == right.month &&
       left.day == right.day;
+
+  @override
+  Future<void> close() async {
+    await _repositorySubscription.cancel();
+    await super.close();
+  }
 }

@@ -8,6 +8,7 @@ import 'package:healty_app/features/appointments/presentation/data/booking_local
 import 'package:healty_app/features/appointments/presentation/models/appointment_status.dart';
 import 'package:healty_app/features/appointments/presentation/models/appointment_ui_model.dart';
 import 'package:healty_app/features/appointments/presentation/models/booking_ids.dart';
+import 'package:healty_app/features/appointments/presentation/cubit/appointments_cubit.dart';
 
 void main() {
   group('booking filters and dependent selections', () {
@@ -214,5 +215,147 @@ void main() {
     expect(saved.id, appointment.id);
     expect(saved.startAt, start);
     expect(saved.doctorId, 'd1');
+  });
+
+  test(
+      'confirmation, duplicate protection, doctor cancellation, and slot reuse',
+      () async {
+    SharedPreferences.setMockInitialValues({});
+    await LocalStorageService.instance.init();
+    await LocalStorageService.instance.remove('localAppointments');
+    final repository = LocalAppointmentsRepository();
+    final patientAppointments = AppointmentsCubit(repository: repository);
+    final booking = BookAppointmentCubit(repository: repository);
+    final doctor = BookAppointmentCubit.doctors.first;
+    final date = BookingLocalDataSource.dateAtOffset(1);
+    final start = DateTime(date.year, date.month, date.day, 9);
+
+    booking.selectHospital(doctor.hospitalId);
+    booking.selectSpecialty(doctor.specialtyId);
+    booking.selectVisitType('كشف جديد');
+    booking.selectDoctor(doctor);
+    booking.selectDate(date);
+    booking.selectTime(start);
+
+    expect(repository.load(), isEmpty,
+        reason: 'Choosing a time alone must not create a booking.');
+    final appointment = await booking.confirmBooking();
+    expect(appointment, isNotNull);
+    final confirmedAppointment = appointment!;
+    await Future<void>.delayed(Duration.zero);
+    expect(
+        patientAppointments.state.appointments
+            .any((item) => item.id == confirmedAppointment.id),
+        isTrue);
+    expect(
+        await repository.add(AppointmentUiModel(
+          id: 'racing-request',
+          doctorId: confirmedAppointment.doctorId,
+          doctorName: confirmedAppointment.doctorName,
+          specialty: confirmedAppointment.specialty,
+          hospital: confirmedAppointment.hospital,
+          department: confirmedAppointment.department,
+          day: confirmedAppointment.day,
+          date: confirmedAppointment.date,
+          time: confirmedAppointment.time,
+          appointmentNumber: 'LOCAL-DUPLICATE',
+          status: AppointmentStatus.confirmed,
+          notes: '',
+          instructions: const [],
+          visitType: confirmedAppointment.visitType,
+          startAt: confirmedAppointment.startAt,
+        )),
+        isFalse,
+        reason:
+            'The repository must reject a competing write to the same slot.');
+
+    final secondBooking = BookAppointmentCubit(repository: repository);
+    secondBooking.selectHospital(doctor.hospitalId);
+    secondBooking.selectSpecialty(doctor.specialtyId);
+    secondBooking.selectVisitType('كشف جديد');
+    secondBooking.selectDoctor(doctor);
+    secondBooking.selectDate(date);
+    expect(
+        secondBooking.availableSlots
+            .any((slot) => slot.startAt.isAtSameMomentAs(start)),
+        isFalse,
+        reason: 'A confirmed time must disappear from availability.');
+    secondBooking.selectTime(start);
+    expect(secondBooking.state.selectedTime, isNull);
+
+    expect(
+        await repository.cancelByDoctor(confirmedAppointment.id, 'd2'), isFalse,
+        reason: 'A different doctor cannot cancel this appointment.');
+    final availabilityRevision = secondBooking.state.availabilityRevision;
+    expect(await repository.cancelByDoctor(confirmedAppointment.id, doctor.id),
+        isTrue);
+    await Future<void>.delayed(Duration.zero);
+    expect(
+      secondBooking.state.availabilityRevision,
+      greaterThan(availabilityRevision),
+      reason: 'The booking screen must rebuild when a slot is released.',
+    );
+    expect(repository.load().single.status, AppointmentStatus.canceledByDoctor);
+    expect(
+        patientAppointments.state.appointments
+            .singleWhere((item) => item.id == confirmedAppointment.id)
+            .status,
+        AppointmentStatus.canceledByDoctor);
+    expect(
+        secondBooking.availableSlots
+            .any((slot) => slot.startAt.isAtSameMomentAs(start)),
+        isTrue,
+        reason: 'A future canceled time should return to availability.');
+    expect(await repository.cancelByDoctor(confirmedAppointment.id, doctor.id),
+        isFalse,
+        reason: 'An already canceled appointment cannot be canceled again.');
+
+    await booking.close();
+    await secondBooking.close();
+    await patientAppointments.close();
+  });
+
+  test('confirmation rechecks a selected slot after a competing booking',
+      () async {
+    SharedPreferences.setMockInitialValues({});
+    await LocalStorageService.instance.init();
+    await LocalStorageService.instance.remove('localAppointments');
+
+    final repository = LocalAppointmentsRepository();
+    final booking = BookAppointmentCubit(repository: repository);
+    final doctor = BookAppointmentCubit.doctors.first;
+    final date = BookingLocalDataSource.dateAtOffset(1);
+    final start = DateTime(date.year, date.month, date.day, 9);
+    booking.selectHospital(doctor.hospitalId);
+    booking.selectSpecialty(doctor.specialtyId);
+    booking.selectVisitType('كشف جديد');
+    booking.selectDoctor(doctor);
+    booking.selectDate(date);
+    booking.selectTime(start);
+    expect(booking.state.selectedTime, start);
+
+    final competingAppointment = AppointmentUiModel(
+      id: 'competing-booking',
+      doctorId: doctor.id,
+      doctorName: doctor.name,
+      specialty: doctor.specialty,
+      hospital: doctor.hospital,
+      department: 'قسم ${doctor.specialty}',
+      day: 'موعد اختباري',
+      date: '${date.day}/${date.month}/${date.year}',
+      time: '09:00',
+      appointmentNumber: 'LOCAL-COMPETING',
+      status: AppointmentStatus.confirmed,
+      notes: '',
+      instructions: const [],
+      startAt: start,
+      patientId: 'another-patient',
+      patientName: 'مريض آخر',
+    );
+    expect(await repository.add(competingAppointment), isTrue);
+
+    expect(await booking.confirmBooking(), isNull);
+    expect(repository.load().single.id, competingAppointment.id);
+    await booking.close();
   });
 }

@@ -23,7 +23,10 @@ class AppointmentsState extends Equatable {
   List<AppointmentUiModel> get visibleAppointments {
     return appointments.where((appointment) {
       final query = searchQuery.trim().toLowerCase();
-      final matchesStatus = appointment.status == selectedStatus;
+      final matchesStatus = selectedStatus == AppointmentStatus.canceled
+          ? appointment.status == AppointmentStatus.canceled ||
+              appointment.status == AppointmentStatus.canceledByDoctor
+          : appointment.status == selectedStatus;
       final matchesSearch = query.isEmpty ||
           appointment.doctorName.toLowerCase().contains(query) ||
           appointment.specialty.toLowerCase().contains(query) ||
@@ -36,7 +39,10 @@ class AppointmentsState extends Equatable {
   }
 
   int get upcomingCount => appointments
-      .where((appointment) => appointment.status == AppointmentStatus.confirmed)
+      .where((appointment) =>
+          appointment.status == AppointmentStatus.confirmed &&
+          appointment.startAt != null &&
+          appointment.startAt!.isAfter(DateTime.now()))
       .length;
 
   int get previousCount => appointments
@@ -44,7 +50,9 @@ class AppointmentsState extends Equatable {
       .length;
 
   int get canceledCount => appointments
-      .where((appointment) => appointment.status == AppointmentStatus.canceled)
+      .where((appointment) =>
+          appointment.status == AppointmentStatus.canceled ||
+          appointment.status == AppointmentStatus.canceledByDoctor)
       .length;
 
   AppointmentUiModel get selectedAppointment => appointments.first;

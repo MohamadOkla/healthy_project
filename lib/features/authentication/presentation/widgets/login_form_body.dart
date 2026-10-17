@@ -11,7 +11,6 @@ import '../../../../core/localization/app_translations.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/utils/user_role_helper.dart';
 
 class LoginFormBody extends StatelessWidget {
   const LoginFormBody({
@@ -51,7 +50,8 @@ class LoginFormBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(context.tr('welcome_back'), style: AppTextStyles.headlineLarge(context)),
+                  Text(context.tr('welcome_back'),
+                      style: AppTextStyles.headlineLarge(context)),
                   const SizedBox(height: AppSpacing.sm),
                   Text(
                     context.tr('login_subtitle'),
@@ -73,8 +73,7 @@ class LoginFormBody extends StatelessWidget {
                   const SocialLoginSection(),
                   const Spacer(),
                   const SizedBox(height: AppSpacing.lg),
-                  if (UserRoleHelper.canSelfRegister(selectedRole))
-                    RegisterLink(selectedRole: selectedRole),
+                  const RegisterLink(),
                 ],
               ),
             ),

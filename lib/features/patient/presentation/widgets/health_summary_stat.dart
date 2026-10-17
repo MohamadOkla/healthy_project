@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -7,6 +8,7 @@ import '../../../../core/theme/app_text_styles.dart';
 
 class HealthSummaryStat extends StatelessWidget {
   const HealthSummaryStat({
+    super.key,
     required this.label,
     required this.value,
     required this.icon,
@@ -20,49 +22,53 @@ class HealthSummaryStat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(AppRadius.lg),
       child: InkWell(
         onTap: () => context.go(route),
-        splashFactory: NoSplash.splashFactory,
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        focusColor: Colors.transparent,
-        overlayColor: WidgetStateProperty.all(Colors.transparent),
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+        child: Ink(
           padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.xs,
-            vertical: AppSpacing.sm,
+            horizontal: AppSpacing.sm,
+            vertical: AppSpacing.md,
           ),
           decoration: BoxDecoration(
-            color: AppColors.white.withValues(alpha: 0.14),
+            color: AppColors.textDark.withValues(alpha: 0.16),
             borderRadius: BorderRadius.circular(AppRadius.lg),
             border: Border.all(
-              color: AppColors.white.withValues(alpha: 0.18),
+              color: AppColors.white.withValues(alpha: 0.2),
             ),
           ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Icon(icon, color: AppColors.white, size: 22),
-              const SizedBox(height: AppSpacing.xs),
-              Text(
-                value,
-                style: AppTextStyles.titleMedium(context).copyWith(
-                  color: AppColors.white,
-                  fontWeight: FontWeight.w800,
+              Icon(icon, color: AppColors.white, size: 30),
+              const SizedBox(height: AppSpacing.sm),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  value,
+                  textAlign: TextAlign.center,
+                  softWrap: false,
+                  style: AppTextStyles.titleMedium(context).copyWith(
+                    color: AppColors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 label,
-                style: AppTextStyles.bodyMedium(context).copyWith(
-                  color: AppColors.white.withValues(alpha: 0.86),
-                  fontSize: 12,
-                ),
                 textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+                softWrap: true,
+                style: AppTextStyles.bodyMedium(context).copyWith(
+                  color: AppColors.white.withValues(alpha: 0.96),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),

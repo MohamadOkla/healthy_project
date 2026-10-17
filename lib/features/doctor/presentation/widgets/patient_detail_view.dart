@@ -78,6 +78,9 @@ class _PatientDetailViewState extends State<PatientDetailView>
             title: Text(patient.name),
             bottom: TabBar(
               controller: _tabController,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white,
+              indicatorColor: Colors.white,
               labelStyle: const TextStyle(fontWeight: FontWeight.w700),
               tabs: [
                 Tab(text: 'السجل الطبي (${state.medicalRecords.length})'),

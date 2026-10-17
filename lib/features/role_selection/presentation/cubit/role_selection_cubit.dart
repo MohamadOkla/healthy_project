@@ -31,6 +31,8 @@ class RoleSelectionCubit extends Cubit<RoleSelectionState> {
     ),
   ];
 
+  List<RoleUiModel> get availableRoles => roles;
+
   void selectRole(RoleUiModel role) {
     emit(state.copyWith(selectedRole: role));
   }

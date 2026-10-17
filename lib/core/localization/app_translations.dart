@@ -106,7 +106,7 @@ abstract final class AppTranslations {
     'nav_doctors': {'ar': 'الأطباء', 'en': 'Doctors'},
 
     // Dashboard greetings
-    'welcome_greeting': {'ar': 'مرحباً', 'en': 'Welcome'},
+    'welcome_greeting': {'ar': 'مرحبًا', 'en': 'Welcome'},
     'good_morning_greeting': {'ar': 'صباح الخير،', 'en': 'Good morning,'},
 
     // Settings

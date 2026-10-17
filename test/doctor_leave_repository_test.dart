@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:healty_app/core/constants/storage_keys.dart';
 import 'package:healty_app/core/services/local_storage_service.dart';
@@ -6,6 +7,7 @@ import 'package:healty_app/features/appointments/data/doctor_leave_repository.da
 import 'package:healty_app/features/appointments/presentation/cubit/book_appointment_cubit.dart';
 import 'package:healty_app/features/appointments/presentation/data/booking_local_data_source.dart';
 import 'package:healty_app/features/appointments/presentation/models/booking_ids.dart';
+import 'package:healty_app/features/appointments/presentation/screens/date_time_selection_screen.dart';
 import 'package:healty_app/features/hospital_admin/data/repositories/hospital_admin_repository_impl.dart';
 
 void main() {
@@ -152,7 +154,48 @@ void main() {
     expect(
         cubit.availableFor('d1', leaveDay).every((slot) => !slot.isAvailable),
         isTrue);
+    final afterLeave = leaveDay.add(const Duration(days: 2));
+    expect(cubit.availableFor('d1', afterLeave).any((slot) => slot.isAvailable),
+        isTrue);
     expect(await cubit.confirmBooking(), isNull);
     cubit.close();
+  });
+
+  testWidgets('date selection identifies leave dates and explains the range',
+      (tester) async {
+    final day = BookingLocalDataSource.dateAtOffset(1);
+    final end = day.add(const Duration(days: 1));
+    await DoctorLeaveRepository().save(
+      doctorId: 'd1',
+      startsOn: day,
+      endsOn: end,
+      reason: 'إجازة خاصة لا تعرض للمريض',
+    );
+
+    final cubit = BookAppointmentCubit();
+    addTearDown(cubit.close);
+    cubit.selectHospital(HospitalId.damascusUniversity);
+    cubit.selectSpecialty(SpecialtyId.cardiology);
+    cubit.selectVisitType('كشف جديد');
+    cubit.selectDoctor(BookAppointmentCubit.doctors.first);
+    cubit.selectDate(day);
+
+    await tester.pumpWidget(
+      MaterialApp(home: DateTimeSelectionScreen(cubit: cubit)),
+    );
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text('إجازة'), findsNWidgets(2));
+    expect(find.textContaining('إجازات الطبيب المسجلة'), findsOneWidget);
+    expect(
+      find.textContaining(
+        'الطبيب في إجازة من ${day.day.toString().padLeft(2, '0')}/'
+        '${day.month.toString().padLeft(2, '0')}/${day.year} إلى '
+        '${end.day.toString().padLeft(2, '0')}/'
+        '${end.month.toString().padLeft(2, '0')}/${end.year}',
+      ),
+      findsOneWidget,
+    );
+    expect(find.textContaining('إجازة خاصة'), findsNothing);
   });
 }

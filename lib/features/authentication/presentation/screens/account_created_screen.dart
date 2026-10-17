@@ -31,12 +31,19 @@ class AccountCreatedScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(AppSpacing.lg),
                   child: AuthSuccessCard(
-                    title: UserRoleHelper.isDoctor(selectedRole)
-                        ? 'تم إنشاء حساب الطبيب بنجاح'
-                        : 'تم إنشاء حساب المريض بنجاح',
-                    message: UserRoleHelper.isDoctor(selectedRole)
-                        ? 'سيتم مراجعة الحساب من الإدارة، ويمكنك العودة إلى تسجيل الدخول.'
-                        : 'يمكنك الآن تسجيل الدخول والوصول إلى خدماتك الطبية.',
+                    title: switch (UserRoleHelper.normalize(selectedRole)) {
+                      UserRoleHelper.doctor => 'تم إنشاء حساب الطبيب بنجاح',
+                      UserRoleHelper.hospitalAdmin =>
+                        'تم إنشاء حساب مدير المشفى بنجاح',
+                      _ => 'تم إنشاء حساب المريض بنجاح',
+                    },
+                    message: switch (UserRoleHelper.normalize(selectedRole)) {
+                      UserRoleHelper.doctor =>
+                        'سيتم مراجعة الحساب من الإدارة، ويمكنك العودة إلى تسجيل الدخول.',
+                      UserRoleHelper.hospitalAdmin =>
+                        'يمكنك العودة إلى تسجيل الدخول باستخدام حساب إدارة المشفى.',
+                      _ => 'يمكنك الآن تسجيل الدخول والوصول إلى خدماتك الطبية.',
+                    },
                     buttonText: 'الانتقال إلى تسجيل الدخول',
                     onPressed: () async {
                       await LocalStorageService.instance.setBool(

@@ -18,6 +18,8 @@ class AppointmentUiModel {
     this.visitType = 'كشف جديد',
     this.startAt,
     this.durationMinutes = 30,
+    this.patientId = 'p1',
+    this.patientName = 'محمد أحمد',
   });
 
   final String id;
@@ -36,6 +38,8 @@ class AppointmentUiModel {
   final String visitType;
   final DateTime? startAt;
   final int durationMinutes;
+  final String patientId;
+  final String patientName;
 
   Map<String, Object?> toJson() => {
         'id': id,
@@ -54,6 +58,8 @@ class AppointmentUiModel {
         'visitType': visitType,
         'startAt': startAt?.toIso8601String(),
         'durationMinutes': durationMinutes,
+        'patientId': patientId,
+        'patientName': patientName,
       };
 
   factory AppointmentUiModel.fromJson(Map<String, Object?> json) {
@@ -79,6 +85,8 @@ class AppointmentUiModel {
       visitType: json['visitType'] as String? ?? 'كشف جديد',
       startAt: DateTime.tryParse(json['startAt'] as String? ?? ''),
       durationMinutes: json['durationMinutes'] as int? ?? 30,
+      patientId: json['patientId'] as String? ?? 'p1',
+      patientName: json['patientName'] as String? ?? 'محمد أحمد',
     );
   }
 }

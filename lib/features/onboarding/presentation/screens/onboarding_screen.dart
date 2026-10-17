@@ -26,7 +26,7 @@ class OnboardingScreen extends StatelessWidget {
               true,
             );
             if (!context.mounted) return;
-            context.go(AppRoutes.roleSelection);
+            context.go(AppRoutes.login);
           }
         },
         child: const OnboardingBackground(

@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/constants/storage_keys.dart';
 import '../../../../core/constants/current_patient.dart';
 import '../../../../core/localization/app_translations.dart';
+import '../../../../core/services/local_storage_service.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -21,7 +23,14 @@ class DashboardHeader extends StatelessWidget {
     final fullName = context.select<ProfileCubit, String>(
       (cubit) => cubit.state.fullName,
     );
-    final firstName = fullName.trim().split(RegExp(r'\s+')).first;
+    final savedName =
+        LocalStorageService.instance.getString(StorageKeys.profileFullName);
+    final patientName = savedName == null || fullName.trim().isEmpty
+        ? 'المريض'
+        : fullName.trim();
+    final greeting = context.tr('welcome_greeting');
+    final separator =
+        Directionality.of(context) == TextDirection.rtl ? '، ' : ', ';
     final unreadNotifications = NotificationsRepositoryImpl()
         .getUnreadCountForPatient(currentPatientId);
 
@@ -56,8 +65,13 @@ class DashboardHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '${context.tr('welcome_greeting')} $firstName',
+              Text.rich(
+                TextSpan(
+                  text: '$greeting$separator',
+                  children: [
+                    TextSpan(text: '\u2068$patientName\u2069'),
+                  ],
+                ),
                 style: AppTextStyles.titleMedium(context).copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.w800,

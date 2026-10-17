@@ -9,9 +9,9 @@ import '../widgets/prescription_header.dart';
 import '../widgets/medicine_list_card.dart';
 import '../widgets/prescription_notes_card.dart';
 import '../../../../core/constants/app_routes.dart';
-import '../../../../core/services/pdf_mock_service.dart';
-import '../../../../core/services/share_mock_service.dart';
+import '../../../../core/services/medical_document_service.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../widgets/medical_document_action_button.dart';
 
 const _fallbackPrescription = PrescriptionEntry(
   id: 'rx0',
@@ -42,6 +42,11 @@ class PrescriptionDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final prescription = this.prescription ?? _fallbackPrescription;
+    final documentService = MedicalDocumentService();
+    final fileName = MedicalDocumentService.safeFileName(
+      'prescription',
+      prescription.id,
+    );
 
     return AppScaffold(
       padding: EdgeInsets.zero,
@@ -71,23 +76,27 @@ class PrescriptionDetailsScreen extends StatelessWidget {
             PrescriptionNotesCard(prescription: prescription),
           ],
           const SizedBox(height: AppSpacing.xl),
-          AppButton(
-            text: 'تحميل الوصفة',
+          MedicalDocumentActionButton(
+            service: documentService,
+            createPdf: () =>
+                documentService.createPrescriptionPdf(prescription),
+            fileName: fileName,
+            title: 'الوصفة الطبية',
+            action: MedicalDocumentAction.save,
+            buttonText: 'تحميل الوصفة',
             icon: Icons.download_rounded,
-            onPressed: () => PdfMockService.createPdf(
-              context: context,
-              fileName: 'prescription.pdf',
-            ),
           ),
           const SizedBox(height: AppSpacing.sm),
-          AppButton(
-            text: 'مشاركة الوصفة',
+          MedicalDocumentActionButton(
+            service: documentService,
+            createPdf: () =>
+                documentService.createPrescriptionPdf(prescription),
+            fileName: fileName,
+            title: 'الوصفة الطبية',
+            action: MedicalDocumentAction.share,
+            buttonText: 'مشاركة الوصفة',
             icon: Icons.share_rounded,
             isOutlined: true,
-            onPressed: () => ShareMockService.showShareSheet(
-              context: context,
-              title: 'مشاركة الوصفة الطبية',
-            ),
           ),
           const SizedBox(height: AppSpacing.sm),
           AppButton(

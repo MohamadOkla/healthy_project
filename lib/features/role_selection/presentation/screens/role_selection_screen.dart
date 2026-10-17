@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_routes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../cubit/role_selection_cubit.dart';
 import '../cubit/role_selection_state.dart';
@@ -10,21 +12,25 @@ import '../widgets/role_selection_background.dart';
 import '../widgets/role_selection_header.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
-  const RoleSelectionScreen({super.key});
+  const RoleSelectionScreen({super.key, this.forRegistration = false});
+
+  final bool forRegistration;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => RoleSelectionCubit(),
-      child: const RoleSelectionBackground(
-        child: _RoleSelectionContent(),
+      child: RoleSelectionBackground(
+        child: _RoleSelectionContent(forRegistration: forRegistration),
       ),
     );
   }
 }
 
 class _RoleSelectionContent extends StatelessWidget {
-  const _RoleSelectionContent();
+  const _RoleSelectionContent({required this.forRegistration});
+
+  final bool forRegistration;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +47,14 @@ class _RoleSelectionContent extends StatelessWidget {
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   children: [
+                    Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: IconButton(
+                        tooltip: 'العودة إلى تسجيل الدخول',
+                        onPressed: () => context.go(AppRoutes.login),
+                        icon: const Icon(Icons.arrow_back_rounded),
+                      ),
+                    ),
                     const RoleSelectionHeader(),
                     const SizedBox(height: AppSpacing.lg),
                     Expanded(
@@ -48,11 +62,16 @@ class _RoleSelectionContent extends StatelessWidget {
                           BlocBuilder<RoleSelectionCubit, RoleSelectionState>(
                         builder: (context, state) {
                           return ListView.separated(
-                            itemCount: RoleSelectionCubit.roles.length,
+                            itemCount: context
+                                .read<RoleSelectionCubit>()
+                                .availableRoles
+                                .length,
                             separatorBuilder: (_, __) =>
                                 const SizedBox(height: AppSpacing.md),
                             itemBuilder: (context, index) {
-                              final role = RoleSelectionCubit.roles[index];
+                              final role = context
+                                  .read<RoleSelectionCubit>()
+                                  .availableRoles[index];
                               return RoleCard(
                                 role: role,
                                 isSelected: state.selectedRole?.id == role.id,
@@ -66,7 +85,7 @@ class _RoleSelectionContent extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: AppSpacing.lg),
-                    const RoleContinueButton(),
+                    RoleContinueButton(forRegistration: forRegistration),
                   ],
                 ),
               ),

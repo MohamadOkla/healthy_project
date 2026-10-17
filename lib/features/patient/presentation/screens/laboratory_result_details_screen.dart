@@ -9,9 +9,9 @@ import '../widgets/result_header_card.dart';
 import '../widgets/result_table_card.dart';
 import '../widgets/interpretation_card.dart';
 import '../../../../core/constants/app_routes.dart';
-import '../../../../core/services/pdf_mock_service.dart';
-import '../../../../core/services/share_mock_service.dart';
+import '../../../../core/services/medical_document_service.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../widgets/medical_document_action_button.dart';
 
 const _fallbackResult = LabResultEntry(
   id: 'lab0',
@@ -48,6 +48,9 @@ class LaboratoryResultDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final result = this.result ?? _fallbackResult;
+    final documentService = MedicalDocumentService();
+    final fileName =
+        MedicalDocumentService.safeFileName('lab_result', result.id);
 
     return AppScaffold(
       padding: EdgeInsets.zero,
@@ -79,23 +82,25 @@ class LaboratoryResultDetailsScreen extends StatelessWidget {
             InterpretationCard(result: result),
           ],
           const SizedBox(height: AppSpacing.xl),
-          AppButton(
-            text: 'تحميل PDF',
+          MedicalDocumentActionButton(
+            service: documentService,
+            createPdf: () => documentService.createLabResultPdf(result),
+            fileName: fileName,
+            title: 'نتيجة التحليل',
+            action: MedicalDocumentAction.save,
+            buttonText: 'تحميل PDF',
             icon: Icons.picture_as_pdf_rounded,
-            onPressed: () => PdfMockService.createPdf(
-              context: context,
-              fileName: 'lab_result.pdf',
-            ),
           ),
           const SizedBox(height: AppSpacing.sm),
-          AppButton(
-            text: 'مشاركة النتيجة',
+          MedicalDocumentActionButton(
+            service: documentService,
+            createPdf: () => documentService.createLabResultPdf(result),
+            fileName: fileName,
+            title: 'نتيجة التحليل',
+            action: MedicalDocumentAction.share,
+            buttonText: 'مشاركة النتيجة',
             icon: Icons.share_rounded,
             isOutlined: true,
-            onPressed: () => ShareMockService.showShareSheet(
-              context: context,
-              title: 'مشاركة نتيجة التحليل',
-            ),
           ),
           const SizedBox(height: AppSpacing.sm),
           AppButton(

@@ -16,6 +16,7 @@ class RegisterState extends Equatable {
   bool get canGoNext => !isLoading;
   bool get isPatientRegistration => selectedRole == 'patient';
   bool get isDoctorRegistration => selectedRole == 'doctor';
+  bool get isHospitalAdminRegistration => selectedRole == 'hospitalAdmin';
 
   RegisterState copyWith({
     String? selectedRole,

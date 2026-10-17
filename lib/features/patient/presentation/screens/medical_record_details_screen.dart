@@ -10,9 +10,9 @@ import '../widgets/diagnosis_card.dart';
 import '../widgets/vitals_card.dart';
 import '../widgets/medical_lists_card.dart';
 import '../../../../core/constants/app_routes.dart';
-import '../../../../core/services/pdf_mock_service.dart';
-import '../../../../core/services/share_mock_service.dart';
+import '../../../../core/services/medical_document_service.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../widgets/medical_document_action_button.dart';
 
 const _fallbackRecord = MedicalRecordEntry(
   id: 'mr0',
@@ -40,6 +40,11 @@ class MedicalRecordDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final record = this.record ?? _fallbackRecord;
+    final documentService = MedicalDocumentService();
+    final fileName = MedicalDocumentService.safeFileName(
+      'medical_record',
+      record.id,
+    );
 
     return AppScaffold(
       padding: EdgeInsets.zero,
@@ -73,23 +78,25 @@ class MedicalRecordDetailsScreen extends StatelessWidget {
             MedicalListsCard(record: record),
           ],
           const SizedBox(height: AppSpacing.xl),
-          AppButton(
-            text: 'تحميل التقرير',
+          MedicalDocumentActionButton(
+            service: documentService,
+            createPdf: () => documentService.createMedicalRecordPdf(record),
+            fileName: fileName,
+            title: 'السجل الطبي',
+            action: MedicalDocumentAction.save,
+            buttonText: 'تحميل التقرير',
             icon: Icons.download_rounded,
-            onPressed: () => PdfMockService.createPdf(
-              context: context,
-              fileName: 'medical_record.pdf',
-            ),
           ),
           const SizedBox(height: AppSpacing.sm),
-          AppButton(
-            text: 'مشاركة التقرير',
+          MedicalDocumentActionButton(
+            service: documentService,
+            createPdf: () => documentService.createMedicalRecordPdf(record),
+            fileName: fileName,
+            title: 'السجل الطبي',
+            action: MedicalDocumentAction.share,
+            buttonText: 'مشاركة التقرير',
             icon: Icons.share_rounded,
             isOutlined: true,
-            onPressed: () => ShareMockService.showShareSheet(
-              context: context,
-              title: 'مشاركة التقرير الطبي',
-            ),
           ),
           const SizedBox(height: AppSpacing.sm),
           AppButton(

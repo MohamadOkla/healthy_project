@@ -15,11 +15,18 @@ abstract final class UserRoleHelper {
   }
 
   static bool canSelfRegister(String? role) {
-    final normalizedRole = normalize(role);
-    return normalizedRole == patient || normalizedRole == doctor;
+    return isKnownRole(role);
   }
 
   static bool isDoctor(String? role) => normalize(role) == doctor;
+
+  static bool isHospitalAdmin(String? role) => normalize(role) == hospitalAdmin;
+
+  static bool isKnownRole(String? role) =>
+      role == patient ||
+      role == doctor ||
+      role == hospitalAdmin ||
+      role == 'hospital_admin';
 
   static String loginRouteFor(String? role) {
     return Uri(
@@ -34,6 +41,11 @@ abstract final class UserRoleHelper {
       queryParameters: {'role': normalize(role)},
     ).toString();
   }
+
+  static String get registrationRoleSelectionRoute => Uri(
+        path: AppRoutes.roleSelection,
+        queryParameters: const {'flow': 'register'},
+      ).toString();
 
   static String otpRouteForRegister(String? role) {
     return Uri(

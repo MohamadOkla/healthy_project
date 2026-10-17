@@ -6,11 +6,7 @@ import '../../../../core/services/local_storage_service.dart';
 import '../cubit/login_cubit.dart';
 import 'login_header.dart';
 import 'login_form_body.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_routes.dart';
 import '../../../../core/constants/storage_keys.dart';
-import '../../../../core/theme/app_radius.dart';
-import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/utils/user_role_helper.dart';
 
 class LoginForm extends StatefulWidget {
@@ -78,28 +74,6 @@ class _LoginFormState extends State<LoginForm>
                 ),
               ),
             ],
-          ),
-        ),
-        SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.lg,
-              AppSpacing.md,
-              AppSpacing.lg,
-              0,
-            ),
-            child: Material(
-              color: AppColors.white.withValues(alpha: 0.18),
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              child: IconButton(
-                tooltip: 'الرجوع لاختيار الدور',
-                onPressed: () => context.go(AppRoutes.roleSelection),
-                icon: const Icon(
-                  Icons.arrow_back_rounded,
-                  color: AppColors.white,
-                ),
-              ),
-            ),
           ),
         ),
       ],

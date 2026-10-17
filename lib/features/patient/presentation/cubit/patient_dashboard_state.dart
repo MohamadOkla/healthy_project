@@ -8,25 +8,28 @@ class PatientDashboardState extends Equatable {
   const PatientDashboardState({
     required this.healthSummary,
     required this.quickActions,
-    required this.upcomingAppointment,
+    this.upcomingAppointment,
     this.isLoading = false,
   });
 
   final HealthSummaryModel healthSummary;
   final List<QuickActionModel> quickActions;
-  final AppointmentModel upcomingAppointment;
+  final AppointmentModel? upcomingAppointment;
   final bool isLoading;
 
   PatientDashboardState copyWith({
     HealthSummaryModel? healthSummary,
     List<QuickActionModel>? quickActions,
     AppointmentModel? upcomingAppointment,
+    bool clearUpcomingAppointment = false,
     bool? isLoading,
   }) {
     return PatientDashboardState(
       healthSummary: healthSummary ?? this.healthSummary,
       quickActions: quickActions ?? this.quickActions,
-      upcomingAppointment: upcomingAppointment ?? this.upcomingAppointment,
+      upcomingAppointment: clearUpcomingAppointment
+          ? null
+          : upcomingAppointment ?? this.upcomingAppointment,
       isLoading: isLoading ?? this.isLoading,
     );
   }
